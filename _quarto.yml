@@ -24,8 +24,6 @@ book:
     - index.qmd
 
     - part: Thinking of Text as Data and Preprocessing
-      chapters:
-       - 1-text-as-data.qmd
 
     - part: Analyzing Data
 
@@ -59,4 +57,4 @@ format:
 #  - files/digital-methods.bib
 #bibliographystyle: apa
 
-editor: visual
+editor: visual

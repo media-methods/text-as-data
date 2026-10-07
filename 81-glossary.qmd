@@ -42,14 +42,14 @@ glossary |>
   gt::tab_style(
     style = gt::cell_text(
       weight = "bold",
-      color = "#539FC6"
+      color = "#9E2A2B"
     ),
     locations = gt::cells_column_labels()
   ) |>
   gt::tab_style(
     style = gt::cell_borders(
       sides = "bottom",
-      color = "#539FC6",
+      color = "#9E2A2B",
       weight = gt::px(2)
     ),
     locations = gt::cells_column_labels()

@@ -72,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="files/www/custom.css">
-<link rel="stylesheet" href="ache-refresh">
+<link rel="stylesheet" href="ache-re-fresh">
 </head>
 
 <body class="fullcontent">
@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
 <p><b> Statement of Release </b></p>
 <p>The information herein is correct to the best of my knowledge, however, error cannot be avoided with absolute certainty. Solely the specifications in the pertinent legal bases (laws, orders, statutes) are legally binding. I cannot assume any liability for the particular currency, accuracy, completeness and availability of the provided information. I am not liable for damages caused by the use of this internet offer. This exclusion of liability shall not apply if the regulations of § 839 BGB (liability for violation of official duty) are involved. We are not liable for any damages caused by call-up or downloading of data by damaged software or by the installation or use of software. This exclusion of liability does not apply to information that falls within the scope of the Order (EU) 2016/679 of the European Parliament and of the Council dated 27 April 2016 (General Data Protection Regulation). The accuracy and currency of this information is guaranteed.</p>
 <p><b> Disclaimer </b></p>
-<p>The information offered here contains cross-references (“links”) to other internet offers, including by external, third-parties. Basically the internet pages will open automatically in a new window. Through this cross-reference, I handle access for use of this content (§ 5 Telemedia Law). I am not responsible for this “foreign” content since I do not initiate the transmission of the information, have not selected the addressee of the transmitted information and also have not selected or changed the transmitted information. An automatic, short-term interim saving of this “foreign information” by me does not occur due to the selected call-up and linking method, so that I do not assume any responsibility for this foreign content. However, upon initial linking with these internet offers, the LMU has checked the foreign content to determine whether it may trigger a potential responsibility under civil or penal law. But we do not receive any automatic information about changes to the foreign internet offers and thus cannot constantly monitor their content for any changes. Therefore we also cannot assume any responsibility for them. Solely the particular merchant of the foreign internet offer is liable for illegal, erroneous or incomplete content, and in particular for damages which arise from the use or non-use of information by third parties. However, we endeavor to check the included links regularly with regard to these named criteria.</p>
+<p>The information offered here contains cross-references (“links”) to other internet offers, including by external, third-parties. Basically the internet pages will open automatically in a new window. Through this cross-reference, I handle access for use of this content (§ 5 Telemedia Law). I am not responsible for this “foreign” content since I do not initiate the transmission of the information, have not selected the addressee of the transmitted information and also have not selected or changed the transmitted information. An automatic, short-term interim saving of this “foreign information” by me does not occur due to the selected call-up and linking method, so that I do not assume any responsibility for this foreign content. However, upon initial linking with these internet offers, I have checked the foreign content to determine whether it may trigger a potential responsibility under civil or penal law. But we do not receive any automatic information about changes to the foreign internet offers and thus cannot constantly monitor their content for any changes. Therefore we also cannot assume any responsibility for them. Solely the particular merchant of the foreign internet offer is liable for illegal, erroneous or incomplete content, and in particular for damages which arise from the use or non-use of information by third parties. However, we endeavor to check the included links regularly with regard to these named criteria.</p>
 
 
 
@@ -220,7 +220,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/media-methods\.github\.io\/text-as-data\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

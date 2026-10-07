@@ -1,0 +1,61 @@
+/* Main colors - change here to recolor the whole site */
+:root {
+  --main-color: #9E2A2B;   /* red for links, headings, active items */
+  --main-light: #F7E9E9;   /* light red for highlighted background */
+}
+
+/* links in main content only */
+main a {
+  color: var(--main-color);
+}
+
+/* H1 headings inside main content */
+#quarto-document-content h1 {
+  color: var(--main-color);
+}
+
+/* H2 headings inside main content */
+#quarto-document-content h2 {
+  color: var(--main-color);
+}
+
+#quarto-document-content h3 {
+  font-size: 1.1em;
+}
+
+/* sidebar chapter links */
+#quarto-sidebar .sidebar-navigation .sidebar-item .sidebar-link {
+  color: var(--main-color) !important;
+}
+
+/* hover */
+#quarto-sidebar .sidebar-navigation .sidebar-item .sidebar-link:hover {
+  color: var(--main-color) !important;
+}
+
+/* Right TOC: normal links */
+#TOC a {
+  color: #444 !important;
+}
+
+/* Right TOC: hover */
+#TOC a:hover {
+  color: var(--main-color) !important;
+}
+
+/* Right TOC: active section (most robust) */
+#TOC a[aria-current="true"],
+#TOC .active > a,
+#TOC a.active {
+  color: var(--main-color) !important;
+  font-weight: 600;
+}
+
+/* Optional: active background highlight */
+#TOC a[aria-current="true"],
+#TOC .active > a,
+#TOC a.active {
+  background-color: var(--main-light);
+  border-radius: 6px;
+  padding-left: 6px;
+}
