@@ -1,0 +1,55 @@
+/* links in main content only */
+main a {
+  color: #539FC6;
+}
+
+/* H1 headings inside main content */
+#quarto-document-content h1 {
+  color: #539FC6;
+}
+
+/* H2 headings inside main content */
+#quarto-document-content h2 {
+  color: #539FC6;
+}
+
+#quarto-document-content h3 {
+  font-size: 1.1em;
+}
+
+/* sidebar chapter links */
+#quarto-sidebar .sidebar-navigation .sidebar-item .sidebar-link {
+  color: #539FC6 !important;
+}
+
+/* hover */
+#quarto-sidebar .sidebar-navigation .sidebar-item .sidebar-link:hover {
+  color: #539FC6 !important;
+}
+
+/* Right TOC: normal links */
+#TOC a {
+  color: #444 !important;
+}
+
+/* Right TOC: hover */
+#TOC a:hover {
+  color: #539FC6 !important;
+}
+
+/* Right TOC: active section (most robust) */
+#TOC a[aria-current="true"],
+#TOC .active > a,
+#TOC a.active {
+  color: #539FC6 !important;
+  font-weight: 600;
+}
+
+/* Optional: active background highlight */
+#TOC a[aria-current="true"],
+#TOC .active > a,
+#TOC a.active {
+  background-color: #e8f3f9;
+  border-radius: 6px;
+  padding-left: 6px;
+}

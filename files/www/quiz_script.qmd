@@ -1,0 +1,210 @@
+```{ojs}
+//| echo: false
+
+round = (n, places) => {
+  if (!places) return Math.round(n);
+  const d = 10 ** places;
+  return Math.round(n * d) / d;
+}
+
+function textReplacementWithText({ text, placeholder, correctText, fontFamily = "monospace", color = "#000000" }) {
+  const parts = text.split(/\{\{input\}\}/); // Teilt den Text an den Eingabestellen
+
+  const root = htl.html`<div style="font-size: HUGE; margin-top: -40; margin-bottom: -40; margin-left: -50px; line-height: 1.8; font-family: ${fontFamily}; color: ${color}; white-space: pre-wrap; text-indent: 0; display: flex; align-items: baseline;">
+    <div style="flex: 1;">
+      ${parts.map((part, index) =>
+        htl.html`${part}${index < parts.length - 1 ? htl.html`<span style="display: inline-flex; align-items: baseline;">
+          <input 
+            type="text"
+            placeholder="${placeholder}"
+            style="padding: 3px; font-size: HUGE; border: 1px solid #ccc; margin-left: 0px; border-radius: 4px; width: calc(${correctText.length}ch + 1em); font-family: ${fontFamily}; color: ${color}; text-align: right; box-sizing: border-box; margin-right: 0.2em;"
+            oninput=${(e) => {
+              const feedbackElement = root.querySelector(`#feedback-final`);
+              const allInputsCorrect = Array.from(root.querySelectorAll("input")).every((input) => input.value.trim() === correctText.trim());
+              if (allInputsCorrect) {
+                feedbackElement.textContent = "✅";
+                feedbackElement.style.color = "green";
+              } else {
+                feedbackElement.textContent = "🔴";
+                feedbackElement.style.color = "red";
+              }
+            }}
+          /></span>` : ""}`
+      )}
+    </div>
+    <span id="feedback-final" style="font-weight: bold; font-size: HUGE; margin-left: 0.5em; color: inherit;"></span>
+  </div>`;
+
+  return root;
+}
+
+
+
+function textReplacementTask({ placeholder, correctText, width = "300px", fontFamily = "monospace", color = "black" }) {
+  let enteredText = ""; 
+
+  const root = htl.html`<div style="font-size: 14px; line-height: 1.5; margin-bottom: 20px;">
+    <h4>Bitte ersetzen Sie den Text:</h4>
+    <!-- Eingabefeld -->
+    <div style="display: flex; align-items: center;">
+      <input
+        type="text"
+        placeholder="${placeholder}"
+        style="padding: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: ${width}; font-family: ${fontFamily}; color: ${color};"
+        onInput=${(e) => {
+          enteredText = e.target.value;
+          root.value = enteredText;
+          root.dispatchEvent(new CustomEvent("input"));
+          updateFeedback();
+        }}
+      />
+      <!-- Feedback -->
+      <div id="feedback" style="font-weight: bold; font-size: 14px; margin-left: 10px; text-align: left; white-space: nowrap; color: inherit;"></div>
+    </div>
+  </div>`;
+
+// Funktion zur Aktualisierung des Feedbacks
+  function updateFeedback() {
+    const feedbackElement = root.querySelector("#feedback");
+    if (enteredText.trim() === correctText.trim()) {
+      feedbackElement.textContent = "✅";
+      feedbackElement.style.color = "green";
+    } else if (enteredText.trim() === "") {
+      feedbackElement.textContent = ""; 
+    } else {
+      feedbackElement.textContent = "🔴";
+      feedbackElement.style.color = "red";
+    }
+  }
+
+  root.value = null; 
+  return root;
+}
+
+
+function singleChoiceInput({ options, correctIndex }) {
+  let selectedAnswer = null;
+
+  const root = htl.html`<div style="font-size: HUGE; line-height: 1.5; margin-bottom: 0px;">
+    <!-- Antworten -->
+    <div style="display: grid; row-gap: 12px;">
+      ${options.map(
+        (option, index) =>
+          htl.html`<div style="display: flex; align-items: center;">
+            <!-- Radiobutton und Option -->
+            <label style="display: flex; align-items: center; padding-left: 4pt; font-weight: normal;">
+              <input
+                type="radio"
+                name="singleChoice"
+                value=${index}
+                style="margin-right: 10px;"
+                onChange=${() => {
+                  selectedAnswer = index;
+                  root.value = selectedAnswer;
+                  root.dispatchEvent(new CustomEvent("input"));
+                  updateFeedback();
+                }}
+              />
+              <span>${option}</span>
+            </label>
+            <!-- Feedback -->
+            <div id="feedback-${index}" style="font-weight: bold; font-size: 14px; margin-left: 10px; text-align: left; white-space: nowrap; color: inherit;"></div>
+          </div>`
+      )}
+    </div>
+  </div>`;
+
+// Funktion zur Aktualisierung des Feedbacks
+  function updateFeedback() {
+    options.forEach((_, index) => {
+      const feedbackElement = root.querySelector(`#feedback-${index}`);
+      if (selectedAnswer === index) {
+        feedbackElement.textContent =
+          index === correctIndex ? "✅" : "🔴";
+        feedbackElement.style.color = index === correctIndex ? "green" : "red";
+      } else {
+        feedbackElement.textContent = ""; // Löscht Feedback für nicht ausgewählte Optionen
+      }
+    });
+  }
+
+  root.value = null;
+  return root;
+}
+
+
+function quizInput({ questions, options}) {
+  let answers = questions.map(() => null);
+  let root = htl.html`<div
+      style="
+        display: grid;
+        grid-template-columns: 10% 10% 70% 10%;"
+    >
+      ${options.map(
+        (opt) => htl.html`<div style="font-weight: bold; font-size: HUGE">${opt}</div>`
+      )}
+      <div style="font-weight: bold">Statement</div>
+      <div style="font-weight: bold"></div>
+      ${Array.from(questions.entries(), ([i, [question, correct]]) =>
+        quizInputRow({
+          question,
+          options,
+          correct,
+          onChange: (newAnswer) => {
+            answers[i] = newAnswer;
+            root.value = answers;
+            root.dispatchEvent(new CustomEvent("input"));
+          }
+        })
+      )}
+    </div>`;
+  root.value = answers;
+  return root;
+}
+
+function quizInputRow({
+  question,
+  options,
+  correct,
+  onChange = () => {}
+}) {
+  let root = htl.html`<div>`;
+
+  function setAnswer(answer, initial = false) {
+    morph(
+      root,
+      htl.html`<div style="display: contents"> 
+      <form style="display: contents">
+        ${options.map(
+          (opt) =>
+            htl.html`<label>&emsp;</label> 
+            <input  
+              name=${question} &emsp;
+              type="radio"
+              value="${opt}"
+              checked=${opt === answer}
+              onChange=${() => setAnswer(opt)}
+            >
+            </input>`
+        )}
+      </form>
+      <div>${question}</div>
+      <div> &emsp; ${
+       answer === null ? "" : answer === correct ? "✅" : "🔴"
+      }</div>
+    </div>`
+    );
+
+    root.value = answer;
+    if (!initial) {
+      root.dispatchEvent(new CustomEvent("input"));
+      onChange(answer);
+    }
+  }
+
+  setAnswer(null, true);
+  return root;
+}
+
+morph = require("https://bundle.run/nanomorph@5.4.2")
+```

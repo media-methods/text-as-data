@@ -1,0 +1,62 @@
+project:
+  type: book
+  output-dir: docs
+
+#resources: 
+#  - _common.R
+  
+book:
+  title: "Text-as-Data"
+  author:
+    - name: "Valerie Hase"
+    - affiliation: "University of Klagenfurt"
+  reader-mode: false
+
+  page-footer: 
+      center: |
+       University of Klagenfurt | Built with [Quarto](https://quarto.org/) |  [Imprint](imprint.qmd)  |  Shared under the [CC BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/)   
+  #cover-image: cover.jpg
+  #favicon: cover.jpg
+  #site-url: 
+  repo-url: https://github.com/ #change
+  
+  chapters:
+    - index.qmd
+
+    - part: Text as Data and Preprocessing
+      chapters:
+       - 1-text-as-data.qmd
+
+    - part: Text Analysis
+
+    - part: Quality criteria
+
+    - part: 80-appendix.qmd
+      chapters:
+       - 81-glossary.qmd
+    
+    - imprint.qmd
+    
+format:
+  html:
+    css:
+      - files/www/custom.css
+    
+    theme: cosmo
+  
+    toc: true
+    number-depth: 2
+    number-sections: false 
+    toc-title: "Content"
+    toc-location: right
+    fig-width: 7
+    fig-height: 5
+    fig-show: "hold"
+    code-link: true
+    author-meta: "Valerie Hase"
+
+#bibliography: 
+#  - files/digital-methods.bib
+#bibliographystyle: apa
+
+editor: visual

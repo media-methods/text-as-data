@@ -1,0 +1,54 @@
+﻿R-Function;Definition
+install.packages();installs packages on your machine - only has to be run once
+library();loads existing packages - has to be run everytime you reopen R Studio
+? and help();help you to get more info on a specific function
+save.image();saves your working directory
+|>;the pipe, pushes data (left) through the pipe for transformation (right)
+select();select specific variables
+filter();filter specific observations, often based on conditions
+arrange();arrange data in descending or ascending order
+mutate();create new variables
+case_when();transform existing variables based on multiple conditions
+if_else();transform existing variables based on two conditions
+head();show first rows of a dataset
+class();check what type of data an object contains
+summarise();creates summary statistics for a dataset
+sum();creates sums for a variable
+is.na();for every value in a variable, checks whether it contains missing data (TRUE) or not (FALSE)
+View();command to open and manually inspect data in the viewer
+across();apply the same function to several variables
+ggplot();creating a graph
+aes(x, y, fill, color, etc.);maps data to visual elements
+geom_bar();creates a bar chart for counts or values
+geom_line();creates a line graph connecting observations across x-values
+geom_point();creates a scatter plot using points
+geom_density();creates a smoothed curve of a numeric distribution
+geom_boxplot();creates a box plot showing a distribution
+facet_wrap();splits a graph into separate panels
+labs();adds titles and labels to a graph
+theme_minimal(), theme_classic(), theme_light();changes the design of your graph
+ggsave();saves graphs as image files
+read_csv(), read_csv2();read in tabular data (e.g., .csv file)
+glimpse();inspect the structure of a dataset
+nrow();get the number of rows for a dataset
+ncol();get the number of columns for a dataset
+rename();rename variables
+na_if();setting specific values to missing (NA)
+add_index();build mean/sum index from variables
+get_reliability();get internal consistency for an index
+bow();introduce your scraping agent
+scrape();scrape a website
+html_element(), html_elements();extract the first (or all) matching HTML nodes from a scraped website
+html_attr();extract the value from a html attribute
+html_text();extract text from a html node
+chrome_print();take automated screenshots
+taskscheduler_create();schedule automated scraping runs with R
+tab_frequencies();gives us specific descriptive statistics (e.g., counts, percentages)
+describe_cat();gives us specific descriptive statistics (e.g., mode)
+describe();gives us specific descriptive statistics (e.g., mean, standard deviation)
+report();creates a report of descriptive statistics
+kable();creates a table based on input data
+group_by();groups a dataset based on a variable for subsequent analyses
+correlate();calculates the correlation between two metric variables
+t_test();calculates a t-test for differences in the mean across groups
+crosstab();tests the relationship between two categorical variables

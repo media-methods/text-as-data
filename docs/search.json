@@ -1,0 +1,139 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Text-as-Data",
+    "section": "",
+    "text": "Welcome! 👋 What Is This Compendium For?\nAcross several tutorials, we will help you build practical skills for analyzing text as data:",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#welcome-what-is-this-compendium-for",
+    "href": "index.html#welcome-what-is-this-compendium-for",
+    "title": "Text-as-Data",
+    "section": "",
+    "text": "Thinking of Text as Data and Preprocessing\n→ understanding text-as-data logic, tokenization, preprocessing text (e.g., removing stopwords, stemming), creating document-feature matrices\nAnalyzing Data\n→ keywords-in-context, collocations & co-occurrence, dictionaries, supervised machine learning\nQuality criteria and validation\n→ quality criteria for text-as-data methods, especially validating automated analyses",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#what-can-you-expect",
+    "href": "index.html#what-can-you-expect",
+    "title": "Text-as-Data",
+    "section": "What Can You Expect?",
+    "text": "What Can You Expect?\nEach tutorial in this compendium includes:\n\nExplanations of new R functions and text-as-data methods (with example code)\nA short summary of the key takeaways & additional learning resources\nPractice exercises/quizzes to help you apply your new skills\n\nThis tutorial is inspired by many people who talked to me about teaching R in times of generative AI. Thanks 🙌 to: Lara Kobilke, Michael Scharkow, Ben Fretwurst, Marko Bachl, Katharina Maubach, Jakob Jünger. In the spirit of open science, many even shared their materials with me - special shoutout to Michael Scharkow and Ben Fretwurst!",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#what-do-we-expect-from-you",
+    "href": "index.html#what-do-we-expect-from-you",
+    "title": "Text-as-Data",
+    "section": "What Do We Expect from You?",
+    "text": "What Do We Expect from You?\nThis compendium builds on the R and tidyverse skills from Digital Methods I. To get the most out of our in-person sessions, you should complete the assigned tutorial before each class. Please check the syllabus to see which tutorial you should prepare for each week. That way, we can use our time together to clarify questions, go through examples, and apply what you have learned.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome</span>"
+    ]
+  },
+  {
+    "objectID": "1-text-as-data.html",
+    "href": "1-text-as-data.html",
+    "title": "1 Install R/R Studio",
+    "section": "",
+    "text": "1. What are R and R Studio?\nR is the programming language we’ll use to import, edit, and analyze data. R Studio is a desktop application with a graphical interface that facilitates programming with R. Basically, R Studio makes coding with R much easier!\nIn programming, R Studio is called an “integrated development environment” (IDE). There are other interfaces or IDEs (e.g., Positron, Visual Studio Code), but we will stick with R Studio for now.",
+    "crumbs": [
+      "Text as Data and Preprocessing",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1 Install R/R Studio</span>"
+    ]
+  },
+  {
+    "objectID": "1-text-as-data.html#how-do-i-install-r-and-r-studio",
+    "href": "1-text-as-data.html#how-do-i-install-r-and-r-studio",
+    "title": "1 Install R/R Studio",
+    "section": "2. How do I install R and R Studio?",
+    "text": "2. How do I install R and R Studio?\n\n2.1 Install/Update R\nI don’t have R on my computer yet!\nPlease use Cran to install the newest version of R (version 4.3.1, “Beagle Scouts”). You’ll have to specify your operation system to download the right version:\n\nR for Windows\nR for Mac, please read the documentation and installation information here\n\nI have R, but need to update it!\nIf you already have R installed, you just need to update it to the latest version.\n\nDownload and install the newest R version using the links above. (This won’t usually remove your old version—it installs alongside it.)\nOpen RStudio and go to Tools → Global Options → General.\nUnder R version, select the newest installed version of R.\nRestart RStudio (close and reopen it) so the change takes effect.\n\n\n\n2.2 Install/Update R Studio\nI don’t have R Studio on my computer yet!\nNext, install R Studio. The newest version of R Studio can be downloaded via this link.\nI have R Studio, but need to update it!\nIf you already have R Studio on your computer, simply make sure to update it to the newest version. The easiest way to do this is via: “Help/Check for Updates” in R Studio.",
+    "crumbs": [
+      "Text as Data and Preprocessing",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1 Install R/R Studio</span>"
+    ]
+  },
+  {
+    "objectID": "1-text-as-data.html#why-should-i-learn-r",
+    "href": "1-text-as-data.html#why-should-i-learn-r",
+    "title": "1 Install R/R Studio",
+    "section": "3. Why should I learn R?",
+    "text": "3. Why should I learn R?\nThere are several reasons why I recommend learning R (and similar programming languages like Python) instead of menu-based programs such as SPSS.\n\nR is free. Unlike many other statistical programs, you don’t have to buy it or depend on a university license which often expires once you leave.\nR is open source. That means the source code (the “blueprint” of the software) is publicly available. On top of that, R has thousands of add-on packages - extra tools that provide specialized functions for particular tasks. Most of these packages are available through CRAN (the Comprehensive R Archive Network) and you can install them whenever you need them.\nR is flexible. You can work with many different types of data and choose from a huge range of functions to import, clean, visualize, and analyze it. And if a function you need doesn’t exist yet, you can often write your own (or adapt code someone else has shared).\nProgramming is a valuable job skill. Knowing R (or Python) can strengthen your applications in areas like academia, market research, data science, and data journalism as many employers expect applicants to be comfortable working with code.",
+    "crumbs": [
+      "Text as Data and Preprocessing",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1 Install R/R Studio</span>"
+    ]
+  },
+  {
+    "objectID": "1-text-as-data.html#what-should-i-know-about-learning-r",
+    "href": "1-text-as-data.html#what-should-i-know-about-learning-r",
+    "title": "1 Install R/R Studio",
+    "section": "4. What should I know about learning R?",
+    "text": "4. What should I know about learning R?\n\nThe learning curve (aka: break your keyboard and scream)\nLearning R can feel hard—especially at the beginning. You might even think: Why the hell did I pick this course?\n\nThat’s normal. Once you understand the basics, things start to click. That’s when the fun begins and we can do the cool stuff: building visuals, scraping, and more.\n\nSource: Learning curve illustration originally published on Medium (Konstantin Borimechkov).\nMany students experience a similar learning curve:\n\nFrustration phase: Errors, syntax issues, and unfamiliar concepts make progress feel slow. This stage is normal. You may want to break your keyboard and scream.\nBreakthrough: Core ideas start to make sense. Some setbacks still happen and you occasionally still forget things you thought you already knew.\nConfidence: Tasks get faster and learning new tools becomes easier. Even if you hit a problem you can’t solve right away, you know you will — it may just take some time. You’ve got it now!\n\n\n\nMany ways to do the same thing in R\nR is a full programming language. with R, you can analyze data, create graphics, automate repetitive tasks, and use thousands of add-on packages for specialized methods. That flexibility is a big advantage, but it can feel confusing at first: There are many different ways to solve the same problem in R.\nYou might see solutions in different tutorials that look completely different but produce the same result - that’s normal. In this course, we have one goal: make the code work and understand what it’s doing, even if it isn’t the shortest or “prettiest” solution yet. It doesn’t matter which solution you choose - as long as it it correct.\nOnce that feels comfortable, we’ll improve our workflow step by step: cleaner code, fewer steps, and more reusable solutions.",
+    "crumbs": [
+      "Text as Data and Preprocessing",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1 Install R/R Studio</span>"
+    ]
+  },
+  {
+    "objectID": "1-text-as-data.html#take-aways",
+    "href": "1-text-as-data.html#take-aways",
+    "title": "1 Install R/R Studio",
+    "section": "💡 Take-Aways",
+    "text": "💡 Take-Aways\nR is great! 🫶",
+    "crumbs": [
+      "Text as Data and Preprocessing",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1 Install R/R Studio</span>"
+    ]
+  },
+  {
+    "objectID": "1-text-as-data.html#more-tutorials-on-this",
+    "href": "1-text-as-data.html#more-tutorials-on-this",
+    "title": "1 Install R/R Studio",
+    "section": "📚 More tutorials on this",
+    "text": "📚 More tutorials on this\nYou still have questions? The following tutorials & papers can help you with that:\n\nR for Data Science by Wickham et al.\n“wegweisR” by M. Haim, Video 1\n“R Cookbook” by Long et al., Tutorial 1\n“Tutorial 2 - Wissen macht R” by B. Fretwurst",
+    "crumbs": [
+      "Text as Data and Preprocessing",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1 Install R/R Studio</span>"
+    ]
+  },
+  {
+    "objectID": "81-glossary.html",
+    "href": "81-glossary.html",
+    "title": "🔷 Glossary",
+    "section": "",
+    "text": "R Function\nDefinition\n\n\n\n\n? and help()\nhelp you to get more info on a specific function\n\n\nView()\ncommand to open and manually inspect data in the viewer\n\n\nacross()\napply the same function to several variables\n\n\nadd_index()\nbuild mean/sum index from variables\n\n\naes(x, y, fill, color, etc.)\nmaps data to visual elements\n\n\narrange()\narrange data in descending or ascending order\n\n\nbow()\nintroduce your scraping agent\n\n\ncase_when()\ntransform existing variables based on multiple conditions\n\n\nchrome_print()\ntake automated screenshots\n\n\nclass()\ncheck what type of data an object contains\n\n\ncorrelate()\ncalculates the correlation between two metric variables\n\n\ncrosstab()\ntests the relationship between two categorical variables\n\n\ndescribe()\ngives us specific descriptive statistics (e.g., mean, standard deviation)\n\n\ndescribe_cat()\ngives us specific descriptive statistics (e.g., mode)\n\n\nfacet_wrap()\nsplits a graph into separate panels\n\n\nfilter()\nfilter specific observations, often based on conditions\n\n\ngeom_bar()\ncreates a bar chart for counts or values\n\n\ngeom_boxplot()\ncreates a box plot showing a distribution\n\n\ngeom_density()\ncreates a smoothed curve of a numeric distribution\n\n\ngeom_line()\ncreates a line graph connecting observations across x-values\n\n\ngeom_point()\ncreates a scatter plot using points\n\n\nget_reliability()\nget internal consistency for an index\n\n\nggplot()\ncreating a graph\n\n\nggsave()\nsaves graphs as image files\n\n\nglimpse()\ninspect the structure of a dataset\n\n\ngroup_by()\ngroups a dataset based on a variable for subsequent analyses\n\n\nhead()\nshow first rows of a dataset\n\n\nhtml_attr()\nextract the value from a html attribute\n\n\nhtml_element(), html_elements()\nextract the first (or all) matching HTML nodes from a scraped website\n\n\nhtml_text()\nextract text from a html node\n\n\nif_else()\ntransform existing variables based on two conditions\n\n\ninstall.packages()\ninstalls packages on your machine - only has to be run once\n\n\nis.na()\nfor every value in a variable, checks whether it contains missing data (TRUE) or not (FALSE)\n\n\nkable()\ncreates a table based on input data\n\n\nlabs()\nadds titles and labels to a graph\n\n\nlibrary()\nloads existing packages - has to be run everytime you reopen R Studio\n\n\nmutate()\ncreate new variables\n\n\nna_if()\nsetting specific values to missing (NA)\n\n\nncol()\nget the number of columns for a dataset\n\n\nnrow()\nget the number of rows for a dataset\n\n\nread_csv(), read_csv2()\nread in tabular data (e.g., .csv file)\n\n\nrename()\nrename variables\n\n\nreport()\ncreates a report of descriptive statistics\n\n\nsave.image()\nsaves your working directory\n\n\nscrape()\nscrape a website\n\n\nselect()\nselect specific variables\n\n\nsum()\ncreates sums for a variable\n\n\nsummarise()\ncreates summary statistics for a dataset\n\n\nt_test()\ncalculates a t-test for differences in the mean across groups\n\n\ntab_frequencies()\ngives us specific descriptive statistics (e.g., counts, percentages)\n\n\ntaskscheduler_create()\nschedule automated scraping runs with R\n\n\ntheme_minimal(), theme_classic(), theme_light()\nchanges the design of your graph\n\n\n|&gt;\nthe pipe, pushes data (left) through the pipe for transformation (right)",
+    "crumbs": [
+      "Appendix",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>🔷 Glossary</span>"
+    ]
+  },
+  {
+    "objectID": "imprint.html",
+    "href": "imprint.html",
+    "title": "Legal Notice / Contact",
+    "section": "",
+    "text": "Information in accordance with § 5 TMG / § 5 ECG and the GDPR (DSGVO)\nWebsite Operator\nValerie Hase, Universitätsstraße 65–67, 9020 Klagenfurt, Austria valerie.hase@aau.at\n Responsible party for content  (according to § 55 para. 2 RStV / § 18 MStV)\nValerie Hase, Universitätsstraße 65–67, 9020 Klagenfurt, Austria valerie.hase@aau.at\n Responsible party for technical implementation \nThe webmaster is responsible for technical implementation. Technical implementation is done by Valerie Hase.\n Purpose of the Website \nThis website serves to present my academic work, research activities, publications, and teaching-related information.\n Statement of Release \nThe information herein is correct to the best of my knowledge, however, error cannot be avoided with absolute certainty. Solely the specifications in the pertinent legal bases (laws, orders, statutes) are legally binding. I cannot assume any liability for the particular currency, accuracy, completeness and availability of the provided information. I am not liable for damages caused by the use of this internet offer. This exclusion of liability shall not apply if the regulations of § 839 BGB (liability for violation of official duty) are involved. We are not liable for any damages caused by call-up or downloading of data by damaged software or by the installation or use of software. This exclusion of liability does not apply to information that falls within the scope of the Order (EU) 2016/679 of the European Parliament and of the Council dated 27 April 2016 (General Data Protection Regulation). The accuracy and currency of this information is guaranteed.\n Disclaimer \nThe information offered here contains cross-references (“links”) to other internet offers, including by external, third-parties. Basically the internet pages will open automatically in a new window. Through this cross-reference, I handle access for use of this content (§ 5 Telemedia Law). I am not responsible for this “foreign” content since I do not initiate the transmission of the information, have not selected the addressee of the transmitted information and also have not selected or changed the transmitted information. An automatic, short-term interim saving of this “foreign information” by me does not occur due to the selected call-up and linking method, so that I do not assume any responsibility for this foreign content. However, upon initial linking with these internet offers, the LMU has checked the foreign content to determine whether it may trigger a potential responsibility under civil or penal law. But we do not receive any automatic information about changes to the foreign internet offers and thus cannot constantly monitor their content for any changes. Therefore we also cannot assume any responsibility for them. Solely the particular merchant of the foreign internet offer is liable for illegal, erroneous or incomplete content, and in particular for damages which arise from the use or non-use of information by third parties. However, we endeavor to check the included links regularly with regard to these named criteria.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Legal Notice / Contact</span>"
+    ]
+  },
+  {
+    "objectID": "80-appendix.html",
+    "href": "80-appendix.html",
+    "title": "Appendix",
+    "section": "",
+    "text": "This is an overview of additional material we provide:\n\nIn Glossary, you can get a useful overview of important functions.",
+    "crumbs": [
+      "Appendix"
+    ]
+  }
+]

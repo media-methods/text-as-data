@@ -1,0 +1,11 @@
+---
+title: "Appendix"
+body-classes: no-chapter-nav
+format:
+  html:
+    toc: false
+---
+
+This is an overview of additional material we provide:
+
+-   In [Glossary](81-glossary.qmd), you can get a useful overview of important functions.

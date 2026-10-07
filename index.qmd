@@ -1,0 +1,35 @@
+---
+title: "Welcome"
+format:
+  html:
+    toc: false
+---
+
+## Welcome! 👋 What Is This Compendium For? {.unnumbered}
+
+Across several tutorials, we will help you build practical skills for analyzing text as data:
+
+1.  **Thinking of Text as Data and Preprocessing**\
+    → understanding text-as-data logic, tokenization, preprocessing text (e.g., removing stopwords, stemming), creating document-feature matrices
+
+2.  **Analyzing Data**\
+    → keywords-in-context, collocations & co-occurrence, dictionaries, supervised machine learning
+
+3.  **Quality criteria and validation**\
+    → quality criteria for text-as-data methods, especially validating automated analyses
+
+## What Can You Expect? {.unnumbered}
+
+Each tutorial in this compendium includes:
+
+-   Explanations of new R functions and text-as-data methods (with example code)
+
+-   A short summary of the key takeaways & additional learning resources
+
+-   Practice exercises/quizzes to help you apply your new skills
+
+This tutorial is inspired by many people who talked to me about teaching R in times of generative AI. Thanks 🙌 to: Lara Kobilke, Michael Scharkow, Ben Fretwurst, Marko Bachl, Katharina Maubach, Jakob Jünger. In the spirit of open science, many even shared their materials with me - special shoutout to [Michael Scharkow](https://stats.ifp.uni-mainz.de/) and [Ben Fretwurst](https://ikmz.pages.uzh.ch/Wissen-macht-R/)!
+
+## What Do We Expect from You? {.unnumbered}
+
+This compendium builds on the R and tidyverse skills from Digital Methods I. To get the most out of our in-person sessions, you should complete the assigned tutorial *before* each class. Please check the syllabus to see which tutorial you should prepare for each week. That way, we can use our time together to clarify questions, go through examples, and apply what you have learned.

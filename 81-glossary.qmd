@@ -1,0 +1,85 @@
+---
+title: "🔷 Glossary"
+body-classes: no-chapter-nav
+format:
+  html:
+    toc: false
+---
+
+```{r}
+#| label: glossary-table
+#| echo: false
+
+glossary <- read.csv2(
+  here::here("files/data", "glossary.csv")
+) |>
+  janitor::clean_names() |>
+  dplyr::rename(
+    r_function = r_function,
+    definition = definition
+  ) |>
+  dplyr::mutate(
+    r_function = stringr::str_trim(r_function),
+    definition = stringr::str_squish(definition)
+  ) |>
+  dplyr::arrange(r_function)
+
+glossary |>
+  gt::gt() |>
+  gt::cols_label(
+    r_function = "R Function",
+    definition = "Definition"
+  ) |>
+  gt::cols_width(
+    r_function ~ gt::px(170),
+    definition ~ gt::pct(80)
+  ) |>
+  gt::cols_align(
+    align = "left",
+    columns = gt::everything()
+  ) |>
+  # Header styling
+  gt::tab_style(
+    style = gt::cell_text(
+      weight = "bold",
+      color = "#539FC6"
+    ),
+    locations = gt::cells_column_labels()
+  ) |>
+  gt::tab_style(
+    style = gt::cell_borders(
+      sides = "bottom",
+      color = "#539FC6",
+      weight = gt::px(2)
+    ),
+    locations = gt::cells_column_labels()
+  ) |>
+  # Code-style function column
+  gt::tab_style(
+    style = list(
+      gt::cell_text(
+        font = "monospace",
+        size = gt::px(14)
+      ),
+      gt::cell_fill(color = "white")
+    ),
+    locations = gt::cells_body(columns = r_function)
+  ) |>
+  # Table layout (textbook style)
+  gt::tab_options(
+    table.align = "left",
+    table.width = gt::pct(100),
+    data_row.padding = gt::px(8),
+    column_labels.padding = gt::px(10),
+    table.border.top.style = "none",
+    table.border.bottom.style = "none",
+    table_body.border.top.style = "solid",
+    table_body.border.top.width = gt::px(1),
+    table_body.border.top.color = "#e6e6e6",
+    table_body.hlines.style = "solid",
+    table_body.hlines.width = gt::px(1),
+    table_body.hlines.color = "#eeeeee",
+    row.striping.include_table_body = TRUE
+  ) |>
+  gt::opt_row_striping()
+```
