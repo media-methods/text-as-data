@@ -1,16 +1,23 @@
+/* Main colors - change here to recolor the whole site */
+:root {
+  --main-color: #9E2A2B;   /* red for links, headings, active items */
+  --main-light: #F7E9E9;   /* light red for highlighted background */
+}
+
 /* links in main content only */
 main a {
-  color: #539FC6;
+  color: var(--main-color);
 }
 
-/* H1 headings inside main content */
-#quarto-document-content h1 {
-  color: #539FC6;
-}
-
-/* H2 headings inside main content */
-#quarto-document-content h2 {
-  color: #539FC6;
+/* H1 + H2 headings inside main content (incl. page titles) */
+main h1,
+main h2,
+main .h1,
+main .h2,
+#quarto-document-content h1,
+#quarto-document-content h2,
+.quarto-title h1.title {
+  color: var(--main-color) !important;
 }
 
 #quarto-document-content h3 {
@@ -19,12 +26,12 @@ main a {
 
 /* sidebar chapter links */
 #quarto-sidebar .sidebar-navigation .sidebar-item .sidebar-link {
-  color: #539FC6 !important;
+  color: var(--main-color) !important;
 }
 
 /* hover */
 #quarto-sidebar .sidebar-navigation .sidebar-item .sidebar-link:hover {
-  color: #539FC6 !important;
+  color: var(--main-color) !important;
 }
 
 /* Right TOC: normal links */
@@ -34,14 +41,14 @@ main a {
 
 /* Right TOC: hover */
 #TOC a:hover {
-  color: #539FC6 !important;
+  color: var(--main-color) !important;
 }
 
 /* Right TOC: active section (most robust) */
 #TOC a[aria-current="true"],
 #TOC .active > a,
 #TOC a.active {
-  color: #539FC6 !important;
+  color: var(--main-color) !important;
   font-weight: 600;
 }
 
@@ -49,7 +56,7 @@ main a {
 #TOC a[aria-current="true"],
 #TOC .active > a,
 #TOC a.active {
-  background-color: #e8f3f9;
+  background-color: var(--main-light);
   border-radius: 6px;
   padding-left: 6px;
 }
