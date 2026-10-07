@@ -9,14 +9,15 @@ main a {
   color: var(--main-color);
 }
 
-/* H1 headings inside main content */
-#quarto-document-content h1 {
-  color: var(--main-color);
-}
-
-/* H2 headings inside main content */
-#quarto-document-content h2 {
-  color: var(--main-color);
+/* H1 + H2 headings inside main content (incl. page titles) */
+main h1,
+main h2,
+main .h1,
+main .h2,
+#quarto-document-content h1,
+#quarto-document-content h2,
+.quarto-title h1.title {
+  color: var(--main-color) !important;
 }
 
 #quarto-document-content h3 {
