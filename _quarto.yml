@@ -9,7 +9,7 @@ book:
   title: "Text-as-Data"
   author:
     - name: "Valerie Hase"
-    - affiliation: "University of Klagenfurt"
+      affiliation: "University of Klagenfurt"
   reader-mode: false
 
   page-footer: 
@@ -17,19 +17,19 @@ book:
        University of Klagenfurt | Built with [Quarto](https://quarto.org/) |  [Imprint](imprint.qmd)  |  Shared under the [CC BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/)   
   #cover-image: cover.jpg
   #favicon: cover.jpg
-  #site-url: 
-  repo-url: https://github.com/ #change
+  site-url: https://media-methods.github.io/text-as-data/
+  repo-url: https://github.com/media-methods/text-as-data
   
   chapters:
     - index.qmd
 
-    - part: Text as Data and Preprocessing
+    - part: Thinking of Text as Data and Preprocessing
       chapters:
        - 1-text-as-data.qmd
 
-    - part: Text Analysis
+    - part: Analyzing Data
 
-    - part: Quality criteria
+    - part: Quality criteria and validation
 
     - part: 80-appendix.qmd
       chapters:
@@ -59,4 +59,4 @@ format:
 #  - files/digital-methods.bib
 #bibliographystyle: apa
 
-editor: visual
+editor: visual
