@@ -70,16 +70,9 @@ data |>
   filter(str_detect(Description, "[Dd]rama")) |>
   nrow()
 
-# titles with at least two uppercase letters in a row
-data |>
-  filter(str_detect(Title, "[A-Z][A-Z]")) |>
-  select(Title) |>
-  head(3)
-
-
 ## 2.4 Quantifiers ----
 
-# same search, but with a quantifier
+# search for capital letters (at least two) which indicate abbreviations
 data |>
   filter(str_detect(Title, "[A-Z]{2,}")) |>
   select(Title) |>
