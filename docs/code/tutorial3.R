@@ -23,58 +23,7 @@
 library(tidyverse)
 library(quanteda)
 
-# example text
-example <- "On the state of the German economy: Will we have another financial crisis in Germany in 2023?"
-
-# tokenization
-tokens(example)
-
-
-# 2 Lowercasing ------------------------------------------------
-
-tokens(example) |>
-  tokens_tolower()
-
-# Should we always lowercase texts?
-tokens("Apple apple US us") |>
-  tokens_tolower()
-
-
-# 3 Removing punctuation, numbers, and symbols -----------------
-
-tokens(example,
-       remove_punct = TRUE,
-       remove_numbers = TRUE,
-       remove_symbols = TRUE) |>
-  tokens_tolower()
-
-# 4 Removing stopwords -----------------------------------------
-
-# the first 20 English stopwords
-stopwords("english") |>
-  head(20)
-
-# removing stopwords
-tokens(example,
-       remove_punct = TRUE,
-       remove_numbers = TRUE,
-       remove_symbols = TRUE) |>
-  tokens_tolower() |>
-  tokens_remove(stopwords("english"))
-
-
-# 5 Stemming and lemmatization ---------------------------------
-
-tokens(example,
-       remove_punct = TRUE,
-       remove_numbers = TRUE,
-       remove_symbols = TRUE) |>
-  tokens_tolower() |>
-  tokens_remove(stopwords("english")) |>
-  tokens_wordstem()
-
-
-# 6 Example: Preprocessing the IMDb data -----------------------
+# 2 Example: Preprocessing the IMDb data -----------------------
 
 # read in the data
 data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
@@ -91,18 +40,18 @@ summary(corpus_tv, n = 3)
 
 # preprocessing
 tokens_tv <- corpus_tv |>
-
+  
   # tokenization & removing punctuation, numbers, symbols
   tokens(remove_punct = TRUE,
          remove_numbers = TRUE,
          remove_symbols = TRUE) |>
-
+  
   # lowercasing
   tokens_tolower() |>
-
+  
   # removing stopwords
   tokens_remove(stopwords("english")) |>
-
+  
   # stemming
   tokens_wordstem()
 
