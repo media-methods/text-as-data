@@ -1,0 +1,229 @@
+---
+title: "1 Reading in text"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 1, you'll be able to...
+
+- Read text data into R
+- Inspect text data and recognize (and fix) encoding problems
+:::
+
+🖥️ You can download the full code for tutorial 1 [here](code/tutorial1.R){download="tutorial1.R"}.
+
+## 1 Reading text data into R
+
+### 1.1 Reading in Texts
+
+Throughout the next tutorials, we work with a data set of the 900 most popular TV series on IMDb. For each series, it contains the title, the years it aired, its parental rating, its IMDb rating, the number of votes, and - most important for us - a short **description** of the series.
+
+You can download the data as a `data_tvseries.csv` file from Moodle (see Session 2). Save it in your project folder, for example in your subfolder called `data`.
+
+Before we do anything else, we install and load the packages we need for this tutorial. Remember: You only need to run `install.packages()` once. Assuming that you already have these packages installed, the hashtag `#` will skip their installation.
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# install (only once)
+# install.packages("tidyverse")
+
+# load packages (every time you restart R)
+library(tidyverse)
+```
+
+The file is separated by semicolons (`;`) and uses commas as decimal separators. This is why we use `read.csv2()` instead of `read.csv()`. With `encoding = "UTF-8"`, we tell R how the characters in the file are encoded (more on this in Section 3). We save the data as an object called `data`:
+
+```{r read-local, eval=TRUE, echo=TRUE}
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+```
+
+::: {.callout-warning collapse="true"}
+## If R cannot find your file
+
+If you get an error such as `cannot open file 'data/data_tvseries.csv': No such file or directory`, R cannot find your file. Check that...
+
+- you are working in your R project (see the top right corner of RStudio)
+- the file is saved in the folder you specified (here: the subfolder `data`)
+- the file name is spelled correctly (including the file extension `.csv`)
+:::
+
+### 1.2 Reading in texts in other formats
+
+Text data comes in many formats. Here is a (small) selection of formats and R packages that help you read them into R:
+
+```{r formats, eval=TRUE, echo=FALSE}
+Format <- c(
+  "Spreadsheets (.csv, .xlsx)",
+  "Text documents (.txt, .pdf, .doc)",
+  "Files from other statistics programs (.sav, .dta)",
+  "Content from URLs (download, scraping)"
+)
+Packages <- c(
+  "base R (e.g., `read.csv2()`), `readr`, `readxl`",
+  "`readtext`",
+  "`haven`, `foreign`",
+  "`base R`, `httr`, `rvest`, `polite`"
+)
+knitr::kable(data.frame(Format, Packages), booktabs = TRUE)
+```
+
+## 2 Inspecting text data
+
+After reading in data, always check whether everything worked. Let's get an overview of our TV series data. How many rows (documents) and columns (variables) does it have?
+
+```{r inspect-dim, eval=TRUE, echo=TRUE}
+nrow(data)
+ncol(data)
+```
+
+What do the first rows look like?
+
+```{r inspect-head, eval=TRUE, echo=TRUE}
+data |>
+  as_tibble() |>
+  head()
+```
+
+The variable we are most interested in is `Description`, which contains the text we want to analyze. Let's look at the first description. With `slice()`, we keep only the first row, and with `pull()`, we extract the content of the variable as a character string:
+
+```{r inspect-text, eval=TRUE, echo=TRUE}
+data |>
+  slice(1) |>
+  pull(Description)
+```
+
+Looks good! We can also check how long our texts are. `str_length()` from the tidyverse package `stringr` counts the number of characters per text. We use `mutate` to create the variable `length`. With `summarise`, we then get summary statistics of the shortest, longest, and average characters of each TV series description.
+
+```{r inspect-length, eval=TRUE, echo=TRUE}
+data |>
+  mutate(length = str_length(Description)) |>
+  summarise(min = min(length),
+            mean = mean(length),
+            max = max(length))
+```
+
+Descriptions are short: on average, they have about 153 characters.
+
+## 3 Encoding problems
+
+### 3.1 What is encoding?
+
+Computers store characters (e.g., the letters "w", "o", "r", "d") as numbers (bytes). For example, "word" is stored as `01110111 01101111 01110010 01100100`.
+
+An **encoding** is the "key" that translates these numbers back into characters. The problem: There are different encodings (e.g., `UTF-8`, `ASCII`, `latin1`). If a text is saved with one encoding but read with another, characters get "translated" incorrectly. This affects especially...
+
+- language-specific characters such as "ü", "ß", "é", or "ç"
+- special characters such as typographic quotation marks ("...") or emojis
+
+Let's look at an example: We create a string and then change its encoding to see what happens.
+
+```{r encoding-example, eval=TRUE, echo=TRUE}
+# example string
+string <- "Arsène Lupin & Saga Norén"
+
+# check encoding
+Encoding(string)
+
+# change encoding (for testing purposes)
+Encoding(string) <- "latin1"
+string
+```
+
+Oops! "è" turned into "Ã¨". This is a typical encoding problem.
+
+### 3.2 How can encoding cause problems?
+
+Our TV series data also contains special characters. Let's simulate what happens if we read the data with the wrong encoding (here: `latin1`) and look at three descriptions containing special characters:
+
+```{r encoding-wrong, eval=TRUE, echo=TRUE}
+data_wrong <- read.csv2("data/data_tvseries.csv", encoding = "latin1")
+
+data_wrong |>
+  slice(180, 348, 676) |>
+  pull(Description)
+```
+
+Names like "Arsène", "Norén", or "Ömer Uçar" are now broken. Compare this with the data we read in using the correct encoding:
+
+```{r encoding-right, eval=TRUE, echo=TRUE}
+data |>
+  slice(180, 348, 676) |>
+  pull(Description)
+```
+
+### 3.3 How can we fix encoding problems?
+
+There are two main strategies:
+
+1.  **Read in texts with the correct encoding** (recommended). Most functions have an argument for this, e.g., `encoding = "UTF-8"` or `fileEncoding = "UTF-8"` in `read.csv2()`, or `encoding = "UTF-8"` in `readtext()`. Today, `UTF-8` is the most common encoding.
+2.  **If this is not possible: Clean the texts afterwards**, for example by replacing wrongly encoded characters with regular expressions. We will learn more about this in Tutorial 2. For now, here is a sneak peek using `str_replace_all()` from the tidyverse package `stringr`, which replaces one pattern with another:
+
+```{r encoding-fix, eval=TRUE, echo=TRUE}
+string |>
+  str_replace_all(pattern = "Ã¨", replacement = "è") |>
+  str_replace_all(pattern = "Ã©", replacement = "é")
+```
+
+## 💡 Take-Aways
+
+- **read in** data: `read.csv2()` or `read.csv()` (spreadsheets)
+- **inspect** data: `nrow()`, `ncol()`, `head()`, `slice()`, `pull()`, `str_length()`
+- **encoding**: specify the correct encoding when reading in data (e.g., `encoding = "UTF-8"`), check `Encoding()`, clean with `str_replace_all()` if necessary
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Figuring out encodings with `readr`
+
+The tidyverse package `readr` can help with encoding issues. If you do not know a file's encoding, `readr::guess_encoding()` can help you find out:
+
+```{r guess-encoding, eval=TRUE, echo=TRUE}
+guess_encoding("data/data_tvseries.csv")
+```
+:::
+
+## 🎲 Quiz
+
+::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**You read in a data set and notice that the name "Arsène" is displayed as "ArsÃ¨ne". What is the most likely reason?**
+
+```{ojs}
+//| echo: false
+
+viewof answer_encoding_1 = singleChoiceInput({
+  options: [
+    "The original text contains a typo.",
+    "The text was saved with one encoding (e.g., UTF-8) but read in with another one (e.g., latin1).",
+    "R cannot display letters with accents.",
+    "read.csv2() automatically removes special characters."
+  ],
+  correctIndex: 1
+})
+```
+:::
+:::::
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- [quanteda tutorials: Import data](https://tutorials.quanteda.io/import-data/)
+- [readtext documentation](https://readtext.quanteda.io/)
+- [R for Data Science by Wickham et al., Chapter "Data import"](https://r4ds.hadley.nz/data-import.html)
+
+## 📌 Test your knowledge
+
+### Task 1 (Easy🔥)
+
+Use the TV series data. How many TV series have an IMDb `Rating` of at least 9?
+
+```{r task-1, eval=FALSE, echo=FALSE}
+data |>
+  filter(Rating >= 9) |>
+  nrow()
+```

@@ -1,0 +1,473 @@
+---
+title: "2 Regular expressions"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 2, you'll be able to...
+
+- Find, count, and replace words in texts with `stringr` functions
+- Write regular expressions using logical operators, character classes, and quantifiers
+- Combine regular expressions and `stringr` functions to clean and filter text data
+:::
+
+🖥️ You can download the full code for tutorial 2 [here](code/tutorial2.R){download="tutorial2.R"}.
+
+## 1 Working with text in R: `stringr`
+
+A simple text analysis would be to check which words texts contain. For example, ...
+
+- Which texts mention the word "crime"?
+- How often does this word appear?
+- Can we replace or remove this word?
+
+For this, we use the package [`stringr`](https://stringr.tidyverse.org/). It is part of the tidyverse, so you do not need to install it separately. As in Tutorial 1, we first load our packages:
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+All `stringr` functions start with `str_` and work the same way: The **first argument** is the text we want to search (`string`), the **second argument** is what we are looking for (`pattern`).
+
+```{r md-table-helper, eval=TRUE, echo=FALSE}
+# helper: print a data frame as a markdown table (keeps | inside code)
+md_table <- function(df, caption) {
+  esc <- function(x) str_replace_all(x, fixed("|"), "\\|")
+  header <- paste0("| ", paste(names(df), collapse = " | "), " |")
+  sep <- paste0("|", paste(rep("---", ncol(df)), collapse = "|"), "|")
+  rows <- apply(df, 1, function(r) paste0("| ", paste(esc(r), collapse = " | "), " |"))
+  cat(header, sep, rows, "", paste0(": ", caption), sep = "\n")
+}
+```
+
+```{r stringr-functions, eval=TRUE, echo=FALSE, results="asis"}
+fun <- c("`str_detect()`", "`str_count()`", "`str_extract()`", "`str_replace_all()`", "`str_remove_all()`")
+meaning <- c(
+  "checks whether a pattern occurs in a text (`TRUE`) or not (`FALSE`)",
+  "counts how often a pattern occurs in a text",
+  "extracts the first match of a pattern",
+  "replaces all occurrences of a pattern with something else",
+  "removes all occurrences of a pattern"
+)
+example <- c(
+  "`str_detect(x, \"crime\")`",
+  "`str_count(x, \"crime\")`",
+  "`str_extract(x, \"crime\")`",
+  "`str_replace_all(x, \"crime\", \"mystery\")`",
+  "`str_remove_all(x, \"crime\")`"
+)
+md_table(
+  data.frame("Function" = fun, "What it does" = meaning, "Example" = example,
+             check.names = FALSE),
+  caption = "Important stringr functions"
+)
+```
+
+Let's try these functions with three short example texts:
+
+```{r stringr-example, eval=TRUE, echo=TRUE}
+example <- c("A crime drama set in London.",
+             "A comedy about a family.",
+             "Crime, crime, and more crime!")
+
+# does the text contain "crime"?
+str_detect(example, "crime")
+
+# how often does "crime" occur?
+str_count(example, "crime")
+
+# replace "crime" with "mystery"
+str_replace_all(example, "crime", "mystery")
+
+# remove "crime"
+str_remove_all(example, "crime")
+```
+
+Did you notice something? In the third text, `str_count()` only counts "crime" twice - although the text contains the word three times.
+
+The reason: `stringr` functions are **case-sensitive**. "Crime" (with a capital C) is not the same as "crime". We will learn how to deal with this later in this tutorial.
+
+## 2 Regular expressions
+
+So far, we have searched for **exact** words, such as "crime". What if we want to find...
+
+- "crime" **and** "Crime"?
+- texts mentioning "drama" **or** "crime"?
+
+For this, we use **regular expressions**.
+
+You already know the logic of regular expressions! Think of how you search for content in Google or a library database, e.g., `climate chang* OR global warming`. In text analysis, regular expressions help us to...
+
+- **identify** texts (e.g., texts about crime)
+- **clean** texts (e.g., fix encoding problems, see Tutorial 1)
+- **analyze** texts (e.g., search for positive words such as "good\|great\|fantastic")
+
+### 2.1 What are regular expressions?
+
+When we search for a word in a text, we usually search for a **string pattern**, i.e., an exact sequence of characters: `"crime"` finds the word "crime" - and nothing else.
+
+**Regular expressions** go one step further: They are string patterns in which some characters have a special, *non-literal* meaning. For example, `"[Cc]rime"` finds both "Crime" and "crime", because `[Cc]` means "either C or c".
+
+Regular expressions consist of different building blocks. Here are the most important ones:
+
+- **Logical operators**, e.g., `|` (which means OR)
+- **Character classes**, e.g., `[Cc]` (matches "C" or "c") or `[a-z]` (matches any lowercase letter)
+- **Quantifiers**, e.g., `*`, `+`, or `?` (which specify how often the previous expression occurs)
+
+In the following, we will again work with the TV series dataset. Make sure to load it!
+
+```{r data, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# read in the data
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+```
+
+### 2.2 Logical operators
+
+With **logical operators**, we can combine several patterns. The most important one is `|`, which means OR: The pattern `"drama|crime"` finds texts that contain "drama" **or** "crime" (or both). We can also combine two `str_detect()` commands with `&` (AND) or put a `!` in front of `str_detect()` to say that a certain string should **not** be matched.
+
+```{r logical-operators, eval=TRUE, echo=FALSE, results="asis"}
+operator <- c("<code>&#124;</code>", "`&`", "`!`")
+meaning <- c(
+  "OR: finds the expression on the left or on the right",
+  "AND: both patterns have to occur",
+  "NOT: the pattern must not occur"
+)
+example <- c(
+  "\"drama&#124;crime\" finds texts containing \"drama\" or \"crime\" (or both)",
+  "`str_detect(x, \"drama\") & str_detect(x, \"crime\")` finds texts containing both words",
+  "`!str_detect(x, \"drama\")` finds texts not containing \"drama\""
+)
+md_table(
+  data.frame("Operator" = operator, "Meaning" = meaning, "Example" = example,
+             check.names = FALSE),
+  caption = "Logical operators"
+)
+```
+
+For example, how many TV series descriptions mention "drama" **or** "crime"?
+
+```{r logical-or, eval=TRUE, echo=TRUE}
+data |>
+  filter(str_detect(Description, "drama|crime")) |>
+  nrow()
+```
+
+And how many mention "drama" **and** "crime"?
+
+```{r logical-and, eval=TRUE, echo=TRUE}
+data |>
+  filter(str_detect(Description, "drama") & str_detect(Description, "crime")) |>
+  nrow()
+```
+
+### 2.3 Character classes
+
+Regular expressions allow us to search for specific *types* of characters, so-called **character classes**. A character class is always written in square brackets and stands for **exactly one** character. For example, the pattern `[a-z]` matches any one lowercase letter (i.e., "a" or "b" or "c", etc.). We can also define our own classes: `[Dd]` matches either "D" or "d".
+
+Character classes are especially useful because regular expressions are case-sensitive (remember Section 1!). Compare how many descriptions we find with `"drama"` vs. `"[Dd]rama"`:
+
+```{r char-classes-case, eval=TRUE, echo=TRUE}
+# only lowercase "drama"
+data |>
+  filter(str_detect(Description, "drama")) |>
+  nrow()
+
+# "drama" or "Drama"
+data |>
+  filter(str_detect(Description, "[Dd]rama")) |>
+  nrow()
+```
+
+Here is a (limited) selection of frequently used character classes:
+
+```{r char-classes, eval=TRUE, echo=FALSE, results="asis"}
+character_class <- c("`[a-z]`", "`[A-Z]`", "`[[:alpha:]]`", "`[0-9]`", "`[[:blank:]]`", "`[[:punct:]]`")
+meaning <- c(
+  "finds any lowercase letter",
+  "finds any uppercase letter",
+  "finds any letter (lowercase and uppercase)",
+  "finds any digit",
+  "finds spaces and tabs",
+  "finds punctuation, e.g., ! # : ; ."
+)
+example <- c(
+  "\"[a-z]eadline\" finds \"headline\" and \"deadline\"",
+  "\"[A-Z]BC\" finds \"ABC\" and \"NBC\"",
+  "\"[[:alpha:]]rime\" finds \"Crime\" and \"crime\"",
+  "\"Season [0-9]\" finds \"Season 1\" and \"Season 2\"",
+  "\"New[[:blank:]]York\" finds \"New York\"",
+  "\"[[:punct:]]\" finds \".\" and \"!\""
+)
+md_table(
+  data.frame("Character class" = character_class, "Meaning" = meaning, "Example" = example,
+             check.names = FALSE),
+  caption = "Character classes"
+)
+```
+
+For example, we can find all TV series whose title contains an abbreviation, i.e., at least two uppercase letters in a row (like "IT" or "NCIS"):
+
+```{r char-classes-example, eval=TRUE, echo=TRUE}
+data |>
+  filter(str_detect(Title, "[A-Z][A-Z]")) |>
+  select(Title) |>
+  head(3)
+```
+
+### 2.4 Quantifiers
+
+Regular expressions also allow us to specify **how often** a letter, number, or other character should occur. For this, we use so-called **quantifiers**.
+
+A quantifier always refers to the expression directly before it: In `"superheroe?s"`, the `?` only refers to the "e" before it.
+
+```{r quantifiers, eval=TRUE, echo=FALSE, results="asis"}
+quantifier <- c("`?`", "`+`", "`*`", "`{n}`", "`{n,}`", "`{n,m}`")
+meaning <- c(
+  "the preceding expression occurs zero times or once (i.e., it is optional)",
+  "the preceding expression occurs at least once",
+  "the preceding expression occurs zero or more times",
+  "the preceding expression occurs exactly n times",
+  "the preceding expression occurs at least n times",
+  "the preceding expression occurs at least n times and at most m times"
+)
+example <- c(
+  "\"superheroe?s\" finds \"superheros\" and \"superheroes\"",
+  "\"[0-9]+\" finds \"7\" and \"2023\"",
+  "\"Go*al\" finds \"Goal\" and \"Goooooal\"",
+  "\"[0-9]{4}\" finds \"2023\", but not \"23\"",
+  "\"[A-Z]{2,}\" finds \"FBI\" and \"NYPD\"",
+  "\"[0-9]{2,4}\" finds \"23\" and \"2023\""
+)
+md_table(
+  data.frame("Quantifier" = quantifier, "Meaning" = meaning, "Example" = example),
+  caption = "Quantifiers"
+)
+```
+
+Quantifiers become especially powerful in combination with character classes. For example, `[A-Z]{2,}` finds sequences of at least two uppercase letters - which helps us identify abbreviations such as "FBI" or "NYPD".
+
+Let's search the titles again - this time with a quantifier instead of writing `[A-Z][A-Z]`. We get the same result, but with a shorter pattern:
+
+```{r quantifiers-example, eval=TRUE, echo=TRUE}
+data |>
+  filter(str_detect(Title, "[A-Z]{2,}")) |>
+  select(Title) |>
+  head(3)
+```
+
+::: {.callout-tip collapse="true"}
+## More on regular expressions: Anchors
+
+**Anchors** do not match a character, but a **position** in a text. With anchors, we can specify that a pattern should only be found at the beginning or at the end of a text:
+
+- `^` matches the **beginning** of a string
+- `$` matches the **end** of a string
+
+Let's look at three short example texts:
+
+```{r anchors-1, eval=TRUE, echo=TRUE}
+example_anchors <- c("Crown Jewels", "Inside the Crown", "The Crown is back")
+
+# "Crown" anywhere in the text
+str_detect(example_anchors, "Crown")
+
+# "Crown" at the beginning of the text
+str_detect(example_anchors, "^Crown")
+
+# "Crown" at the end of the text
+str_detect(example_anchors, "Crown$")
+```
+:::
+
+## 3 Combining `stringr` and regular expressions
+
+Now we can bring everything together: We use `stringr` functions (Section 1) with regular expressions (Section 2) to clean and filter our data.
+
+For example, combined with `filter()`, `str_detect()` keeps only rows where a pattern occurs. Let's keep only TV series whose description mentions "drama" or "Drama":
+
+```{r filter-drama, eval=TRUE, echo=TRUE}
+data |>
+  filter(str_detect(Description, "[Dd]rama")) |>
+  nrow()
+```
+
+With `!`, we can also do the opposite and keep only series whose description does **not** mention "drama" or "Drama":
+
+```{r filter-not, eval=TRUE, echo=TRUE}
+data |>
+  filter(!str_detect(Description, "[Dd]rama")) |>
+  nrow()
+```
+
+## 💡 Take-Aways
+
+- **string patterns**: exact sequences of characters, e.g., `"crime"`
+- **regular expressions**: string patterns with a non-literal meaning, built from logical operators (`|`), character classes (e.g., `[a-z]`, `[0-9]`, `[[:punct:]]`), quantifiers (e.g., `*`, `+`, `?`, `{n}`), and anchors (`^`, `$`)
+- **`stringr` functions**: `str_detect()` (does a pattern occur?), `str_count()` (how often?), `str_extract()` (extract it), `str_replace_all()` and `str_remove_all()` (replace/remove it)
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Testing regular expressions online
+
+Writing regular expressions often involves trial and error. Websites like [regex101.com](https://regex101.com/) let you test a pattern on example text and explain step by step what each part of the pattern does.
+:::
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 2: Searching for metacharacters
+
+Some characters, such as `?`, `+`, `*`, `|`, `(`, `[`, or `.`, are not interpreted literally in regular expressions - for example, `?` is a quantifier and `.` stands for "any character". These characters are called **metacharacters**.
+
+If you want to search for a metacharacter itself (e.g., a full stop), you have two options:
+
+- **Escape** it with `\\`, e.g., `"\\."`: R then interprets the next character literally.
+- Wrap the pattern in **`fixed()`**, e.g., `fixed(".")`: R then interprets the whole pattern literally (but you can no longer use any regular expressions in this pattern).
+
+For example, if we simply count `"."` in the first description, R counts *every* character - because `.` means "any character":
+
+```{r metachar-1, eval=TRUE, echo=TRUE}
+data |>
+  slice(1) |>
+  mutate(n_dots = str_count(Description, ".")) |>
+  pull(n_dots)
+```
+
+Once we escape the full stop as a metacharacter or use `fixed()`, R counts only actual full stops:
+
+```{r metachar-2, eval=TRUE, echo=TRUE}
+# escaping the metacharacter
+data |>
+  slice(1) |>
+  mutate(n_dots = str_count(Description, "\\.")) |>
+  pull(n_dots)
+
+# interpreting the pattern literally
+data |>
+  slice(1) |>
+  mutate(n_dots = str_count(Description, fixed("."))) |>
+  pull(n_dots)
+```
+:::
+
+## 🎲 Quiz
+
+::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**Which of the following statements about regular expressions are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_regex_1 = [
+  ["The regular expression '[Cc]rime' finds both 'Crime' and 'crime'.", "True"],
+  ["'[A-Z]{2,}' finds sequences of at least two uppercase letters.", "True"],
+  ["'[0-9]+' finds a sequence of at least one digit.", "True"],
+  ["The pattern 'drama|crime' only finds texts containing both 'drama' and 'crime'.", "False"]
+]
+
+viewof answers_regex_1 = quizInput({
+  questions: MC_regex_1,
+  options: ["True", "False"]
+})
+```
+:::
+
+::: {.callout-note icon="false"}
+## 🎲 Question 2
+
+**You want to keep only TV series whose description mentions "drama" or "Drama". Type in the correct command!**
+
+```{ojs}
+//| echo: false
+
+TRT_2_1 = [
+  `data |>
+        filter({{input}}(Description, "[Dd]rama"))`, // Text
+  "Command", // Placeholder
+  "str_detect", // Correct Text
+  "monospace", // Font Family
+  "#000000" // Color
+];
+
+viewof answer_TRT_2_1 = textReplacementWithText({
+  text: TRT_2_1[0],
+  placeholder: TRT_2_1[1],
+  correctText: TRT_2_1[2],
+  fontFamily: TRT_2_1[3],
+  color: TRT_2_1[4]
+});
+```
+:::
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- [stringr cheatsheet (incl. regular expressions)](https://rstudio.github.io/cheatsheets/strings.pdf)
+- [R for Data Science by Wickham et al., Chapter "Strings"](https://r4ds.hadley.nz/strings.html)
+- [R for Data Science by Wickham et al., Chapter "Regular expressions"](https://r4ds.hadley.nz/regexps.html)
+- [regex101: test and debug regular expressions](https://regex101.com/)
+
+## 📌 Test your knowledge
+
+### Task 1 (Easy🔥)
+
+Use the TV series data. *Can you identify the number of TV series whose description mentions London?*
+
+```{r task-1, eval=FALSE, echo=FALSE}
+data |>
+  filter(str_detect(Description, "London")) |>
+  nrow()
+```
+
+### Task 2 (Medium🔥🔥)
+
+Use the TV series data.
+
+- Identify all TV series about superheroes, i.e., whose description contains "superhero" or "superheroes" (upper- or lowercase).
+- In these descriptions, replace "superhero"/"superheroes" with "fancy R programmers".
+
+*How many series are about superheroes? What does the first description look like after your replacement?*
+
+```{r task-2, eval=FALSE, echo=FALSE}
+data_superheroes <- data |>
+  filter(str_detect(Description, "[Ss]uperhero(es)?")) |>
+  mutate(Description = str_replace_all(Description, "[Ss]uperhero(es)?", "fancy R programmers"))
+
+nrow(data_superheroes)
+
+data_superheroes |>
+  slice(1) |>
+  pull(Description)
+```
+
+### Task 3 (Hard🔥🔥🔥)
+
+Use the TV series data.
+
+In the variable `Title`, each title starts with a number, a dot, and a space:
+
+```{r clean-title-1, eval=TRUE, echo=TRUE}
+data |>
+  select(Title) |>
+  head(5)
+```
+
+We want to remove these characters with `str_remove_all()`. The result should look like this:
+
+```{r clean-title-2, eval=TRUE, echo=FALSE}
+data |>
+  mutate(Title = str_remove_all(Title, "^[0-9]+[[:punct:]] ")) |>
+  select(Title) |>
+  head(5)
+```
+
+*How would you clean the data this way using regular expressions?*
+
+*Hint*: Have a look at the box "More on regular expressions: Anchors" in Section 2.4.
+:::::

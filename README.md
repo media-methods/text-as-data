@@ -1,19 +1,7 @@
-We’re using GitHub Discussions as a place to connect with other students in this course. We hope that you:
-* Ask questions you’re wondering about.
-* Share ideas.
-* Engage with other students.
-* Welcome others and are open-minded. Remember that this is a community we build together 💪.
+# Text-as-Data
 
-💡 **Recommendations for posting**
+This repository contains the materials for the compendium [Text-as-Data](https://media-methods.github.io/text-as-data/), part of the course Digital Methods II at the University of Klagenfurt.
 
-* Use a title that clearly indicates your question.
-* Use different posts for different questions.
-* If you have a R problem, make sure that you make the problem reproducible
+The compendium introduces students to the automated analysis of text with R. Across several tutorials, students learn how to read text data into R, clean it with regular expressions, preprocess it with `quanteda`, and represent it as a document-feature matrix. Later tutorials cover methods for analyzing text as data as well as quality criteria and validation. Each tutorial includes example code, a downloadable R script, quizzes, and practice tasks.
 
-💡 **Making problems reproducible**
-* share your code snippet
-* include sample data
-* paste the full error message
-* briefly explain what you expected and what happened instead.
-
-👉 Anyone should be able to copy your code into R and reproduce the same problem immediately.
+👉 Go to the tutorial: [Text-as-Data](https://media-methods.github.io/text-as-data/)

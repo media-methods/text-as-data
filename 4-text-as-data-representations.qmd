@@ -1,0 +1,179 @@
+---
+title: "4 Text-as-data representations"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 4, you'll be able to...
+
+- Explain why we need to represent text numerically
+- Explain what a document-feature matrix (DFM) is
+- Create and inspect a DFM with `quanteda`
+- Name other text-as-data representations beyond the bag-of-words
+:::
+
+🖥️ You can download the full code for tutorial 4 [here](code/tutorial4.R){download="tutorial4.R"}.
+
+## 1 Why do we need text-as-data representations?
+
+Computers cannot "read" text the way we do. For computers to analyze text, we need to transform it into a **numerical format**. How we do this is called a **text-as-data representation**.
+
+A classic representation is the **bag-of-words**, which builds on the bag-of-words assumption (see Tutorial 3): We reduce texts to the frequency of their features and ignore their order and context. The most common way of storing a bag-of-words representation is the **document-feature matrix (DFM)**.
+
+First, we load our packages and data, and repeat the preprocessing from Tutorial 3:
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# load packages
+library(tidyverse)
+library(quanteda)
+
+# read in the data
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+
+# create corpus (see Tutorial 3)
+corpus_tv <- corpus(data, text_field = "Description")
+
+# preprocessing (see Tutorial 3)
+tokens_tv <- corpus_tv |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem()
+```
+
+## 2 The document-feature matrix
+
+### 2.1 What is a document-feature matrix?
+
+A **document-feature matrix (DFM)** is a matrix in which...
+
+- **Rows** = documents
+- **Columns** = features
+- **Cells** = how often a feature occurs in a document
+
+Let's look at an example with three short news headlines:
+
+```{r dfm-example, eval=TRUE, echo=TRUE}
+headlines <- c(
+  doc1 = "On the state of the German economy: Will we have another financial crisis in Germany in 2023?",
+  doc2 = "The GDP is going down, unemployment is up: Crisis ahead in Germany?",
+  doc3 = "German economy tumbles into crisis: Government under pressure"
+)
+
+headlines |>
+  tokens(remove_punct = TRUE, remove_numbers = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem() |>
+  dfm()
+```
+
+For example, the feature "crisi" (the stem of "crisis") occurs once in every document, while "economi" occurs in `doc1` and `doc3`, but not in `doc2`.
+
+A DFM can be used as input for many methods, e.g., dictionaries or machine learning. With little preprocessing, it becomes very large and contains many zeros (because most features occur in only a few documents) - it is **sparse**.
+
+### 2.2 Creating a DFM for our data
+
+We create a DFM from our tokens with `dfm()`:
+
+```{r dfm, eval=TRUE, echo=TRUE}
+dfm_tv <- tokens_tv |>
+  dfm()
+
+dfm_tv
+```
+
+We see that...
+
+- the DFM consists of `r ndoc(dfm_tv)` documents,
+- after preprocessing, it still contains `r format(nfeat(dfm_tv), big.mark = ",")` unique features,
+- it is `r round(sparsity(dfm_tv) * 100, 2)`% sparse, i.e., more than 99% of all cells contain a 0.
+
+### 2.3 Inspecting a DFM
+
+`quanteda` offers several functions to inspect a DFM:
+
+- `ndoc()`: number of documents
+- `nfeat()`: number of features
+- `sparsity()`: share of cells containing a 0
+- `featnames()`: names of all features
+- `docvars()`: metadata of all documents (e.g., title, rating)
+
+```{r dfm-inspect, eval=TRUE, echo=TRUE}
+ndoc(dfm_tv)
+nfeat(dfm_tv)
+sparsity(dfm_tv)
+
+featnames(dfm_tv) |>
+  head(10)
+```
+
+## 3 Other text-as-data representations
+
+The bag-of-words representation is simple and often useful. But because it ignores the order and context of features, it has clear limitations. This is why there are other text-as-data representations, for example:
+
+- **N-grams**: sequences of *n* features (e.g., "new york" as a bigram), which keep some information about word order
+- **Syntax**: information about the grammatical role of features (e.g., subject vs. object)
+- **Semantic representations**, e.g., word embeddings, which represent features based on the contexts they occur in, so that similar words (e.g., "series" and "show") get similar representations
+
+We will learn more about these later in the course.
+
+## 💡 Take-Aways
+
+- **document-feature matrix**: rows = documents, columns = features, cells = frequencies: `dfm()`
+- **inspect** a DFM: `ndoc()`, `nfeat()`, `sparsity()`, `featnames()`, `docvars()`
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Weighting a DFM
+
+By default, the cells of a DFM contain absolute frequencies. With `dfm_weight()`, we can change this, e.g., to the **proportion** of each feature within a document. This is useful if documents differ in length:
+
+```{r dfm-weight, eval=TRUE, echo=TRUE}
+dfm_tv |>
+  dfm_weight(scheme = "prop") |>
+  head(3)
+```
+
+Another common weighting is **tf-idf** (`dfm_tfidf()`), which gives more weight to features that occur often in a document, but rarely across all documents.
+:::
+
+## 🎲 Quiz
+
+::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**Which of the following statements about document-feature matrices are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_dfm_1 = [
+  ["In a document-feature matrix, rows are documents and columns are features.", "True"],
+  ["A sparse DFM contains many cells with the value 0.", "True"],
+  ["A DFM keeps information about the order of words in a text.", "False"],
+  ["A DFM can be used as input for methods like dictionaries or machine learning.", "True"]
+]
+
+viewof answers_dfm_1 = quizInput({
+  questions: MC_dfm_1,
+  options: ["True", "False"]
+})
+```
+:::
+
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- [quanteda tutorials: Document-feature matrix](https://tutorials.quanteda.io/basic-operations/dfm/)
+- [quanteda quick start guide](https://quanteda.io/articles/quickstart.html)
+- Grimmer, J., Roberts, M. E., & Stewart, B. M. (2022). *Text as data: A new framework for machine learning and the social sciences*. Princeton University Press.

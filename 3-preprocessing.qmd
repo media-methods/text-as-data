@@ -1,0 +1,368 @@
+---
+title: "3 Preprocessing text"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 3, you'll be able to...
+
+- Explain what preprocessing is
+- Explain the bag-of-words assumption
+- Normalize text with `quanteda` (e.g., tokenization, lowercasing, etc.)
+:::
+
+🖥️ You can download the full code for tutorial 3 [here](code/tutorial3.R){download="tutorial3.R"}.
+
+## 1 Preprocessing and the bag-of-words assumption
+
+What is preprocessing?
+
+> Preprocessing reduces the complexity of text data through cleaning and normalization - without losing its substantive meaning.
+
+Preprocessing has two goals:
+
+- **Cleaning**: reducing (systematic) errors, e.g., encoding problems → *Tutorial 2*
+- **Normalization**: making texts comparable across documents, languages, etc. → *this tutorial*
+
+This involves a central **trade-off**: The more we reduce the complexity of texts for automated analysis, the more we risk losing their substantive meaning (which we may need for in-depth analyses).
+
+Let's start with a simple example. Imagine a news article that reads:
+
+> *On the state of the German economy: Will we have another financial crisis in Germany in 2023?*
+
+In a first step, we break the text down into **features**, our unit of analysis. Most often, features are words. The process of breaking texts down into features is called **tokenization**. Afterwards, we can count how often each feature occurs ("On": 1, "the": 2, "state": 1, ...).
+
+By reducing texts to the frequency of features, we make an important assumption - the **bag-of-words assumption**:
+
+> We assume that we can interpret texts without considering the order and context of features.
+
+For preprocessing, we use the package [`quanteda`](https://quanteda.io/). Make sure that you install it first (you only need to do this once). Then, we load `quanteda` and the `tidyverse`:
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# install.packages("quanteda")
+
+# load packages (every time you restart R)
+library(tidyverse)
+library(quanteda)
+```
+
+In `quanteda`, we tokenize texts with `tokens()`:
+
+```{r tokens-example, eval=TRUE, echo=TRUE}
+example <- "On the state of the German economy: Will we have another financial crisis in Germany in 2023?"
+
+tokens(example)
+```
+
+## 2 Lowercasing
+
+Next, we often convert all features to lowercase, so that "Will" and "will" are counted as the same feature. In `quanteda`, we use `tokens_tolower()`:
+
+```{r lowercase, eval=TRUE, echo=TRUE}
+tokens(example) |>
+  tokens_tolower()
+```
+
+::: {.callout-warning collapse="true"}
+## Should we always lowercase texts?
+
+Often, lowercasing does not change the meaning of features: "Learning R" and "learning R" mean the same thing. But there are exceptions, where upper- and lowercase letters signal different meanings, for example:
+
+- "Apple" (the company) vs. "apple" (the fruit)
+- "US" (United States) vs. "us" (the pronoun)
+- "Bild" (German tabloid) vs. "bild" (German for picture)
+
+After lowercasing, R can no longer tell these features apart:
+
+```{r lowercase-warning, eval=TRUE, echo=TRUE}
+tokens("Apple apple US us") |>
+  tokens_tolower()
+```
+
+If such differences matter for your research question (e.g., when analyzing coverage of companies or countries), think twice before lowercasing.
+:::
+
+## 3 Removing punctuation, numbers, and symbols
+
+Punctuation, numbers, and symbols are often not of substantive interest. We can remove them directly when tokenizing, using the arguments `remove_punct`, `remove_numbers`, and `remove_symbols` in `tokens()`:
+
+```{r remove-punct, eval=TRUE, echo=TRUE}
+tokens(example,
+       remove_punct = TRUE,
+       remove_numbers = TRUE,
+       remove_symbols = TRUE) |>
+  tokens_tolower()
+```
+
+::: {.callout-warning collapse="true"}
+## Should we always remove punctuation, numbers, and symbols?
+
+Often, punctuation, numbers, and symbols carry little substantive meaning. But sometimes, they are exactly what we are interested in, for example:
+
+- **emotions**: "Is this true???!!!" or emojis like 👍🤬🥳
+- **numbers with a meaning**: "9/11", "G7", or years like "2023"
+- **social media content**: hashtags like "#metoo" or URLs like "www.zeit.de"
+
+:::
+
+## 4 Removing stopwords
+
+**Stopwords** are very frequent words that (often) carry little substantive meaning, e.g., "the", "of", "in". `quanteda` includes ready-made stopword lists in many languages, which you can access via `stopwords()`:
+
+```{r stopwords-list, eval=TRUE, echo=TRUE}
+stopwords("english") |>
+  head(20)
+```
+
+We remove stopwords with `tokens_remove()`:
+
+```{r stopwords-remove, eval=TRUE, echo=TRUE}
+tokens(example,
+       remove_punct = TRUE,
+       remove_numbers = TRUE,
+       remove_symbols = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("english"))
+```
+
+::: {.callout-warning collapse="true"}
+## Should we always remove stopwords?
+
+There is no consensus definition of stopwords - what counts as a stopword strongly depends on your context and research question. Use off-the-shelf lists with care! For example, if you study how politicians construct collective identities, words like "we", "our", or "they" are of substantive interest and should not be removed.
+
+Often, it makes sense to adapt existing stopword lists or to define your own, "organic" stopwords.
+:::
+
+## 5 Stemming and lemmatization
+
+Finally, we often reduce features to their base form, so that "running", "runs", and "run" are counted as the same feature. There are two approaches:
+
+- **Stemming** reduces features to their word stem by cutting off suffixes, e.g., "running", "runs", "run" → "run". This is fast, but does not always work well: "ran" stays "ran", and "Germany" becomes "germani".
+- **Lemmatization** reduces features to their dictionary form (lemma), e.g., "running", "ran" → "run". This is more accurate, but requires additional tools (e.g., the R packages `udpipe` or `spacyr`).
+
+In `quanteda`, we use `tokens_wordstem()` for stemming:
+
+```{r stemming, eval=TRUE, echo=TRUE}
+tokens(example,
+       remove_punct = TRUE,
+       remove_numbers = TRUE,
+       remove_symbols = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem()
+```
+
+::: {.callout-warning collapse="true"}
+## Should we always stem or lemmatize texts?
+
+Stemming and lemmatization reduce the number of features - but they may also merge words with **different meanings**. For example, stemming reduces both "university" and "universe" to "univers", and both "organization" and "organ" to "organ":
+
+```{r stemming-warning, eval=TRUE, echo=TRUE}
+tokens("university universe organization organ") |>
+  tokens_wordstem()
+```
+
+Lemmatization works better in such cases, but it can also make mistakes - for example, if a word has several meanings ("saw" can be a tool or the past tense of "see"). And stems such as "univers" or "germani" are harder to read and interpret when presenting results.
+:::
+
+## 6 Example: Preprocessing the IMDb data
+
+Now let's apply all steps to our TV series data. First, we load the data:
+
+```{r data, eval=TRUE, echo=TRUE}
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+```
+
+`quanteda` cannot work with a data frame directly. Instead, it uses a specific object type: the **corpus**. A corpus stores the texts we want to analyze together with their metadata (in `quanteda`, these are called *document variables* or **docvars**, e.g., the title or rating of a series).
+
+We create a corpus with `corpus()`. With the argument `text_field`, we tell `quanteda` which variable contains the texts:
+
+```{r corpus, eval=TRUE, echo=TRUE}
+corpus_tv <- corpus(data, text_field = "Description")
+```
+
+Our corpus contains 900 documents, i.e., 900 TV series descriptions. All other variables of our data set are saved as docvars:
+
+```{r corpus-docvars, eval=TRUE, echo=TRUE}
+docvars(corpus_tv) |>
+  head(3)
+```
+
+With `summary()`, we get a first overview of our texts, e.g., the number of **tokens** (all words, numbers, and punctuation characters) and **types** (unique tokens) per document:
+
+```{r corpus-summary, eval=TRUE, echo=TRUE}
+summary(corpus_tv, n = 3)
+```
+
+Now we can apply preprocessing steps. We combine them in one pipe and save the result as `tokens_tv`:
+
+```{r normalize-data, eval=TRUE, echo=TRUE}
+tokens_tv <- corpus_tv |>
+
+  # tokenization & removing punctuation, numbers, symbols
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+
+  # lowercasing
+  tokens_tolower() |>
+
+  # removing stopwords
+  tokens_remove(stopwords("english")) |>
+
+  # stemming
+  tokens_wordstem()
+```
+
+This is what our first text looked like before preprocessing:
+
+```{r normalize-before, eval=TRUE, echo=TRUE}
+data$Description[1]
+```
+
+...and this is what it looks like afterwards:
+
+```{r normalize-after, eval=TRUE, echo=TRUE}
+tokens_tv[1]
+```
+
+## 💡 Take-Aways
+
+- **preprocessing**: reduces the complexity of text through cleaning and normalization, without losing substantive meaning
+- **features**: the unit of analysis texts are reduced to (often: words)
+- **corpus**: texts + metadata (docvars) in one `quanteda` object: `corpus()`
+- **tokenization**: breaking texts down into features: `tokens()`
+- **bag-of-words assumption**: the order and context of features do not influence their meaning (unlikely!)
+- **normalization**: `tokens_tolower()`, `tokens_remove(stopwords("english"))`, `tokens_wordstem()`
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Stopword lists in other languages
+
+`stopwords()` includes lists for many languages. For example, here are the first German stopwords:
+
+```{r stopwords-de, eval=TRUE, echo=TRUE}
+stopwords("german") |>
+  head(10)
+```
+
+Similarly, `tokens_wordstem()` can stem texts in other languages via the argument `language`, e.g., `tokens_wordstem(language = "german")`.
+:::
+
+## 🎲 Quiz
+
+::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**Which of the following statements about preprocessing are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_prep_1 = [
+  ["Preprocessing aims to reduce the complexity of text without losing its substantive meaning.", "True"],
+  ["There is one correct way to preprocess text that works for all research questions.", "False"],
+  ["Stopword lists should be adapted to the research question.", "True"],
+  ["The bag-of-words assumption implies that the order of words does not matter.", "True"]
+]
+
+viewof answers_prep_1 = quizInput({
+  questions: MC_prep_1,
+  options: ["True", "False"]
+})
+```
+:::
+
+::: {.callout-note icon="false"}
+## 🎲 Question 2
+
+**Which of the following statements about preprocessing are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_prep_2 = [
+  ["Tokenization breaks texts down into features.", "True"],
+  ["Stemming reduces 'ran' to 'run'.", "False"],
+  ["Lemmatization reduces features to their dictionary form.", "True"],
+]
+
+viewof answers_prep_2 = quizInput({
+  questions: MC_prep_2,
+  options: ["True", "False"]
+})
+```
+:::
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- [quanteda tutorials: Basic operations](https://tutorials.quanteda.io/basic-operations/)
+- [quanteda quick start guide](https://quanteda.io/articles/quickstart.html)
+- Denny, M. J., & Spirling, A. (2018). Text preprocessing for unsupervised learning: Why it matters, when it misleads, and what to do about it. *Political Analysis, 26*(2), 168–189. <https://doi.org/10.1017/pan.2017.44>
+
+## 📌 Test your knowledge
+
+### Task 1 (Easy🔥)
+
+Use the TV series data. Preprocess only the description of "Breaking Bad" (the second document) as in this tutorial.
+
+*How many tokens does the description have before and after preprocessing?*
+
+```{r task-1, eval=FALSE, echo=FALSE}
+# before
+corpus_tv[2] |>
+  tokens() |>
+  ntoken()
+
+# after
+corpus_tv[2] |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem() |>
+  ntoken()
+```
+
+### Task 2 (Medium🔥🔥)
+
+Use the TV series data. In this tutorial, we first removed stopwords and then applied stemming. Repeat the preprocessing from this tutorial, but **switch the order** of these two steps: First apply stemming, then remove stopwords.
+
+*Why does the order of preprocessing steps matter here?*
+
+```{r task-2, eval=FALSE, echo=FALSE}
+# original order: removing stopwords, then stemming
+corpus_tv |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem() |>
+  ntoken() |>
+  sum()
+
+# switched order: stemming, then removing stopwords
+corpus_tv |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower() |>
+  tokens_wordstem() |>
+  tokens_remove(stopwords("english")) |>
+  ntoken() |>
+  sum()
+
+# Answer: With the switched order, 101 more tokens remain (13,599 instead of 13,498).
+# Stemming changes some stopwords (e.g., "only" -> "onli", "during" -> "dure",
+# "themselves" -> "themselv"), so they no longer match the stopword list and
+# are not removed. The order of preprocessing steps therefore matters!
+```

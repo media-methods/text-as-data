@@ -2,7 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://media-methods.github.io/text-as-data/index.html</loc>
-    <lastmod>2026-10-07T06:43:14.331Z</lastmod>
+    <lastmod>2026-10-09T11:46:39.078Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/1-reading-in-text.html</loc>
+    <lastmod>2026-10-09T11:46:38.180Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/2-regular-expressions.html</loc>
+    <lastmod>2026-10-09T11:16:18.221Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/3-preprocessing.html</loc>
+    <lastmod>2026-10-09T14:55:40.020Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/4-text-as-data-representations.html</loc>
+    <lastmod>2026-10-09T14:57:53.884Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/80-appendix.html</loc>
+    <lastmod>2026-10-06T19:53:12.967Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/81-glossary.html</loc>
@@ -11,9 +31,5 @@
   <url>
     <loc>https://media-methods.github.io/text-as-data/imprint.html</loc>
     <lastmod>2026-10-07T06:44:18.004Z</lastmod>
-  </url>
-  <url>
-    <loc>https://media-methods.github.io/text-as-data/80-appendix.html</loc>
-    <lastmod>2026-10-06T19:53:12.967Z</lastmod>
   </url>
 </urlset>

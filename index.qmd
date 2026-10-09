@@ -4,8 +4,21 @@ format:
   html:
     toc: false
 ---
+## Welcome! 👋 This is an Introduction to Text-as-Data with R {.unnumbered}
 
-## Welcome! 👋 What Is This Compendium For? {.unnumbered}
+In this course, we treat text as data: Instead of reading every text ourselves, we use a computer to analyze large amounts of text systematically.
+
+> "Automated content analysis describes the automated (e.g., via a programming script) analysis of content (e.g., text, images). Researchers or manual coders still support this process, for example by validating results." (Hase, 2023)
+
+This definition already includes an important point: Automated does not mean that the computer does everything. You decide which texts to analyze, how to prepare them, which method to use, and whether the results are valid.
+
+From the outside, automated content analysis can look like magic: You collect data and - *poof* - you get results. In practice, most projects follow three classical steps.
+
+1.  **Preprocessing**: We read the text into R, clean and normalize it, and choose a suitable text-as-data representation.
+2.  **Analysis**: We choose a method that allows us to infer *latent* constructs (e.g., an opinion about the weather) based on *manifest* features.
+3.  **Testing quality criteria**: We evaluate our results with respect to quality criteria such as reproducibility, replicability, and validity.
+
+## What Is This Compendium For? {.unnumbered}
 
 Across several tutorials, we will help you build practical skills for analyzing text as data:
 
@@ -22,14 +35,18 @@ Across several tutorials, we will help you build practical skills for analyzing 
 
 Each tutorial in this compendium includes:
 
--   Explanations of new R functions and text-as-data methods (with example code)
+- Explanations of new R functions and text-as-data methods (with example code)
 
--   A short summary of the key takeaways & additional learning resources
+- A short summary of the key takeaways & additional learning resources
 
--   Practice exercises/quizzes to help you apply your new skills
+- Practice exercises/quizzes to help you apply your new skills
 
-This tutorial is inspired by many people who talked to me about teaching R in times of generative AI. Thanks 🙌 to: Lara Kobilke, Michael Scharkow, Ben Fretwurst, Marko Bachl, Katharina Maubach, Jakob Jünger. In the spirit of open science, many even shared their materials with me - special shoutout to [Michael Scharkow](https://stats.ifp.uni-mainz.de/) and [Ben Fretwurst](https://ikmz.pages.uzh.ch/Wissen-macht-R/)!
+This compendium is inspired by many people who talked to me about teaching R in times of generative AI. Thanks 🙌 to: Lara Kobilke, Michael Scharkow, Ben Fretwurst, Marko Bachl, Katharina Maubach, Jakob Jünger. In the spirit of open science, many even shared their materials with me - special shoutout to [Michael Scharkow](https://stats.ifp.uni-mainz.de/) and [Ben Fretwurst](https://ikmz.pages.uzh.ch/Wissen-macht-R/)!
 
 ## What Do We Expect from You? {.unnumbered}
 
 This compendium builds on the R and tidyverse skills from Digital Methods I. To get the most out of our in-person sessions, you should complete the assigned tutorial *before* each class. Please check the syllabus to see which tutorial you should prepare for each week. That way, we can use our time together to clarify questions, go through examples, and apply what you have learned.
+
+## Need a Refresher on R? {.unnumbered}
+
+If you want to repeat the basics of R (e.g., installing R and RStudio, objects and functions, or working with the tidyverse), have a look at my tutorial [Programming with R for Social Scientists](https://media-methods.github.io/programming-with-r/).

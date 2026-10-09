@@ -2,8 +2,6 @@
 .git
 .gitattributes
 .github
-.RData
-Thumbs.db
 
 
 #errors
@@ -26,6 +24,7 @@ _extensions
 ~$*.DS_Store*
 ~$*.Rproj.user*
 ~$*.RData*
+.RData
 .Rapp.history
 *.Rhistory
 
@@ -52,3 +51,6 @@ research/.DS_Store
 *.doc
 *.docx
 .Rproj.user
+
+# Windows thumbnails
+Thumbs.db

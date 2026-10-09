@@ -24,8 +24,15 @@ book:
     - index.qmd
 
     - part: Thinking of Text as Data and Preprocessing
+      chapters:
+       - 1-reading-in-text.qmd
+       - 2-regular-expressions.qmd
+       - 3-preprocessing.qmd
+       - 4-text-as-data-representations.qmd
 
     - part: Analyzing Data
+     # chapters:
+     #  - 5-descriptive-insights.qmd
 
     - part: Quality criteria and validation
 
