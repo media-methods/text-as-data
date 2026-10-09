@@ -12,8 +12,6 @@ After working through Tutorial 2, you'll be able to...
 - Combine regular expressions and `stringr` functions to clean and filter text data
 :::
 
-🖥️ You can download the full code for tutorial 2 [here](code/tutorial2.R){download="tutorial2.R"}.
-
 ## 1 Working with text in R: `stringr`
 
 A simple text analysis would be to check which words texts contain. For example, ...

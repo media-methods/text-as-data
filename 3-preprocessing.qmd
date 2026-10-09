@@ -12,8 +12,6 @@ After working through Tutorial 3, you'll be able to...
 - Normalize text with `quanteda` (e.g., tokenization, lowercasing, etc.)
 :::
 
-🖥️ You can download the full code for tutorial 3 [here](code/tutorial3.R){download="tutorial3.R"}.
-
 ## 1 Preprocessing and the bag-of-words assumption
 
 What is preprocessing?
@@ -103,7 +101,6 @@ Often, punctuation, numbers, and symbols carry little substantive meaning. But s
 - **emotions**: "Is this true???!!!" or emojis like 👍🤬🥳
 - **numbers with a meaning**: "9/11", "G7", or years like "2023"
 - **social media content**: hashtags like "#metoo" or URLs like "www.zeit.de"
-
 :::
 
 ## 4 Removing stopwords
@@ -366,3 +363,4 @@ corpus_tv |>
 # "themselves" -> "themselv"), so they no longer match the stopword list and
 # are not removed. The order of preprocessing steps therefore matters!
 ```
+:::::

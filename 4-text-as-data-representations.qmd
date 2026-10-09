@@ -13,8 +13,6 @@ After working through Tutorial 4, you'll be able to...
 - Name other text-as-data representations beyond the bag-of-words
 :::
 
-🖥️ You can download the full code for tutorial 4 [here](code/tutorial4.R){download="tutorial4.R"}.
-
 ## 1 Why do we need text-as-data representations?
 
 Computers cannot "read" text the way we do. For computers to analyze text, we need to transform it into a **numerical format**. How we do this is called a **text-as-data representation**.
@@ -144,7 +142,7 @@ Another common weighting is **tf-idf** (`dfm_tfidf()`), which gives more weight 
 
 ## 🎲 Quiz
 
-::::: {.content-visible when-format="html"}
+:::: {.content-visible when-format="html"}
 {{< include "files/www/quiz_script.qmd" >}}
 
 ::: {.callout-note icon="false"}
@@ -169,7 +167,6 @@ viewof answers_dfm_1 = quizInput({
 ```
 :::
 
-
 ## 📚 More tutorials on this
 
 You still have questions? The following tutorials & papers can help you with that:
@@ -177,3 +174,4 @@ You still have questions? The following tutorials & papers can help you with tha
 - [quanteda tutorials: Document-feature matrix](https://tutorials.quanteda.io/basic-operations/dfm/)
 - [quanteda quick start guide](https://quanteda.io/articles/quickstart.html)
 - Grimmer, J., Roberts, M. E., & Stewart, B. M. (2022). *Text as data: A new framework for machine learning and the social sciences*. Princeton University Press.
+::::

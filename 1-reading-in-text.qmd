@@ -11,8 +11,6 @@ After working through Tutorial 1, you'll be able to...
 - Inspect text data and recognize (and fix) encoding problems
 :::
 
-🖥️ You can download the full code for tutorial 1 [here](code/tutorial1.R){download="tutorial1.R"}.
-
 ## 1 Reading text data into R
 
 ### 1.1 Reading in Texts
@@ -184,7 +182,7 @@ guess_encoding("data/data_tvseries.csv")
 
 ## 🎲 Quiz
 
-::::: {.content-visible when-format="html"}
+:::: {.content-visible when-format="html"}
 {{< include "files/www/quiz_script.qmd" >}}
 
 ::: {.callout-note icon="false"}
@@ -206,7 +204,7 @@ viewof answer_encoding_1 = singleChoiceInput({
 })
 ```
 :::
-:::::
+::::
 
 ## 📚 More tutorials on this
 
