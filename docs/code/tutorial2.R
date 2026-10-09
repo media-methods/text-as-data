@@ -86,20 +86,6 @@ data |>
   head(3)
 
 
-## More on regular expressions: Anchors (optional) ----
-
-example_anchors <- c("Crown Jewels", "Inside the Crown", "The Crown is back")
-
-# "Crown" anywhere in the text
-str_detect(example_anchors, "Crown")
-
-# "Crown" at the beginning of the text
-str_detect(example_anchors, "^Crown")
-
-# "Crown" at the end of the text
-str_detect(example_anchors, "Crown$")
-
-
 # 3 Combining stringr and regular expressions ------------------
 
 # keep only series whose description mentions "drama" or "Drama"
@@ -111,27 +97,6 @@ data |>
 data |>
   filter(!str_detect(Description, "[Dd]rama")) |>
   nrow()
-
-
-# Smart Hack 2: Searching for metacharacters --------------------
-
-# "." means "any character", so this counts every character
-data |>
-  slice(1) |>
-  mutate(n_dots = str_count(Description, ".")) |>
-  pull(n_dots)
-
-# escaping the metacharacter
-data |>
-  slice(1) |>
-  mutate(n_dots = str_count(Description, "\\.")) |>
-  pull(n_dots)
-
-# interpreting the pattern literally
-data |>
-  slice(1) |>
-  mutate(n_dots = str_count(Description, fixed("."))) |>
-  pull(n_dots)
 
 
 # Test your knowledge ------------------------------------------

@@ -89,11 +89,6 @@ string |>
   str_replace_all(pattern = "Ã©", replacement = "é")
 
 
-# Smart Hack 1: Figuring out encodings with readr ---------------
-
-guess_encoding("data/data_tvseries.csv")
-
-
 # Test your knowledge ------------------------------------------
 
 ## Task 1 (Easy) ----

@@ -48,13 +48,6 @@ tokens(example,
        remove_symbols = TRUE) |>
   tokens_tolower()
 
-# Should we always remove punctuation, numbers, and symbols?
-tokens("Is this true??? 👍 #metoo G7 9/11",
-       remove_punct = TRUE,
-       remove_numbers = TRUE,
-       remove_symbols = TRUE)
-
-
 # 4 Removing stopwords -----------------------------------------
 
 # the first 20 English stopwords
@@ -78,10 +71,6 @@ tokens(example,
        remove_symbols = TRUE) |>
   tokens_tolower() |>
   tokens_remove(stopwords("english")) |>
-  tokens_wordstem()
-
-# Should we always stem or lemmatize texts?
-tokens("university universe organization organ") |>
   tokens_wordstem()
 
 
@@ -124,20 +113,6 @@ data$Description[1]
 tokens_tv[1]
 
 
-# Smart Hack 1: Keeping multi-word expressions together ---------
-
-tokens("A family moves from New York to the United States countryside.",
-       remove_punct = TRUE) |>
-  tokens_tolower() |>
-  tokens_compound(pattern = phrase(c("new york", "united states")))
-
-
-# Smart Hack 2: Stopword lists in other languages ---------------
-
-stopwords("german") |>
-  head(10)
-
-
 # Test your knowledge ------------------------------------------
 
 ## Task 1 (Easy) ----
@@ -154,18 +129,7 @@ stopwords("german") |>
 # then applied stemming. Repeat the preprocessing from this tutorial, but
 # switch the order of these two steps: First apply stemming, then remove
 # stopwords.
-# How many tokens are left in total after preprocessing - compared to the
-# original order? Why does the order of preprocessing steps matter here?
+# Why does the order of preprocessing steps matter here?
 
 # Your solution:
-
-
-
-## Task 3 (Hard) ----
-# Use the TV series data and repeat the preprocessing from this tutorial,
-# but define your own list of 3-5 additional stopwords and remove them as well.
-# How many tokens are left in total after preprocessing?
-
-# Your solution:
-
 
