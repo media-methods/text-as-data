@@ -30,22 +30,9 @@ str_detect(example, "crime")
 # how often does "crime" occur?
 str_count(example, "crime")
 
-# replace "crime" with "mystery"
-str_replace_all(example, "crime", "mystery")
-
-# remove "crime"
-str_remove_all(example, "crime")
-
-
 # 2 Regular expressions ----------------------------------------
 
-## 2.1 What are regular expressions? ----
-
-# read in the data
-data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
-
-
-## 2.2 Logical operators ----
+## 2.1 Logical operators ----
 
 # descriptions mentioning "drama" OR "crime"
 data |>
@@ -57,8 +44,7 @@ data |>
   filter(str_detect(Description, "drama") & str_detect(Description, "crime")) |>
   nrow()
 
-
-## 2.3 Character classes ----
+## 2.2 Character classes ----
 
 # only lowercase "drama"
 data |>
@@ -70,7 +56,7 @@ data |>
   filter(str_detect(Description, "[Dd]rama")) |>
   nrow()
 
-## 2.4 Quantifiers ----
+## 2.3 Quantifiers ----
 
 # search for capital letters (at least two) which indicate abbreviations
 data |>
@@ -78,18 +64,6 @@ data |>
   select(Title) |>
   head(3)
 
-
-# 3 Combining stringr and regular expressions ------------------
-
-# keep only series whose description mentions "drama" or "Drama"
-data |>
-  filter(str_detect(Description, "[Dd]rama")) |>
-  nrow()
-
-# keep only series whose description does NOT mention "drama" or "Drama"
-data |>
-  filter(!str_detect(Description, "[Dd]rama")) |>
-  nrow()
 
 
 # Test your knowledge ------------------------------------------

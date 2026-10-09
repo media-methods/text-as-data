@@ -66,23 +66,7 @@ Encoding(string)
 Encoding(string) <- "latin1"
 string
 
-
-## 3.2 How can encoding cause problems? ----
-
-# read in the data with the wrong encoding
-data_wrong <- read.csv2("data/data_tvseries.csv", encoding = "latin1")
-
-data_wrong |>
-  slice(180, 348, 676) |>
-  pull(Description)
-
-# compare with the data read in with the correct encoding
-data |>
-  slice(180, 348, 676) |>
-  pull(Description)
-
-
-## 3.3 How can we fix encoding problems? ----
+## 3.2 How can we fix encoding problems? ----
 
 string |>
   str_replace_all(pattern = "Ã¨", replacement = "è") |>
