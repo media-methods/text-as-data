@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Valerie Hase">
 <title>◆ Glossary – Text-as-Data</title>
@@ -10,10 +10,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -38,10 +41,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-631496449bf32ff9b0bb69a6bfd9195d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -138,9 +141,31 @@ ul.task-list li input[type="checkbox"] {
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Analyzing Data</span></span>
-  </li>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Analyzing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5-descriptive-insights.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5 Feature frequencies and wordclouds</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6-cooccurrence.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6 Collocations &amp; co-occurrence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./7-syntax.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7 Part-of-speech tagging &amp; dependency parsing</span></a>
+  </div>
+</li>
+      </ul>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">Quality criteria and validation</span></span>
@@ -189,23 +214,23 @@ ul.task-list li input[type="checkbox"] {
 
 </header><div class="cell">
 <div class="cell-output-display">
-<div id="bpxczftocr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bpxczftocr table {
+<div id="bamcltrrkb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bamcltrrkb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bpxczftocr thead, #bpxczftocr tbody, #bpxczftocr tfoot, #bpxczftocr tr, #bpxczftocr td, #bpxczftocr th {
+#bamcltrrkb thead, #bamcltrrkb tbody, #bamcltrrkb tfoot, #bamcltrrkb tr, #bamcltrrkb td, #bamcltrrkb th {
   border-style: none;
 }
 
-#bpxczftocr p {
+#bamcltrrkb p {
   margin: 0;
   padding: 0;
 }
 
-#bpxczftocr .gt_table {
+#bamcltrrkb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -231,12 +256,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_caption {
+#bamcltrrkb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bpxczftocr .gt_title {
+#bamcltrrkb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -248,7 +273,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#bpxczftocr .gt_subtitle {
+#bamcltrrkb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -260,7 +285,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#bpxczftocr .gt_heading {
+#bamcltrrkb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -272,13 +297,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_bottom_border {
+#bamcltrrkb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_col_headings {
+#bamcltrrkb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -293,7 +318,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_col_heading {
+#bamcltrrkb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -313,7 +338,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#bpxczftocr .gt_column_spanner_outer {
+#bamcltrrkb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -325,15 +350,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#bpxczftocr .gt_column_spanner_outer:first-child {
+#bamcltrrkb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bpxczftocr .gt_column_spanner_outer:last-child {
+#bamcltrrkb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bpxczftocr .gt_column_spanner {
+#bamcltrrkb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -345,11 +370,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#bpxczftocr .gt_spanner_row {
+#bamcltrrkb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bpxczftocr .gt_group_heading {
+#bamcltrrkb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -375,7 +400,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#bpxczftocr .gt_empty_group_heading {
+#bamcltrrkb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -390,15 +415,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#bpxczftocr .gt_from_md > :first-child {
+#bamcltrrkb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bpxczftocr .gt_from_md > :last-child {
+#bamcltrrkb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bpxczftocr .gt_row {
+#bamcltrrkb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -417,7 +442,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#bpxczftocr .gt_stub {
+#bamcltrrkb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -430,7 +455,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpxczftocr .gt_stub_row_group {
+#bamcltrrkb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -444,15 +469,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#bpxczftocr .gt_row_group_first td {
+#bamcltrrkb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bpxczftocr .gt_row_group_first th {
+#bamcltrrkb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bpxczftocr .gt_summary_row {
+#bamcltrrkb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -462,16 +487,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpxczftocr .gt_first_summary_row {
+#bamcltrrkb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_first_summary_row.thick {
+#bamcltrrkb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bpxczftocr .gt_last_summary_row {
+#bamcltrrkb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -481,7 +506,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_grand_summary_row {
+#bamcltrrkb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -491,7 +516,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpxczftocr .gt_first_grand_summary_row {
+#bamcltrrkb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -501,7 +526,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_last_grand_summary_row_top {
+#bamcltrrkb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -511,11 +536,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_striped {
+#bamcltrrkb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bpxczftocr .gt_table_body {
+#bamcltrrkb .gt_table_body {
   border-top-style: solid;
   border-top-width: 1px;
   border-top-color: #E6E6E6;
@@ -524,7 +549,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_footnotes {
+#bamcltrrkb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -538,7 +563,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_footnote {
+#bamcltrrkb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -547,7 +572,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpxczftocr .gt_sourcenotes {
+#bamcltrrkb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -561,7 +586,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpxczftocr .gt_sourcenote {
+#bamcltrrkb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -569,72 +594,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpxczftocr .gt_left {
+#bamcltrrkb .gt_left {
   text-align: left;
 }
 
-#bpxczftocr .gt_center {
+#bamcltrrkb .gt_center {
   text-align: center;
 }
 
-#bpxczftocr .gt_right {
+#bamcltrrkb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bpxczftocr .gt_font_normal {
+#bamcltrrkb .gt_font_normal {
   font-weight: normal;
 }
 
-#bpxczftocr .gt_font_bold {
+#bamcltrrkb .gt_font_bold {
   font-weight: bold;
 }
 
-#bpxczftocr .gt_font_italic {
+#bamcltrrkb .gt_font_italic {
   font-style: italic;
 }
 
-#bpxczftocr .gt_super {
+#bamcltrrkb .gt_super {
   font-size: 65%;
 }
 
-#bpxczftocr .gt_footnote_marks {
+#bamcltrrkb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bpxczftocr .gt_asterisk {
+#bamcltrrkb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bpxczftocr .gt_indent_1 {
+#bamcltrrkb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bpxczftocr .gt_indent_2 {
+#bamcltrrkb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bpxczftocr .gt_indent_3 {
+#bamcltrrkb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bpxczftocr .gt_indent_4 {
+#bamcltrrkb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bpxczftocr .gt_indent_5 {
+#bamcltrrkb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#bpxczftocr .katex-display {
+#bamcltrrkb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#bpxczftocr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#bamcltrrkb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -653,16 +678,64 @@ ul.task-list li input[type="checkbox"] {
 <td class="gt_row gt_left" headers="definition">checks or sets the encoding of a character string (base R)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">as_tibble()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">converts a data frame into a tibble, which prints more neatly (tidyverse)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">aes()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">maps variables to visual properties of a plot, e.g., x, y, or color (ggplot2, tidyverse)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">corpus()</td>
-<td class="gt_row gt_left" headers="definition">creates a quanteda corpus from a data frame, with text_field specifying the variable containing the texts (quanteda)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">arrange()</td>
+<td class="gt_row gt_left" headers="definition">sorts rows, e.g., in descending order with arrange(desc(x)) (tidyverse)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">dfm()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">creates a document-feature matrix from tokens (quanteda)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">as.numeric()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">converts values into numbers, e.g., 2014 into 2014 (base R)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">as_tibble()</td>
+<td class="gt_row gt_left" headers="definition">converts a data frame into a tibble, which prints more neatly (tidyverse)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">c()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">combines several values into a vector, e.g., c(new york, high school) (base R)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">case_when()</td>
+<td class="gt_row gt_left" headers="definition">creates values based on several conditions, e.g., to group TV series by parental rating (tidyverse)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">coalesce()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">takes the first non-missing value from several alternatives (tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">convert()</td>
+<td class="gt_row gt_left" headers="definition">converts a quanteda object into another format, e.g., a DFM into a data frame (quanteda)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">corpus()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">creates a quanteda corpus from a data frame, with text_field specifying the variable containing the texts (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">count()</td>
+<td class="gt_row gt_left" headers="definition">counts how often each value of a variable occurs (tidyverse)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">desc()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">sorts in descending order within arrange() (tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">dfm()</td>
+<td class="gt_row gt_left" headers="definition">creates a document-feature matrix from tokens (quanteda)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">dfm_group()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">combines all documents of the same group into one document, e.g., all series per audience (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">dfm_select()</td>
+<td class="gt_row gt_left" headers="definition">keeps (or removes) features of a document-feature matrix that match a pattern (quanteda)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">dfm_subset()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">keeps only documents of a document-feature matrix that meet a condition (quanteda)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">dfm_tfidf()</td>
@@ -677,36 +750,108 @@ ul.task-list li input[type="checkbox"] {
 <td class="gt_row gt_left" headers="definition">shows the metadata (document variables) of a corpus, tokens object, or DFM (quanteda)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">featnames()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">returns the names of all features in a document-feature matrix (quanteda)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">facet_wrap()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">splits a plot into several panels, e.g., one per group (ggplot2, tidyverse)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">filter()</td>
-<td class="gt_row gt_left" headers="definition">keeps only rows that meet a condition (tidyverse)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">fcm()</td>
+<td class="gt_row gt_left" headers="definition">creates a feature co-occurrence matrix, e.g., within documents or a window of n features (quanteda)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">fixed()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">tells stringr functions to interpret a pattern literally instead of as a regular expression (stringr)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">fcm_select()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">keeps (or removes) features of a feature co-occurrence matrix (quanteda)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">guess_encoding()</td>
-<td class="gt_row gt_left" headers="definition">guesses the encoding of a file (readr)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">featnames()</td>
+<td class="gt_row gt_left" headers="definition">returns the names of all features in a document-feature matrix (quanteda)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">head()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">shows the first rows or elements of an object (base R)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">filter()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">keeps only rows that meet a condition (tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">fixed()</td>
+<td class="gt_row gt_left" headers="definition">tells stringr functions to interpret a pattern literally instead of as a regular expression (stringr)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">geom_col()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">creates bar charts (ggplot2, tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">geom_line()</td>
+<td class="gt_row gt_left" headers="definition">creates line charts (ggplot2, tidyverse)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">ggplot()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">creates a plot, which is then built up in layers with + (ggplot2, tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">group_by()</td>
+<td class="gt_row gt_left" headers="definition">groups data so that the following steps are done per group (tidyverse)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">guess_encoding()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">guesses the encoding of a file (readr)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">head()</td>
+<td class="gt_row gt_left" headers="definition">shows the first rows or elements of an object (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">inner_join()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">combines two data frames and keeps only rows that match in both (tidyverse)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">install.packages()</td>
 <td class="gt_row gt_left" headers="definition">installs an R package (only needed once) (base R)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">library()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">loads an installed R package (needed every time you restart R) (base R)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">interaction()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">combines several variables into one grouping variable, e.g., year and country (base R)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">mutate()</td>
-<td class="gt_row gt_left" headers="definition">creates new variables or changes existing ones (tidyverse)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">is.na()</td>
+<td class="gt_row gt_left" headers="definition">checks whether a value is missing (NA) (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">kwic()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">shows keywords-in-context, i.e., the features before and after a keyword (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">labs()</td>
+<td class="gt_row gt_left" headers="definition">sets the labels of a plot, e.g., axis titles or the plot title (ggplot2, tidyverse)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">left_join()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">combines two data frames and keeps all rows of the first one (tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">library()</td>
+<td class="gt_row gt_left" headers="definition">loads an installed R package (needed every time you restart R) (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">load()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">reads in objects saved in an .RData file (base R)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">max()</td>
+<td class="gt_row gt_left" headers="definition">returns the largest value (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">mean()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">calculates the average (base R)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">min()</td>
+<td class="gt_row gt_left" headers="definition">returns the smallest value (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">mutate()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">creates new variables or changes existing ones (tidyverse)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">names()</td>
+<td class="gt_row gt_left" headers="definition">returns the names of an object, e.g., of the features returned by topfeatures() (base R)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">ncol()</td>
@@ -729,8 +874,16 @@ ul.task-list li input[type="checkbox"] {
 <td class="gt_row gt_left gt_striped" headers="definition">counts the number of tokens per document (quanteda)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">phrase()</td>
-<td class="gt_row gt_left" headers="definition">declares a pattern as a multi-word expression, e.g., for tokens_compound() (quanteda)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">paste()</td>
+<td class="gt_row gt_left" headers="definition">combines several strings into one, e.g., paste(a, b, sep = _) (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">phrase()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">declares a pattern as a multi-word expression, e.g., for tokens_compound() (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">pivot_longer()</td>
+<td class="gt_row gt_left" headers="definition">reshapes data from wide to long format (tidyverse)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">pull()</td>
@@ -745,36 +898,60 @@ ul.task-list li input[type="checkbox"] {
 <td class="gt_row gt_left gt_striped" headers="definition">reads in semicolon-separated .csv files with commas as decimal separators (base R)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">select()</td>
-<td class="gt_row gt_left" headers="definition">keeps only selected variables (tidyverse)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">reorder()</td>
+<td class="gt_row gt_left" headers="definition">sorts the categories of a variable by another variable, e.g., features by frequency in a plot (base R)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">slice()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">keeps rows by their position, e.g., slice(1) for the first row (tidyverse)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">rm()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">removes objects from the environment (base R)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">sparsity()</td>
-<td class="gt_row gt_left" headers="definition">returns the share of cells in a document-feature matrix that contain a 0 (quanteda)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">scale_y_continuous()</td>
+<td class="gt_row gt_left" headers="definition">adapts a continuous y-axis, e.g., to show percentages (ggplot2, tidyverse)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">stopwords()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">returns a ready-made list of stopwords for a language, e.g., stopwords(english) (quanteda)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">select()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">keeps only selected variables (tidyverse)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_count()</td>
-<td class="gt_row gt_left" headers="definition">counts how often a pattern occurs in a text (stringr)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">separate()</td>
+<td class="gt_row gt_left" headers="definition">splits one variable into several, e.g., 2010_India into year and country (tidyverse)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_detect()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">checks whether a pattern occurs in a text (TRUE) or not (FALSE) (stringr)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">set.seed()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">makes random results reproducible, e.g., the layout of a word cloud (base R)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_extract()</td>
-<td class="gt_row gt_left" headers="definition">extracts the first match of a pattern (stringr)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">slice()</td>
+<td class="gt_row gt_left" headers="definition">keeps rows by their position, e.g., slice(1) for the first row (tidyverse)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_length()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">counts the number of characters in a text (stringr)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">sparsity()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">returns the share of cells in a document-feature matrix that contain a 0 (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">stopwords()</td>
+<td class="gt_row gt_left" headers="definition">returns a ready-made list of stopwords for a language, e.g., stopwords(english) (quanteda)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_count()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">counts how often a pattern occurs in a text (stringr)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_detect()</td>
+<td class="gt_row gt_left" headers="definition">checks whether a pattern occurs in a text (TRUE) or not (FALSE) (stringr)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_extract()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">extracts the first match of a pattern (stringr)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_length()</td>
+<td class="gt_row gt_left" headers="definition">counts the number of characters in a text (stringr)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_match()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">extracts parts of a pattern that are marked with round brackets (stringr)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_remove_all()</td>
@@ -785,12 +962,44 @@ ul.task-list li input[type="checkbox"] {
 <td class="gt_row gt_left gt_striped" headers="definition">replaces all occurrences of a pattern with something else (stringr)</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">str_sub()</td>
+<td class="gt_row gt_left" headers="definition">extracts part of a string by position, e.g., the first 300 characters (stringr)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">sum()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">adds up values (base R)</td>
+</tr>
+<tr class="odd">
 <td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">summarise()</td>
 <td class="gt_row gt_left" headers="definition">calculates summary statistics, e.g., mean or maximum (tidyverse)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">summary()</td>
 <td class="gt_row gt_left gt_striped" headers="definition">gives an overview of a corpus, e.g., the number of tokens and types per document (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">table()</td>
+<td class="gt_row gt_left" headers="definition">counts how often each value of a variable occurs (base R)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">textplot_network()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">visualizes a feature co-occurrence matrix as a semantic network (quanteda.textplots)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">textplot_wordcloud()</td>
+<td class="gt_row gt_left" headers="definition">creates a word cloud from a document-feature matrix, e.g., a comparison word cloud with comparison = TRUE (quanteda.textplots)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">textstat_collocations()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">identifies collocations, i.e., consecutive features that occur together more often than by chance (quanteda.textstats)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">textstat_frequency()</td>
+<td class="gt_row gt_left" headers="definition">returns feature frequencies, ranks, and document frequencies, also per group (quanteda.textstats)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">theme_minimal()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">applies a simple, minimal design to a plot (ggplot2, tidyverse)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens()</td>
@@ -801,16 +1010,28 @@ ul.task-list li input[type="checkbox"] {
 <td class="gt_row gt_left gt_striped" headers="definition">keeps multi-word expressions together as one feature, e.g., new_york (quanteda)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_remove()</td>
-<td class="gt_row gt_left" headers="definition">removes features from tokens, e.g., stopwords (quanteda)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_ngrams()</td>
+<td class="gt_row gt_left" headers="definition">creates n-grams, i.e., sequences of n consecutive features (quanteda)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_tolower()</td>
-<td class="gt_row gt_left gt_striped" headers="definition">converts all tokens to lowercase (quanteda)</td>
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_remove()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">removes features from tokens, e.g., stopwords (quanteda)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_wordstem()</td>
-<td class="gt_row gt_left" headers="definition">reduces tokens to their word stem (quanteda)</td>
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_tolower()</td>
+<td class="gt_row gt_left" headers="definition">converts all tokens to lowercase (quanteda)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">tokens_wordstem()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">reduces tokens to their word stem (quanteda)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">topfeatures()</td>
+<td class="gt_row gt_left" headers="definition">returns the most frequent features of a document-feature matrix (quanteda)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="r_function" style="font-family: monospace; font-size: 14px; background-color: #FFFFFF">udpipe()</td>
+<td class="gt_row gt_left gt_striped" headers="definition">assigns part-of-speech tags, lemmas, and dependency relations to texts (udpipe)</td>
 </tr>
 </tbody>
 </table>

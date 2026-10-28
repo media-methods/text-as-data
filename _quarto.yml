@@ -31,8 +31,10 @@ book:
        - 4-text-as-data-representations.qmd
 
     - part: Analyzing Data
-     # chapters:
-     #  - 5-descriptive-insights.qmd
+      chapters:
+       - 5-descriptive-insights.qmd
+       - 6-cooccurrence.qmd
+       - 7-syntax.qmd
 
     - part: Quality criteria and validation
 

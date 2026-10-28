@@ -1,0 +1,334 @@
+---
+title: "7 Part-of-speech tagging & dependency parsing"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 7, you'll be able to...
+
+- Explain what part-of-speech tagging and dependency parsing are
+- Assign part-of-speech tags and dependency relations to features
+- Use part-of-speech tags and dependency relations to analyze how features (e.g., nouns) are described
+:::
+
+## 1 Syntax-based text-as-data representations
+
+In Tutorial 6, we learned about n-gram-based representations (e.g., keywords-in-context, collocations), which consider the *order* of features. Today, we go one step further and consider the **syntax** of texts, i.e., the grammatical role of features in a sentence:
+
+- **Part-of-speech tagging**: Which word type (e.g., noun, verb, adjective) does a feature have?
+- **Dependency parsing**: How do features relate to each other (e.g., which adjective describes which noun)?
+
+For both, we use the package [`udpipe`](https://bnosac.github.io/udpipe/en/). Make sure that you install it first (you only need to do this once). Then, we load `udpipe` and the `tidyverse`:
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# install.packages("udpipe")
+
+# load packages (every time you restart R)
+library(tidyverse)
+library(udpipe)
+```
+
+## 2 Part-of-speech tagging
+
+### 2.1 What is part-of-speech tagging?
+
+Part-of-speech tagging is the
+
+> "process of assigning a part-of-speech to each word in a text" (Jurafsky & Martin, 2023, p. 163).
+
+Most taggers use the tags of the [Universal Dependencies](https://universaldependencies.org/u/pos/) project, which work across many languages. Here are some of the most common tags:
+
+```{r tags, eval=TRUE, echo=FALSE}
+data.frame(
+  Tag = c("NOUN", "PROPN", "VERB", "ADJ", "ADV", "DET", "AUX"),
+  `Word type` = c("noun", "proper noun", "verb", "adjective", "adverb", "determiner", "auxiliary verb"),
+  Example = c("family, crime", "Janet, Westeros", "fight, return", "young, mysterious", "very, together", "the, a", "will, is"),
+  check.names = FALSE
+) |>
+  knitr::kable()
+```
+
+With part-of-speech tags, we can, for example...
+
+- analyze which **adjectives** are used to describe a certain **noun**
+- distinguish identical features with different meanings, e.g., "a **sound** solution" (adjective) vs. "What is that **sound**?" (noun)
+- reduce texts to relevant features, e.g., only nouns, verbs, and adjectives
+
+### 2.2 Part-of-speech tagging in R
+
+We tag features with `udpipe()`. With the argument `object`, we specify the language of our texts. The first time you run the function, `udpipe` downloads a language model for English (about 16 MB), which is saved in your project folder.
+
+Let's tag a short example sentence:
+
+```{r pos-example, eval=TRUE, echo=TRUE, message=FALSE}
+udpipe("Janet will back the bill.", object = "english") |>
+  select(token_id, token, lemma, upos)
+```
+
+The output is a data frame with one row per token. The most important variables are:
+
+- `token_id`: the position of the token in its sentence
+- `token`: the token itself
+- `lemma`: its dictionary form (see lemmatization in Tutorial 3)
+- `upos`: its part-of-speech tag
+
+"Janet" is a proper noun, "will" an auxiliary verb, "back" a verb, "the" a determiner, and "bill" a noun - exactly as we would expect!
+
+::: {.callout-warning collapse="true"}
+## Do part-of-speech taggers make mistakes?
+
+Yes! Taggers are statistical models trained on manually annotated texts. They work well, but not perfectly. For example, in "This is a sound solution", "sound" is an adjective - but `udpipe` tags it as a noun:
+
+```{r pos-mistake, eval=TRUE, echo=TRUE, message=FALSE}
+udpipe("This is a sound solution.", object = "english") |>
+  select(token, upos)
+```
+
+Always check your results qualitatively - and keep in mind that different packages and models can lead to different results.
+:::
+
+### 2.3 Example: Tagging the TV series data
+
+Now let's tag our TV series descriptions. First, we read in the data:
+
+```{r data, eval=TRUE, echo=TRUE}
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+```
+
+Then, we tag all descriptions. This may take a moment (about 30 seconds), since `udpipe` analyzes about 20,000 tokens:
+
+```{r pos-data, eval=TRUE, echo=TRUE, message=FALSE}
+pos_tv <- udpipe(data$Description, object = "english")
+```
+
+`udpipe` numbers our documents in the order of the data, i.e., `doc1` is the first TV series description ("Game of Thrones"), `doc2` the second one ("Breaking Bad"), etc.:
+
+```{r pos-data-head, eval=TRUE, echo=TRUE}
+pos_tv |>
+  select(doc_id, sentence_id, token_id, token, lemma, upos) |>
+  head(5)
+```
+
+Which word types are most frequent? We count the tags with `count()`:
+
+```{r pos-count, eval=TRUE, echo=TRUE}
+pos_tv |>
+  count(upos, sort = TRUE) |>
+  head(5)
+```
+
+And which adjectives are most frequent? We keep only adjectives with `filter()` and count their lemmas:
+
+```{r pos-adj, eval=TRUE, echo=TRUE}
+pos_tv |>
+  filter(upos == "ADJ") |>
+  count(lemma, sort = TRUE) |>
+  head(5)
+```
+
+TV series are often described as "young", "new", or "old".
+
+## 3 Dependency parsing
+
+### 3.1 What is dependency parsing?
+
+Part-of-speech tags tell us *which* word type a feature has - but not *how* features relate to each other. For this, we use dependency parsing, which describes
+
+> "the syntactic structure of a sentence \[...\] in terms of directed binary grammatical relations between the words" (Jurafsky & Martin, 2023, p. 381).
+
+Every sentence has a **root** (usually its main verb). All other features depend on another feature, their **head**. The type of relation is called **dependency relation**. Here is our example sentence:
+
+![Dependency relations for "My only goal in life is dependency parsing"](files/images/dependency_tree.png){fig-alt="Dependency tree for the sentence My only goal in life is dependency parsing"}
+
+For example, "parsing" is the root. "goal" depends on "parsing" as its subject (`nsubj`), and "only" depends on "goal" as an adjectival modifier (`amod`).
+
+You may be surprised that "is" is not the root. In sentences with "to be" (e.g., "X is Y"), the root is the predicate - here "parsing" - while "is" only links subject and predicate as a copula (`cop`).
+
+### 3.2 Dependency parsing in R
+
+`udpipe()` does not only assign part-of-speech tags - it also parses dependencies. Two further variables are important:
+
+- `head_token_id`: the `token_id` of the head a token depends on (0 = root)
+- `dep_rel`: the type of dependency relation
+
+```{r dep-example, eval=TRUE, echo=TRUE, message=FALSE}
+udpipe("My only goal in life is dependency parsing.", object = "english") |>
+  select(token_id, token, upos, head_token_id, dep_rel)
+```
+
+For example, "only" (`token_id` 2) has the head 3, i.e., it depends on "goal" as an adjectival modifier (`amod`). You can find an overview of all dependency relations [here](https://universaldependencies.org/u/dep/index.html).
+
+### 3.3 Example: How are families described?
+
+With dependency relations, we can analyze which adjectives *directly* describe a noun. Such adjectives have the dependency relation `amod` (adjectival modifier). 
+
+*Which adjectives describe families in our TV series data?*
+
+Let's find out. We proceed in two steps.
+
+First, we find all nouns with the lemma "family". We keep their position (document, sentence, token ID) and rename `token_id` to `head_token_id` - because we are looking for adjectives that have these families as their *head*:
+
+```{r families, eval=TRUE, echo=TRUE}
+families <- pos_tv |>
+  filter(lemma == "family", upos == "NOUN") |>
+  select(doc_id, sentence_id, head_token_id = token_id)
+```
+
+Second, we keep all adjectival modifiers (`amod`) and use `inner_join()` to keep only those whose head is one of our families:
+
+```{r families-adj, eval=TRUE, echo=TRUE}
+pos_tv |>
+  filter(dep_rel == "amod") |>
+  inner_join(families, by = c("doc_id", "sentence_id", "head_token_id")) |>
+  count(lemma, sort = TRUE) |>
+  head(5)
+```
+
+Families are often described as "dysfunctional"!
+
+
+## 💡 Take-Aways
+
+- **part-of-speech tagging**: assigning word types (e.g., noun, verb, adjective) to features: `udpipe()`, variable `upos`
+- **dependency parsing**: describing grammatical relations between features: `udpipe()`, variables `head_token_id` and `dep_rel`
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Other languages
+
+`udpipe` offers models for many languages. For German texts, for example, use `object = "german"`:
+
+```{r german, eval=FALSE, echo=TRUE}
+udpipe("Die Serie handelt von einer jungen Familie.", object = "german")
+```
+:::
+
+## 🎲 Quiz
+
+::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**Which of the following statements are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_syntax_1 = [
+  ["Part-of-speech tagging assigns word types (e.g., noun, verb) to features.", "True"],
+  ["Before part-of-speech tagging, we should remove stopwords and punctuation.", "False"],
+  ["In dependency parsing, the root is usually the main verb of a sentence.", "True"],
+  ["Part-of-speech taggers never make mistakes.", "False"]
+]
+
+viewof answers_syntax_1 = quizInput({
+  questions: MC_syntax_1,
+  options: ["True", "False"]
+})
+```
+:::
+
+::: {.callout-note icon="false"}
+## 🎲 Question 2
+
+**You want to keep only adjectives from your tagged data. Type in the correct tag!**
+
+```{ojs}
+//| echo: false
+
+TRT_7_1 = [
+  `pos_tv |>
+        filter(upos == "{{input}}")`, // Text
+  "Tag", // Placeholder
+  "ADJ", // Correct Text
+  "monospace", // Font Family
+  "#000000" // Color
+];
+
+viewof answer_TRT_7_1 = textReplacementWithText({
+  text: TRT_7_1[0],
+  placeholder: TRT_7_1[1],
+  correctText: TRT_7_1[2],
+  fontFamily: TRT_7_1[3],
+  color: TRT_7_1[4]
+});
+```
+:::
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- [udpipe documentation](https://bnosac.github.io/udpipe/en/)
+- [Universal Dependencies: part-of-speech tags](https://universaldependencies.org/u/pos/) and [dependency relations](https://universaldependencies.org/u/dep/index.html)
+- Jurafsky, D., & Martin, J. H. (2023). *Speech and language processing* (3rd ed. draft), Chapters on part-of-speech tagging and dependency parsing. <https://web.stanford.edu/~jurafsky/slp3/>
+
+## 📌 Test your knowledge
+
+### Task 1 (Easy🔥)
+
+Use the tagged TV series data. *What are the five most frequent verbs in the TV series descriptions?*
+
+```{r task-1, eval=FALSE, echo=FALSE}
+pos_tv |>
+  filter(upos == "VERB") |>
+  count(lemma, sort = TRUE) |>
+  head(5)
+
+# Answer: follow (69), find (68), become (48), have (44), live (43)
+```
+
+### Task 2 (Medium🔥🔥)
+
+Use the tagged TV series data. *Which adjectives occur in descriptions that mention "woman"?*
+
+*Hint*: First, save the `doc_id` of all descriptions that mention "woman" with `pull()`. Then, keep only these documents with `%in%`.
+
+```{r task-2, eval=FALSE, echo=FALSE}
+woman_docs <- pos_tv |>
+  filter(lemma == "woman") |>
+  pull(doc_id)
+
+pos_tv |>
+  filter(doc_id %in% woman_docs, upos == "ADJ") |>
+  count(lemma, sort = TRUE) |>
+  head(5)
+```
+
+### Task 3 (Hard🔥🔥🔥)
+
+Use the tagged TV series data. *Which adjectives directly describe "man" vs. "woman"?*
+
+*Hint*: Use dependency relations as in Section 3.3.
+
+```{r task-3, eval=FALSE, echo=FALSE}
+men <- pos_tv |>
+  filter(lemma == "man", upos == "NOUN") |>
+  select(doc_id, sentence_id, head_token_id = token_id)
+
+women <- pos_tv |>
+  filter(lemma == "woman", upos == "NOUN") |>
+  select(doc_id, sentence_id, head_token_id = token_id)
+
+# adjectives describing men
+pos_tv |>
+  filter(dep_rel == "amod") |>
+  inner_join(men, by = c("doc_id", "sentence_id", "head_token_id")) |>
+  count(lemma, sort = TRUE) |>
+  head(5)
+
+# adjectives describing women
+pos_tv |>
+  filter(dep_rel == "amod") |>
+  inner_join(women, by = c("doc_id", "sentence_id", "head_token_id")) |>
+  count(lemma, sort = TRUE) |>
+  head(5)
+
+# Answer: Both men and women are most often described as "young" (10 each).
+# Men are also described as "mysterious", women as "married".
+```
+:::::

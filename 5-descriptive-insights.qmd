@@ -1,5 +1,5 @@
 ---
-title: "5 First descriptive insights"
+title: "5 Feature frequencies and wordclouds"
 ---
 
 ::: callout-note
@@ -7,10 +7,9 @@ title: "5 First descriptive insights"
 
 After working through Tutorial 5, you'll be able to...
 
--   Identify the most frequent features in a corpus (via `topfeatures()` and `textstat_frequency()`)
--   Visualize feature frequencies with bar charts and word clouds
--   Compare feature frequencies across groups of documents
--   Explain why the bag-of-words assumption limits what descriptive analyses can tell us
+- Identify the most frequent features in a corpus
+- Compare feature frequencies across groups of documents
+- Visualize feature frequencies with bar charts and word clouds
 :::
 
 ## 1 Recap: From text to DFM
@@ -19,21 +18,24 @@ In Tutorials 1 to 4, we read in our TV series data, cleaned and preprocessed it,
 
 Today, we need two additional packages: `quanteda.textstats` (for frequency statistics) and `quanteda.textplots` (for word clouds).
 
+Make sure to uncomment the package installation (remove the hashtag #) and run the `install.packages()` command if you have not yet installed these packages.
+
 ```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
-# install.packages(c("tidyverse", "quanteda", "quanteda.textstats", "quanteda.textplots"))
+# install.packages(c("quanteda.textstats", "quanteda.textplots"))
 library(tidyverse)
 library(quanteda)
 library(quanteda.textstats)
 library(quanteda.textplots)
 ```
 
-We read in the data and remove the numbers in front of the TV series titles (see Tutorial 2):
+We read in the data and remove the numbers in front of the TV series titles with `str_remove_all()` (see Tutorial 2):
 
 ```{r data, eval=TRUE, echo=TRUE}
-url <- "https://raw.githubusercontent.com/valeriehase/textasdata-ms/main/data/data_tvseries.csv"
+# read in the data
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
 
-data <- read.csv2(url, encoding = "UTF-8") |>
-  mutate(Title = gsub("^[0-9]+[[:punct:]] ", "", Title))
+data <- data |>
+  mutate(Title = str_remove_all(Title, "^[0-9]+[[:punct:]] "))
 ```
 
 Then, we preprocess the descriptions and create a DFM. Note one difference compared to Tutorials 3 and 4: **We skip stemming.** Stems like "famili" or "seri" are hard to read - and today, we want to present our results in a way that others can easily understand. This is a good example of how preprocessing decisions depend on your goal!
@@ -56,12 +58,7 @@ dfm_tv <- data |>
   tokens_remove(stopwords("english")) |>
 
   # create DFM
-  dfm() |>
-
-  # relative pruning
-  dfm_trim(min_docfreq = 0.005,
-           max_docfreq = 0.99,
-           docfreq_type = "prop")
+  dfm()
 
 dfm_tv
 ```
@@ -76,23 +73,13 @@ A first, simple way of getting to know our texts is to check which features occu
 topfeatures(dfm_tv, 10)
 ```
 
-The result is a named vector, which is a bit hard to work with. We can turn it into a nicer data frame:
-
-```{r topfeatures-df, eval=TRUE, echo=TRUE}
-topfeatures(dfm_tv, 10) |>
-  as.data.frame() |>
-  rename(frequency = 1)
-```
-
-We see that descriptions of TV series often mention "life", "new", or "family" - which makes sense, given that many series follow the lives of (new) characters, families, or groups.
-
 ### 2.2 More detailed frequencies with `textstat_frequency()`
 
 The function `textstat_frequency()` from the `quanteda.textstats` package gives us more information:
 
--   `frequency`: how often a feature occurs in total
--   `rank`: the rank of a feature by frequency
--   `docfreq`: in how many documents a feature occurs
+- `frequency`: how often a feature occurs in total
+- `rank`: the rank of a feature by frequency
+- `docfreq`: in how many documents a feature occurs
 
 ```{r textstat-frequency, eval=TRUE, echo=TRUE}
 freq_tv <- textstat_frequency(dfm_tv, n = 15)
@@ -121,9 +108,9 @@ Often, we are not only interested in the most frequent features overall, but in 
 
 In our data, we could compare TV series for different audiences. We create a new variable `audience` based on the parental rating:
 
--   "Adults" for series rated TV-MA (mature audiences)
--   "Teens" for series rated TV-14 (teenagers aged 14 and older)
--   "Family" for series rated TV-PG, TV-G, TV-Y, TV-Y7, or TV-Y7-FV (family and kids' series)
+- "Adults" for series rated TV-MA (mature audiences)
+- "Teens" for series rated TV-14 (teenagers aged 14 and older)
+- "Family" for series rated TV-PG, TV-G, TV-Y, TV-Y7, or TV-Y7-FV (family and kids' series)
 
 Since the DFM stores all variables from our data as `docvars`, we can add this new variable directly to the DFM:
 
@@ -215,32 +202,17 @@ A comparison word cloud shows features that are *particularly* frequent in one g
 
 Word clouds look nice - but they have important drawbacks:
 
--   It is hard to compare the size of words precisely. Long words look more important than short words.
--   The position and color of words are often arbitrary, but readers may interpret them.
--   They show frequencies only, without context.
+- It is hard to compare the size of words precisely. Long words look more important than short words.
+- The position and color of words are often arbitrary, but readers may interpret them.
+- They show frequencies only, without context.
 
 For scientific papers, **bar charts** (see Section 2.3) are usually the better choice. Word clouds can still be useful for a quick first impression of your data.
 
-## 5 Why the bag-of-words assumption is problematic
-
-Our analyses so far are based on the bag-of-words assumption (see Tutorial 3): We treat texts as if they were bags of words, ignoring the order and context of features. But is it plausible to "treat every word as having a distinct, unique meaning" (Grimmer et al., 2022, p. 79)?
-
-Probably not ❌. The assumption is violated (or at least not helpful) in case of...
-
--   **Polysemy**: the same word can have different meanings, e.g., "bank" (financial institution vs. river bank)
--   **Negation**: "not bad" contains "bad", but means something positive
--   **Named entities**: "United States" or "New York" consist of several features, but mean one thing
--   **Synonyms**: different features can have similar meanings, e.g., "show" and "series"
-
-This is why top features and word clouds give us a *first* impression - but no in-depth understanding of our texts. In the next tutorials, we learn methods that consider the context of features (e.g., keywords-in-context and co-occurrences).
-
 ## 💡 Take-Aways
 
--   **top features**: `topfeatures()`, `textstat_frequency()`
--   **visualize** frequencies: `ggplot()` with `geom_col()` (bar charts), `textplot_wordcloud()` (word clouds)
--   **compare groups**: `groups` argument in `textstat_frequency()`, `dfm_group()`, `textplot_wordcloud(comparison = TRUE)`
--   **reproducibility**: use `set.seed()` for word clouds
--   **bag-of-words**: descriptive analyses ignore order and context - they only give a first impression
+- **top features**: `topfeatures()`, `textstat_frequency()`
+- **visualize** frequencies: `ggplot()` with `geom_col()` (bar charts), `textplot_wordcloud()` (word clouds)
+- **compare groups**: `groups` argument in `textstat_frequency()`, `dfm_group()`, `textplot_wordcloud(comparison = TRUE)`
 
 ## 🤓 Smart Hacks
 
@@ -256,24 +228,12 @@ dfm_tv |>
   textstat_frequency(n = 3, groups = audience, force = TRUE)
 ```
 
-The column `frequency` now contains proportions: For example, "life" accounts for about 2.5% of all features in descriptions of family series.
-:::
-
-::: {.callout-tip collapse="true"}
-## Smart Hack 2: Analyzing subsets of your data
-
-With `dfm_subset()`, you can analyze only some documents in your DFM, based on their `docvars`. For example, these are the top features for TV series with an IMDb rating of at least 9:
-
-```{r dfm-subset, eval=TRUE, echo=TRUE}
-dfm_tv |>
-  dfm_subset(Rating >= 9) |>
-  topfeatures(5)
-```
+The column `frequency` now contains proportions: For example, "life" accounts for about 1.2% of all features in descriptions of family series, but only for about 0.8% in descriptions of series for adults.
 :::
 
 ## 🎲 Quiz
 
-:::::: {.content-visible when-format="html"}
+::::: {.content-visible when-format="html"}
 {{< include "files/www/quiz_script.qmd" >}}
 
 ::: {.callout-note icon="false"}
@@ -288,7 +248,6 @@ MC_desc_1 = [
   ["topfeatures() returns the most frequent features in a DFM.", "True"],
   ["In textstat_frequency(), docfreq indicates in how many documents a feature occurs.", "True"],
   ["In a word cloud, the position of a word tells us how important it is.", "False"],
-  ["set.seed() helps us to create the same word cloud each time we run the code.", "True"],
   ["Word clouds show us the context in which features occur.", "False"]
 ]
 
@@ -321,47 +280,20 @@ viewof answers_desc_2 = quizInput({
 ```
 :::
 
-::: {.callout-note icon="false"}
-## 🎲 Question 3
-
-**You want to combine all documents in `dfm_tv` that belong to the same audience into one document. Type in the correct command!**
-
-```{ojs}
-//| echo: false
-
-TRT_5_1 = [
-  `dfm_tv |>
-        {{input}}(groups = audience)`, // Text
-  "Command", // Placeholder
-  "dfm_group", // Correct Text
-  "monospace", // Font Family
-  "#000000" // Color
-];
-
-viewof answer_TRT_5_1 = textReplacementWithText({
-  text: TRT_5_1[0],
-  placeholder: TRT_5_1[1],
-  correctText: TRT_5_1[2],
-  fontFamily: TRT_5_1[3],
-  color: TRT_5_1[4]
-});
-```
-:::
-
 ## 📚 More tutorials on this
 
 You still have questions? The following tutorials & papers can help you with that:
 
--   [quanteda tutorials: Statistical analysis](https://tutorials.quanteda.io/statistical-analysis/)
--   [quanteda tutorials: Plotting](https://tutorials.quanteda.io/basic-operations/dfm/dfm_group/)
--   [R for Data Science by Wickham et al., Chapter "Data visualization"](https://r4ds.hadley.nz/data-visualize.html)
--   Grimmer, J., Roberts, M. E., & Stewart, B. M. (2022). *Text as data: A new framework for machine learning and the social sciences*. Princeton University Press.
+- [quanteda tutorials: Statistical analysis](https://tutorials.quanteda.io/statistical-analysis/)
+- [quanteda tutorials: Grouping documents with dfm_group()](https://tutorials.quanteda.io/basic-operations/dfm/dfm_group/)
+- [R for Data Science by Wickham et al., Chapter "Data visualization"](https://r4ds.hadley.nz/data-visualize.html)
+- Grimmer, J., Roberts, M. E., & Stewart, B. M. (2022). *Text as data: A new framework for machine learning and the social sciences*. Princeton University Press.
 
 ## 📌 Test your knowledge
 
 ### Task 1 (Easy🔥)
 
-Use `dfm_tv`. *Which are the 20 most frequent features? Is "york" among them - and what could be the reason?*
+Use `dfm_tv`. *Which are the 20 most frequent features?*
 
 ```{r task-1, eval=FALSE, echo=FALSE}
 topfeatures(dfm_tv, 20)
@@ -369,37 +301,38 @@ topfeatures(dfm_tv, 20)
 
 ### Task 2 (Medium🔥🔥)
 
-Use `dfm_tv`.
-
--   Create a word cloud with the 50 most frequent features, but only for TV series for mature audiences (TV-MA).
--   Hint: Use `dfm_subset()` (see Smart Hack 2).
-
-```{r task-2, eval=FALSE, echo=FALSE}
-set.seed(42)
-dfm_tv |>
-  dfm_subset(Parental.Rating == "TV-MA") |>
-  textplot_wordcloud(max_words = 50)
-```
-
-### Task 3 (Hard🔥🔥🔥)
-
 Use the TV series data.
 
--   Create a new variable that indicates whether a series has an IMDb `Rating` of at least 8.5 ("top rated") or not ("other").
--   Visualize the 10 most frequent features for both groups in a bar chart with one panel per group.
+- Create a new variable that indicates whether a series has an IMDb `Rating` of at least 8.5 ("top rated") or below 6.0 ("worst rated").
+- Visualize the most frequent features for both groups using a comparison word cloud.
 
-*Do descriptions of top-rated series differ from those of other series?*
+*Do descriptions of top-rated series differ from those of low-rated series?*
 
-```{r task-3, eval=FALSE, echo=FALSE}
-docvars(dfm_tv, "rating_cat") <- if_else(dfm_tv$Rating >= 8.5, "top rated", "other")
+```{r task-2, eval=FALSE, echo=FALSE}
+# create new variable (all other series: NA)
+docvars(dfm_tv, "rating_group") <- case_when(
+  dfm_tv$Rating >= 8.5 ~ "top rated",
+  dfm_tv$Rating < 6.0 ~ "worst rated",
+  TRUE ~ NA_character_)
 
-textstat_frequency(dfm_tv, n = 10, groups = rating_cat) |>
-  ggplot(aes(x = frequency,
-             y = reorder(paste(feature, group, sep = "__"), frequency))) +
-  geom_col(fill = "#9E2A2B") +
-  facet_wrap(~ group, scales = "free") +
-  scale_y_discrete(labels = function(x) gsub("__.*$", "", x)) +
-  labs(x = "Frequency", y = NULL) +
-  theme_minimal()
+# how many series per group?
+table(docvars(dfm_tv, "rating_group"))
+
+# keep only both groups & group the DFM
+dfm_rating <- dfm_tv |>
+  dfm_subset(!is.na(rating_group)) |>
+  dfm_group(groups = rating_group)
+
+# comparison word cloud
+set.seed(42)
+textplot_wordcloud(dfm_rating,
+                   comparison = TRUE,
+                   max_words = 60,
+                   color = c("#9E2A2B", "#2E5E6E"))
+
+# Answer: 208 series are top rated, but only 23 worst rated - so the comparison
+# should be interpreted with care (see "Absolute vs. relative frequencies").
+# Top-rated series are often described with "new", "young", "lives", or "life",
+# worst-rated series with "life", "fight", "friends", or "complicated".
 ```
-::::::
+:::::

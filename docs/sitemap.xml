@@ -2,34 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://media-methods.github.io/text-as-data/index.html</loc>
-    <lastmod>2026-10-09T11:46:39.078Z</lastmod>
+    <lastmod>2026-10-09T19:34:49.545Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/1-reading-in-text.html</loc>
-    <lastmod>2026-10-09T11:46:38.180Z</lastmod>
+    <lastmod>2026-10-27T21:27:03.833Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/2-regular-expressions.html</loc>
-    <lastmod>2026-10-09T11:16:18.221Z</lastmod>
+    <lastmod>2026-10-27T21:28:13.224Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/3-preprocessing.html</loc>
-    <lastmod>2026-10-09T14:55:40.020Z</lastmod>
+    <lastmod>2026-10-27T21:28:44.464Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/4-text-as-data-representations.html</loc>
-    <lastmod>2026-10-09T14:57:53.884Z</lastmod>
+    <lastmod>2026-10-09T19:12:41.141Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/5-descriptive-insights.html</loc>
+    <lastmod>2026-10-28T09:57:48.962Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/6-cooccurrence.html</loc>
+    <lastmod>2026-10-28T12:59:07.724Z</lastmod>
+  </url>
+  <url>
+    <loc>https://media-methods.github.io/text-as-data/7-syntax.html</loc>
+    <lastmod>2026-10-28T13:15:18.249Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/80-appendix.html</loc>
-    <lastmod>2026-10-06T19:53:12.967Z</lastmod>
+    <lastmod>2026-10-09T19:34:44.638Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/81-glossary.html</loc>
-    <lastmod>2026-10-07T07:19:15.046Z</lastmod>
+    <lastmod>2026-10-09T19:34:44.685Z</lastmod>
   </url>
   <url>
     <loc>https://media-methods.github.io/text-as-data/imprint.html</loc>
-    <lastmod>2026-10-07T06:44:18.004Z</lastmod>
+    <lastmod>2026-10-09T19:34:49.482Z</lastmod>
   </url>
 </urlset>

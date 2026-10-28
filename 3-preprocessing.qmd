@@ -312,7 +312,7 @@ Use the TV series data. Preprocess only the description of "Breaking Bad" (the s
 
 *How many tokens does the description have before and after preprocessing?*
 
-```{r task-1, eval=FALSE, echo=FALSE}
+```{r task-1, eval=TRUE, echo=TRUE}
 # before
 corpus_tv[2] |>
   tokens() |>
@@ -335,7 +335,7 @@ Use the TV series data. In this tutorial, we first removed stopwords and then ap
 
 *Why does the order of preprocessing steps matter here?*
 
-```{r task-2, eval=FALSE, echo=FALSE}
+```{r task-2, eval=TRUE, echo=TRUE}
 # original order: removing stopwords, then stemming
 corpus_tv |>
   tokens(remove_punct = TRUE,

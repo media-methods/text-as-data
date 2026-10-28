@@ -220,7 +220,7 @@ You still have questions? The following tutorials & papers can help you with tha
 
 Use the TV series data. How many TV series have an IMDb `Rating` of at least 9?
 
-```{r task-1, eval=FALSE, echo=FALSE}
+```{r task-1, eval=TRUE, echo=TRUE}
 data |>
   filter(Rating >= 9) |>
   nrow()
