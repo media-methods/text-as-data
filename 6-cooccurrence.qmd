@@ -256,7 +256,7 @@ fcm_tv |>
 
 ## 🎲 Quiz
 
-::::: {.content-visible when-format="html"}
+:::::: {.content-visible when-format="html"}
 {{< include "files/www/quiz_script.qmd" >}}
 
 ::: {.callout-note icon="false"}
@@ -325,7 +325,7 @@ The data contains, among others, the following variables:
 
 Since the data is saved as an `.RData` file, we read it in with `load()`. This creates an object called `corpus`. To avoid confusion with the function `corpus()`, we rename it to `data_climate`:
 
-```{r climate-data, eval=FALSE, echo=TRUE}
+```{r climate-data, eval=TRUE, echo=TRUE}
 # read in the data
 load("data/news_climate_change.RData")
 
@@ -342,7 +342,7 @@ Climate change can be described in different ways, e.g., as "climate change", "c
 
 *Hint*: Preprocess the texts as in this tutorial (without stemming) and have a look at Section 2.3 on compounding.
 
-```{r task-1, eval=FALSE, echo=FALSE}
+```{r task-1, eval=TRUE, echo=TRUE}
 # preprocessing (without stemming)
 tokens_climate <- data_climate |>
   corpus(text_field = "text_clean") |>
@@ -372,7 +372,7 @@ Visualize the frequency of these three terms across the countries in the data se
 
 *Hint*: Have a look at Tutorial 5 on comparing groups with `textstat_frequency()` and on bar charts with `ggplot()`.
 
-```{r task-2, eval=FALSE, echo=FALSE}
+```{r task-2, eval=TRUE, echo=TRUE}
 # Note: If the number of articles differs between countries, absolute frequencies
 # are misleading. Better: relative frequencies, e.g., the share of each term among
 # all three terms per country:
@@ -402,7 +402,7 @@ This task goes beyond what we have covered in the tutorials so far (e.g., extrac
 However, you remain responsible for your code: Make sure that you understand what each line does and check whether the results make sense (e.g., by looking at a few articles and their extracted years). Remember that AI is **not** allowed in the exam - so use it as a learning aid, not as a replacement for understanding.
 :::
 
-```{r task-3, eval=FALSE, echo=FALSE}
+```{r task-3, eval=TRUE, echo=TRUE}
 # extract year from text
 data_reduced <- data_climate |>
   mutate(year = coalesce(
@@ -463,4 +463,4 @@ dfm_terms_reduced |>
   labs(x = "Year", y = "Share of articles", color = "Term") +
   theme_minimal()
 ```
-:::::
+::::::

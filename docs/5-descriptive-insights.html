@@ -954,6 +954,15 @@ docs     nine noble families fight control lands westeros ancient enemy returns
 </ul></section><section id="test-your-knowledge" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge">📌 Test your knowledge</h2>
 <section id="task-1-easy" class="level3"><h3 class="anchored" data-anchor-id="task-1-easy">Task 1 (Easy🔥)</h3>
 <p>Use <code>dfm_tv</code>. <em>Which are the 20 most frequent features?</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://quanteda.io/reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfm_tv</span>, <span class="fl">20</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   life     new  family   young   world   lives  series     two    city   group 
+    108     103      92      74      68      65      65      57      53      53 
+follows friends    must   years    team  school     one    find   three    york 
+     52      47      45      45      43      43      42      42      40      36 </code></pre>
+</div>
+</div>
 </section><section id="task-2-medium" class="level3"><h3 class="anchored" data-anchor-id="task-2-medium">Task 2 (Medium🔥🔥)</h3>
 <p>Use the TV series data.</p>
 <ul>
@@ -961,6 +970,45 @@ docs     nine noble families fight control lands westeros ancient enemy returns
 <li>Visualize the most frequent features for both groups using a comparison word cloud.</li>
 </ul>
 <p><em>Do descriptions of top-rated series differ from those of low-rated series?</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create new variable (all other series: NA)</span></span>
+<span><span class="fu"><a href="https://quanteda.io/reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">dfm_tv</span>, <span class="st">"rating_group"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span></span>
+<span>  <span class="va">dfm_tv</span><span class="op">$</span><span class="va">Rating</span> <span class="op">&gt;=</span> <span class="fl">8.5</span> <span class="op">~</span> <span class="st">"top rated"</span>,</span>
+<span>  <span class="va">dfm_tv</span><span class="op">$</span><span class="va">Rating</span> <span class="op">&lt;</span> <span class="fl">6.0</span> <span class="op">~</span> <span class="st">"worst rated"</span>,</span>
+<span>  <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># how many series per group?</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://quanteda.io/reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">dfm_tv</span>, <span class="st">"rating_group"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  top rated worst rated 
+        208          23 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># keep only both groups &amp; group the DFM</span></span>
+<span><span class="va">dfm_rating</span> <span class="op">&lt;-</span> <span class="va">dfm_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_subset.html">dfm_subset</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">rating_group</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_group.html">dfm_group</a></span><span class="op">(</span>groups <span class="op">=</span> <span class="va">rating_group</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># comparison word cloud</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="co"># max_size: smaller words, so that all of them fit on the plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html">textplot_wordcloud</a></span><span class="op">(</span><span class="va">dfm_rating</span>,</span>
+<span>                   comparison <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   max_words <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>                   max_size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                   color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#9E2A2B"</span>, <span class="st">"#2E5E6E"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="5-descriptive-insights_files/figure-html/task-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Answer: 208 series are top rated, but only 23 worst rated - so the comparison</span></span>
+<span><span class="co"># should be interpreted with care (see "Absolute vs. relative frequencies").</span></span>
+<span><span class="co"># Top-rated series are often described with "world", "young", "boy", or "family",</span></span>
+<span><span class="co"># worst-rated series with "fight", "complicated", "deal", or "life". Since there</span></span>
+<span><span class="co"># are only 23 worst-rated series, their features dominate the word cloud.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 
 
 </section></section></main><!-- /main --><script type="ojs-module-contents">

@@ -295,7 +295,7 @@ You still have questions? The following tutorials & papers can help you with tha
 
 Use `dfm_tv`. *Which are the 20 most frequent features?*
 
-```{r task-1, eval=FALSE, echo=FALSE}
+```{r task-1, eval=TRUE, echo=TRUE}
 topfeatures(dfm_tv, 20)
 ```
 
@@ -308,7 +308,7 @@ Use the TV series data.
 
 *Do descriptions of top-rated series differ from those of low-rated series?*
 
-```{r task-2, eval=FALSE, echo=FALSE}
+```{r task-2, eval=TRUE, echo=TRUE, warning=FALSE}
 # create new variable (all other series: NA)
 docvars(dfm_tv, "rating_group") <- case_when(
   dfm_tv$Rating >= 8.5 ~ "top rated",
@@ -325,14 +325,17 @@ dfm_rating <- dfm_tv |>
 
 # comparison word cloud
 set.seed(42)
+# max_size: smaller words, so that all of them fit on the plot
 textplot_wordcloud(dfm_rating,
                    comparison = TRUE,
                    max_words = 60,
+                   max_size = 3,
                    color = c("#9E2A2B", "#2E5E6E"))
 
 # Answer: 208 series are top rated, but only 23 worst rated - so the comparison
 # should be interpreted with care (see "Absolute vs. relative frequencies").
-# Top-rated series are often described with "new", "young", "lives", or "life",
-# worst-rated series with "life", "fight", "friends", or "complicated".
+# Top-rated series are often described with "world", "young", "boy", or "family",
+# worst-rated series with "fight", "complicated", "deal", or "life". Since there
+# are only 23 worst-rated series, their features dominate the word cloud.
 ```
 :::::

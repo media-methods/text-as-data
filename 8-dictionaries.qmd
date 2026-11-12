@@ -322,7 +322,7 @@ To classify texts, you can then add negated features to the *opposite* category,
 
 ## 🎲 Quiz
 
-::::: {.content-visible when-format="html"}
+:::::: {.content-visible when-format="html"}
 {{< include "files/www/quiz_script.qmd" >}}
 
 ::: {.callout-note icon="false"}
@@ -382,6 +382,9 @@ You still have questions? The following tutorials & papers can help you with tha
 - [quanteda tutorials](https://tutorials.quanteda.io/)
 - Boukes, M., van de Velde, B., Araujo, T., & Vliegenthart, R. (2020). What's the tone? Easy doesn't do it: Analyzing performance and agreement between off-the-shelf sentiment analysis tools. *Communication Methods and Measures, 14*(2), 83-104. <https://doi.org/10.1080/19312458.2019.1671966>
 - Muddiman, A., McGregor, S. C., & Stroud, N. J. (2019). (Re)Claiming our expertise: Parsing large text corpora with manually validated and organic dictionaries. *Political Communication, 36*(2), 214-226.
+
+::: content-hidden
+<!-- Tasks hidden for now: delete this line, the line above and the closing "::::" below to show them again -->
 
 ## 📌 Test your knowledge
 
@@ -508,4 +511,5 @@ sentiment_adjectives |>
 # "special" (as in "special report"), and even "copenhagen" (matched by the
 # positive feature "cope*") are classified as positive.
 ```
-:::::
+:::
+::::::

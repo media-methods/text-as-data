@@ -161,7 +161,7 @@ For example, "only" (`token_id` 2) has the head 3, i.e., it depends on "goal" as
 
 ### 3.3 Example: How are families described?
 
-With dependency relations, we can analyze which adjectives *directly* describe a noun. Such adjectives have the dependency relation `amod` (adjectival modifier). 
+With dependency relations, we can analyze which adjectives *directly* describe a noun. Such adjectives have the dependency relation `amod` (adjectival modifier).
 
 *Which adjectives describe families in our TV series data?*
 
@@ -186,7 +186,6 @@ pos_tv |>
 ```
 
 Families are often described as "dysfunctional"!
-
 
 ## 💡 Take-Aways
 
@@ -273,7 +272,7 @@ You still have questions? The following tutorials & papers can help you with tha
 
 Use the tagged TV series data. *What are the five most frequent verbs in the TV series descriptions?*
 
-```{r task-1, eval=FALSE, echo=FALSE}
+```{r task-1, eval=TRUE, echo=TRUE}
 pos_tv |>
   filter(upos == "VERB") |>
   count(lemma, sort = TRUE) |>
@@ -288,7 +287,7 @@ Use the tagged TV series data. *Which adjectives occur in descriptions that ment
 
 *Hint*: First, save the `doc_id` of all descriptions that mention "woman" with `pull()`. Then, keep only these documents with `%in%`.
 
-```{r task-2, eval=FALSE, echo=FALSE}
+```{r task-2, eval=TRUE, echo=TRUE}
 woman_docs <- pos_tv |>
   filter(lemma == "woman") |>
   pull(doc_id)
@@ -305,7 +304,7 @@ Use the tagged TV series data. *Which adjectives directly describe "man" vs. "wo
 
 *Hint*: Use dependency relations as in Section 3.3.
 
-```{r task-3, eval=FALSE, echo=FALSE}
+```{r task-3, eval=TRUE, echo=TRUE}
 men <- pos_tv |>
   filter(lemma == "man", upos == "NOUN") |>
   select(doc_id, sentence_id, head_token_id = token_id)

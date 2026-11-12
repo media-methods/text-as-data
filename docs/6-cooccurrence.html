@@ -1022,10 +1022,55 @@ features   returns
 <p>Climate change can be described in different ways, e.g., as “climate change”, “climate crisis”, or “global warming”.</p>
 <p><em>How often does each of these three terms occur in the articles?</em></p>
 <p><em>Hint</em>: Preprocess the texts as in this tutorial (without stemming) and have a look at Section 2.3 on compounding.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># preprocessing (without stemming)</span></span>
+<span><span class="va">tokens_climate</span> <span class="op">&lt;-</span> <span class="va">data_climate</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/corpus.html">corpus</a></span><span class="op">(</span>text_field <span class="op">=</span> <span class="st">"text_clean"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># compound terms &amp; create DFM with only these three terms</span></span>
+<span><span class="va">dfm_terms</span> <span class="op">&lt;-</span> <span class="va">tokens_climate</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://quanteda.io/reference/phrase.html">phrase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"climate change"</span>,</span>
+<span>                                     <span class="st">"climate crisis"</span>,</span>
+<span>                                     <span class="st">"global warming"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_select.html">dfm_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"climate_change"</span>, <span class="st">"climate_crisis"</span>, <span class="st">"global_warming"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># frequencies</span></span>
+<span><span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">dfm_terms</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         feature frequency rank docfreq group
+1 climate_change     14771    1    4569   all
+2 global_warming      4752    2    2412   all
+3 climate_crisis        75    3      64   all</code></pre>
+</div>
+</div>
 </section><section id="task-2-medium" class="level3"><h3 class="anchored" data-anchor-id="task-2-medium">Task 2 (Medium🔥🔥)</h3>
 <p>Visualize the frequency of these three terms across the countries in the data set (India, Germany, USA).</p>
 <p><em>Do the countries differ in how they describe climate change?</em></p>
 <p><em>Hint</em>: Have a look at Tutorial 5 on comparing groups with <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> and on bar charts with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Note: If the number of articles differs between countries, absolute frequencies</span></span>
+<span><span class="co"># are misleading. Better: relative frequencies, e.g., the share of each term among</span></span>
+<span><span class="co"># all three terms per country:</span></span>
+<span><span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">dfm_terms</span>, groups <span class="op">=</span> <span class="va">country</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="va">frequency</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">frequency</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">share</span>, y <span class="op">=</span> <span class="va">feature</span>, fill <span class="op">=</span> <span class="va">group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Share of all three terms"</span>, y <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="st">"Country"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="6-cooccurrence_files/figure-html/task-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section><section id="task-3-hard" class="level3"><h3 class="anchored" data-anchor-id="task-3-hard">Task 3 (Hard🔥🔥🔥)</h3>
 <p><em>How has the use of the three terms “climate change”, “climate crisis”, and “global warming” developed over time?</em></p>
 <ul>
@@ -1045,6 +1090,73 @@ features   returns
 <div class="callout-body-container callout-body">
 <p>This task goes beyond what we have covered in the tutorials so far (e.g., extracting dates from text, reshaping data). <strong>For this task, you are explicitly allowed to use AI tools such as ChatGPT.</strong></p>
 <p>However, you remain responsible for your code: Make sure that you understand what each line does and check whether the results make sense (e.g., by looking at a few articles and their extracted years). Remember that AI is <strong>not</strong> allowed in the exam - so use it as a learning aid, not as a replacement for understanding.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># extract year from text</span></span>
+<span><span class="va">data_reduced</span> <span class="op">&lt;-</span> <span class="va">data_climate</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce</a></span><span class="op">(</span></span>
+<span>    <span class="co"># 1st choice: the year after "DATE:"</span></span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="va">text_clean</span>, <span class="st">"DATE:.{0,30}?\\b((19|20)\\d{2})\\b"</span><span class="op">)</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>,</span>
+<span>    <span class="co"># if there is no "DATE:": the first year in the first 300 characters</span></span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_extract.html">str_extract</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">text_clean</span>, <span class="fl">1</span>, <span class="fl">300</span><span class="op">)</span>, <span class="st">"\\b(19|20)\\d{2}\\b"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># we exclude observations where year not extracted (or extracted incorrectly)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fl">2006</span><span class="op">:</span><span class="fl">2018</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># re-do preprocessing with smaller data set</span></span>
+<span><span class="va">dfm_terms_reduced</span> <span class="op">&lt;-</span> <span class="va">data_reduced</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/corpus.html">corpus</a></span><span class="op">(</span>text_field <span class="op">=</span> <span class="st">"text_clean"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># compound tokens</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://quanteda.io/reference/phrase.html">phrase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"climate change"</span>,</span>
+<span>                                     <span class="st">"climate crisis"</span>,</span>
+<span>                                     <span class="st">"global warming"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># reduce to relevant tokens</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_select.html">dfm_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"climate_change"</span>, <span class="st">"climate_crisis"</span>, <span class="st">"global_warming"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># number of articles per year &amp; country</span></span>
+<span><span class="va">n_articles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">dfm_terms_reduced</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">country</span>, name <span class="op">=</span> <span class="st">"n_articles"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># share of articles per year &amp; country using each term</span></span>
+<span><span class="va">dfm_terms_reduced</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># count each term only once per article (1 = mentioned, 0 = not mentioned)</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"boolean"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># number of articles mentioning each term per year &amp; country</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_group.html">dfm_group</a></span><span class="op">(</span>groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">country</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">doc_id</span>, names_to <span class="op">=</span> <span class="st">"term"</span>, values_to <span class="op">=</span> <span class="st">"articles"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span><span class="va">doc_id</span>, into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"country"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># divide by the number of all articles per year &amp; country</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">n_articles</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"country"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="va">articles</span> <span class="op">/</span> <span class="va">n_articles</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span></span>
+<span>  <span class="co"># plot</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">share</span>, color <span class="op">=</span> <span class="va">term</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">country</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Year"</span>, y <span class="op">=</span> <span class="st">"Share of articles"</span>, color <span class="op">=</span> <span class="st">"Term"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="6-cooccurrence_files/figure-html/task-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
