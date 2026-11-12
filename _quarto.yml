@@ -35,6 +35,7 @@ book:
        - 5-descriptive-insights.qmd
        - 6-cooccurrence.qmd
        - 7-syntax.qmd
+       - 8-dictionaries.qmd
 
     - part: Quality criteria and validation
 

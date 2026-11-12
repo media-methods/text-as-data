@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Valerie Hase">
+<title>8 Dictionaries – Text-as-Data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./80-appendix.html" rel="next">
+<link href="./7-syntax.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script><link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<link rel="stylesheet" href="files/www/custom.css">
+<link rel="stylesheet" href="ache-refresh">
+</head>
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./5-descriptive-insights.html">Analyzing Data</a></li><li class="breadcrumb-item"><a href="./8-dictionaries.html"><span class="chapter-title">8 Dictionaries</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Text-as-Data</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/media-methods/text-as-data" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Thinking of Text as Data and Preprocessing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-reading-in-text.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1 Reading in text</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-regular-expressions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2 Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3-preprocessing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3 Preprocessing text</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4-text-as-data-representations.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">4 Text-as-data representations</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Analyzing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5-descriptive-insights.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5 Feature frequencies and wordclouds</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6-cooccurrence.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6 Collocations &amp; co-occurrence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./7-syntax.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7 Part-of-speech tagging &amp; dependency parsing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./8-dictionaries.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">8 Dictionaries</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Quality criteria and validation</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./80-appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./81-glossary.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">◆ Glossary</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./imprint.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Legal Notice / Contact</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Content</h2>
+   
+  <ul>
+<li><a href="#what-are-dictionaries" id="toc-what-are-dictionaries" class="nav-link active" data-scroll-target="#what-are-dictionaries">1 What are dictionaries?</a></li>
+  <li>
+<a href="#off-the-shelf-dictionaries" id="toc-off-the-shelf-dictionaries" class="nav-link" data-scroll-target="#off-the-shelf-dictionaries">2 Off-the-shelf dictionaries</a>
+  <ul class="collapse">
+<li><a href="#what-are-off-the-shelf-dictionaries" id="toc-what-are-off-the-shelf-dictionaries" class="nav-link" data-scroll-target="#what-are-off-the-shelf-dictionaries">2.1 What are off-the-shelf dictionaries?</a></li>
+  <li><a href="#an-example-the-lexicoder-sentiment-dictionary" id="toc-an-example-the-lexicoder-sentiment-dictionary" class="nav-link" data-scroll-target="#an-example-the-lexicoder-sentiment-dictionary">2.2 An Example: The Lexicoder Sentiment Dictionary</a></li>
+  <li><a href="#looking-up-dictionary-features" id="toc-looking-up-dictionary-features" class="nav-link" data-scroll-target="#looking-up-dictionary-features">2.3 Looking up dictionary features</a></li>
+  <li><a href="#classifying-texts" id="toc-classifying-texts" class="nav-link" data-scroll-target="#classifying-texts">2.4 Classifying texts</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#organic-dictionaries" id="toc-organic-dictionaries" class="nav-link" data-scroll-target="#organic-dictionaries">3 Organic dictionaries</a>
+  <ul class="collapse">
+<li><a href="#what-are-organic-dictionaries" id="toc-what-are-organic-dictionaries" class="nav-link" data-scroll-target="#what-are-organic-dictionaries">3.1 What are organic dictionaries?</a></li>
+  <li><a href="#creating-a-dictionary" id="toc-creating-a-dictionary" class="nav-link" data-scroll-target="#creating-a-dictionary">3.2 Creating a dictionary</a></li>
+  <li><a href="#applying-the-dictionary" id="toc-applying-the-dictionary" class="nav-link" data-scroll-target="#applying-the-dictionary">3.3 Applying the dictionary</a></li>
+  <li><a href="#does-the-threshold-matter" id="toc-does-the-threshold-matter" class="nav-link" data-scroll-target="#does-the-threshold-matter">3.4 Does the threshold matter?</a></li>
+  </ul>
+</li>
+  <li><a href="#take-aways" id="toc-take-aways" class="nav-link" data-scroll-target="#take-aways">💡 Take-Aways</a></li>
+  <li><a href="#smart-hacks" id="toc-smart-hacks" class="nav-link" data-scroll-target="#smart-hacks">🤓 Smart Hacks</a></li>
+  <li><a href="#quiz" id="toc-quiz" class="nav-link" data-scroll-target="#quiz">🎲 Quiz</a></li>
+  <li><a href="#more-tutorials-on-this" id="toc-more-tutorials-on-this" class="nav-link" data-scroll-target="#more-tutorials-on-this">📚 More tutorials on this</a></li>
+  <li>
+<a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">📌 Test your knowledge</a>
+  <ul class="collapse">
+<li><a href="#task-1-easy" id="toc-task-1-easy" class="nav-link" data-scroll-target="#task-1-easy">Task 1 (Easy🔥)</a></li>
+  <li><a href="#task-2-hard" id="toc-task-2-hard" class="nav-link" data-scroll-target="#task-2-hard">Task 2 (Hard🔥🔥🔥)</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./5-descriptive-insights.html">Analyzing Data</a></li><li class="breadcrumb-item"><a href="./8-dictionaries.html"><span class="chapter-title">8 Dictionaries</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title"><span class="chapter-title">8 Dictionaries</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🎯 Learning goals
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After working through Tutorial 8, you’ll be able to…</p>
+<ul>
+<li>Explain what dictionaries are and which decisions a dictionary analysis involves</li>
+<li>Apply off-the-shelf dictionaries</li>
+<li>Build and apply your own (organic) dictionaries</li>
+</ul>
+</div>
+</div>
+<section id="what-are-dictionaries" class="level2"><h2 class="anchored" data-anchor-id="what-are-dictionaries">1 What are dictionaries?</h2>
+<p>So far, we have mostly <em>described</em> texts, for example via frequent features (Tutorial 5), co-occurrences (Tutorial 6), or syntax (Tutorial 7). Today, we want to classify text into predetermined categories: Is a TV series description negative? Is a TV series a crime series?</p>
+<p>For this, we use <strong>dictionaries</strong>. Dictionaries are</p>
+<blockquote class="blockquote">
+<p>lists of features that describe a construct (e.g., emotionality).</p>
+</blockquote>
+<p>The idea is simple: We count how often <strong>manifest</strong> features (e.g., “bad”, “worse”) occur in a text to infer whether a <strong>latent</strong> construct (e.g., a “negative evaluation”) is present. Dictionaries are a <strong>deductive</strong> approach: We classify texts into categories that we define <em>before</em> the analysis.</p>
+<p>A classic example is <strong>sentiment analysis</strong>, which rests on</p>
+<blockquote class="blockquote">
+<p>“the idea that the affective content of text […] reveals information about the underlying opinions, stances, and attitudes” (Rauh, 2018, p.&nbsp;320).</p>
+</blockquote>
+<p>Dictionary analyses typically follow four steps. Each step involves decisions:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 82%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">Step</th>
+<th style="text-align: left;">Important questions</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1 Preprocessing</td>
+<td style="text-align: left;">Should I remove stopwords (e.g., negations such as “not”)? Should I use stemming?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2 Choosing or building a dictionary</td>
+<td style="text-align: left;">Do I use an existing off-the-shelf dictionary or build my own organic one?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3 Analysis</td>
+<td style="text-align: left;">Do I look at whole texts or only at features related to a specific object? How do I deal with negation and different text lengths? When is a construct present (threshold)?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4 Validation</td>
+<td style="text-align: left;">Does the dictionary measure what it should?</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In this tutorial, we focus on the first three steps. We only need <code>quanteda</code> and the <code>tidyverse</code>, which you already installed:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load packages (every time you restart R)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We read in our TV series data and preprocess the descriptions as in Tutorial 3 - with two exceptions: We do <em>not</em> remove stopwords and we do <em>not</em> use stemming.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read in the data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv2</a></span><span class="op">(</span><span class="st">"data/data_tvseries.csv"</span>, encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># preprocessing (without stemming &amp; without removing stopwords)</span></span>
+<span><span class="va">tokens_tv</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/corpus.html">corpus</a></span><span class="op">(</span>text_field <span class="op">=</span> <span class="st">"Description"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Why do we keep stopwords and skip stemming today?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Stopwords</strong>: Lists of stopwords often include negations such as “not”. If we remove them, “that is not bad” becomes “bad” - and a dictionary would classify the text as negative.</p>
+<p><strong>Stemming</strong>: Many dictionaries already use <strong>wildcards</strong>: <code>abandon*</code> matches “abandon”, “abandoned”, and “abandonment”. If we stem our texts, features such as “famili” may no longer match the dictionary.</p>
+<p>Again, preprocessing decisions depend on your goal (see Tutorial 6).</p>
+</div>
+</div>
+</div>
+</section><section id="off-the-shelf-dictionaries" class="level2"><h2 class="anchored" data-anchor-id="off-the-shelf-dictionaries">2 Off-the-shelf dictionaries</h2>
+<section id="what-are-off-the-shelf-dictionaries" class="level3"><h3 class="anchored" data-anchor-id="what-are-off-the-shelf-dictionaries">2.1 What are off-the-shelf dictionaries?</h3>
+<p>Off-the-shelf dictionaries are existing word lists, often developed for other contexts. Here are some examples:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 48%">
+<col style="width: 51%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">Dictionary</th>
+<th style="text-align: left;">Measures</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">General Inquirer (GI)</td>
+<td style="text-align: left;">many categories, incl.&nbsp;positive &amp; negative</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Linguistic Inquiry and Word Count (LIWC)</td>
+<td style="text-align: left;">psychological &amp; emotional categories</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lexicoder Sentiment Dictionary (LSD)</td>
+<td style="text-align: left;">sentiment in (political) news</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WordNet-Affect (WNA)</td>
+<td style="text-align: left;">emotions</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bing</td>
+<td style="text-align: left;">positive &amp; negative sentiment</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AFINN</td>
+<td style="text-align: left;">sentiment scores from -5 to +5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NRC Word-Emotion Association Lexicon</td>
+<td style="text-align: left;">eight emotions &amp; sentiment</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SentimentWortschatz (SentiWS)</td>
+<td style="text-align: left;">sentiment in German texts</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Off-the-shelf dictionaries have <strong>advantages</strong>: There is a large selection of existing dictionaries, so they are cheap to use. Many are already implemented in packages like <code>quanteda</code>. And they are transparent, i.e., no “black-box” method.</p>
+<p>But they also have <strong>disadvantages</strong>: They are often atheoretical and of limited validity, since they were not developed for <em>our</em> theories and data. Boukes et al.&nbsp;(2020) show that off-the-shelf sentiment tools barely agree with manual coding - and barely agree with each other (see the required reading).</p>
+</section><section id="an-example-the-lexicoder-sentiment-dictionary" class="level3"><h3 class="anchored" data-anchor-id="an-example-the-lexicoder-sentiment-dictionary">2.2 An Example: The Lexicoder Sentiment Dictionary</h3>
+<p>We use the <strong>Lexicoder Sentiment Dictionary</strong> (Young &amp; Soroka, 2012), which comes with <code>quanteda</code> as <code>data_dictionary_LSD2015</code>. A dictionary consists of <strong>keys</strong> (categories) and the features belonging to each key. With <code>[1:2]</code>, we only keep the first two keys, <em>negative</em> and <em>positive</em>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_dictionary_LSD2015</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dictionary object with 2 key entries.
+- [negative]:
+  - a lie, abandon*, abas*, abattoir*, abdicat*, aberra*, abhor*, abject*, abnormal*, abolish*, abominab*, abominat*, abrasiv*, absent*, abstrus*, absurd*, abus*, accident*, accost*, accursed* [ ... and 2,838 more ]
+- [positive]:
+  - ability*, abound*, absolv*, absorbent*, absorption*, abundanc*, abundant*, acced*, accentuat*, accept*, accessib*, acclaim*, acclamation*, accolad*, accommodat*, accomplish*, accord, accordan*, accorded*, accords [ ... and 1,689 more ]</code></pre>
+</div>
+</div>
+<p>The asterisk <code>*</code> is a wildcard: <code>abandon*</code> matches every feature that starts with “abandon”.</p>
+</section><section id="looking-up-dictionary-features" class="level3"><h3 class="anchored" data-anchor-id="looking-up-dictionary-features">2.3 Looking up dictionary features</h3>
+<p>To look up dictionary features, we need two functions:</p>
+<ul>
+<li>
+<code><a href="https://quanteda.io/reference/dfm_weight.html">dfm_weight()</a></code>: With <code>scheme = "prop"</code>, we calculate the share of each feature among all features of a text. This way, we account for <strong>text length</strong>: Longer texts are more likely to contain, e.g., negative features “by chance”.</li>
+<li>
+<code><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup()</a></code>: counts features from the dictionary per key.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentiment_tv</span> <span class="op">&lt;-</span> <span class="va">tokens_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">data_dictionary_LSD2015</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sentiment_tv</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 900 documents, 2 features (28.11% sparse) and 5 docvars.
+       features
+docs      negative   positive
+  text1 0.09523810 0.04761905
+  text2 0.04000000 0.04000000
+  text3 0.13636364 0.04545455
+  text4 0          0.04545455
+  text5 0.11538462 0.11538462
+  text6 0.02857143 0.05714286
+[ reached max_ndoc ... 894 more documents ]</code></pre>
+</div>
+</div>
+<p>For example, 9.5% of all features in the first description (“Game of Thrones”) are negative and 4.8% positive.</p>
+</section><section id="classifying-texts" class="level3"><h3 class="anchored" data-anchor-id="classifying-texts">2.4 Classifying texts</h3>
+<p>Next, we classify each series as <em>negative</em>, <em>neutral</em>, or <em>positive</em> - depending on which features dominate. We convert the document-feature matrix into a data frame with <code><a href="https://quanteda.io/reference/convert.html">convert()</a></code>, add the original data with <code><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols()</a></code>, and classify the series with <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentiment_tv</span> <span class="op">&lt;-</span> <span class="va">sentiment_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>sentiment <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="va">positive</span> <span class="op">&gt;</span> <span class="va">negative</span> <span class="op">~</span> <span class="st">"positive"</span>,</span>
+<span>    <span class="va">negative</span> <span class="op">&gt;</span> <span class="va">positive</span> <span class="op">~</span> <span class="st">"negative"</span>,</span>
+<span>    .default <span class="op">=</span> <span class="st">"neutral"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sentiment_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Title</span>, <span class="va">positive</span>, <span class="va">negative</span>, <span class="va">sentiment</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Title   positive  negative sentiment
+1 1. Game of Thrones 0.04761905 0.0952381  negative
+2    2. Breaking Bad 0.04000000 0.0400000   neutral
+3 3. Stranger Things 0.04545455 0.1363636  negative
+4         4. Friends 0.04545455 0.0000000  positive</code></pre>
+</div>
+</div>
+<p><em>How negative are TV series?</em> We count the classifications and calculate shares:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentiment_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">sentiment</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">n</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  sentiment   n share
+1  negative 406  45.1
+2   neutral 233  25.9
+3  positive 261  29.0</code></pre>
+</div>
+</div>
+<p>According to the dictionary, almost half of all TV series descriptions are negative. And which series are most negative?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentiment_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">negative</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Title</span>, <span class="va">negative</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Title  negative
+1      480. Leverage 0.2857143
+2     824. The Glory 0.2857143
+3            115. 24 0.2500000
+4       205. Revenge 0.2352941
+5 284. Falling Skies 0.2352941</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Do dictionaries make mistakes?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Yes - a lot! Dictionaries ignore context. Let’s look at the description of “Dexter”:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentiment_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Title</span> <span class="op">==</span> <span class="st">"8. Dexter"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Description</span>, <span class="va">positive</span>, <span class="va">negative</span>, <span class="va">sentiment</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                                                                                                     Description
+1 He's smart. He's lovable. He's Dexter Morgan, America's favorite serial killer, who spends his days solving crimes and nights committing them.
+   positive  negative sentiment
+1 0.1904762 0.0952381  positive</code></pre>
+</div>
+</div>
+<p>The description of a series about a serial killer is classified as <em>positive</em>. Why? “smart”, “lovable”, and “favorite” are positive - and so is “Dexter” itself, since the dictionary contains <code>dexter*</code> (as in “dexterous”). This is a typical problem of <strong>polysemy</strong>, i.e., features with several meanings.</p>
+<p>Dictionaries also struggle with <strong>sarcasm</strong>, <strong>irony</strong>, and <strong>negation</strong>: “Not a great way to start the day” contains the positive feature “great”. Always check your results qualitatively!</p>
+</div>
+</div>
+</div>
+</section></section><section id="organic-dictionaries" class="level2"><h2 class="anchored" data-anchor-id="organic-dictionaries">3 Organic dictionaries</h2>
+<section id="what-are-organic-dictionaries" class="level3"><h3 class="anchored" data-anchor-id="what-are-organic-dictionaries">3.1 What are organic dictionaries?</h3>
+<p>Organic dictionaries are your own, <strong>domain-specific</strong> word lists, developed for your research question and data. Building them typically involves four steps (Muddiman et al., 2019):</p>
+<ol type="1">
+<li>Identify features based on <strong>existing studies</strong>
+</li>
+<li>Extend them based on the <strong>corpus</strong>, e.g., by inspecting top features (Tutorial 5) or keywords-in-context (Tutorial 6)</li>
+<li>
+<strong>Validate</strong> each single feature</li>
+<li>
+<strong>Validate</strong> the whole dictionary</li>
+</ol>
+<p>Organic dictionaries are often more closely tied to <strong>theoretical concepts</strong> - and thus more valid. Like off-the-shelf dictionaries, they are transparent. However, they are very <strong>time-consuming</strong> to build and hardly <strong>generalizable</strong>, since they are closely tied to one corpus.</p>
+</section><section id="creating-a-dictionary" class="level3"><h3 class="anchored" data-anchor-id="creating-a-dictionary">3.2 Creating a dictionary</h3>
+<p><em>Which TV series are crime series?</em> We create our own dictionary with <code><a href="https://quanteda.io/reference/dictionary.html">dictionary()</a></code>. It takes a list with one key (here: <code>crime</code>) and a vector of features:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dict_crime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  crime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"crim*"</span>, <span class="st">"police*"</span>, <span class="st">"gun*"</span>, <span class="st">"shot*"</span>, <span class="st">"dead*"</span>,</span>
+<span>            <span class="st">"murder*"</span>, <span class="st">"kill*"</span>, <span class="st">"court*"</span>, <span class="st">"suspect*"</span>,</span>
+<span>            <span class="st">"witness*"</span>, <span class="st">"arrest*"</span>, <span class="st">"officer*"</span>, <span class="st">"verdict*"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dict_crime</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dictionary object with 1 key entry.
+- [crime]:
+  - crim*, police*, gun*, shot*, dead*, murder*, kill*, court*, suspect*, witness*, arrest*, officer*, verdict*</code></pre>
+</div>
+</div>
+<p>Again, the wildcard <code>*</code> matches any ending: <code>crim*</code> matches “crime”, “crimes”, “criminal”, etc.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Can a dictionary have more than one key?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Yes! Simply add further elements to the list, e.g., one key for crime series and one for science fiction series:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dict_genres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  crime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"crim*"</span>, <span class="st">"police*"</span>, <span class="st">"murder*"</span>, <span class="st">"detective*"</span><span class="op">)</span>,</span>
+<span>  scifi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"galax*"</span>, <span class="st">"space*"</span>, <span class="st">"alien*"</span>, <span class="st">"planet*"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="applying-the-dictionary" class="level3"><h3 class="anchored" data-anchor-id="applying-the-dictionary">3.3 Applying the dictionary</h3>
+<p>We apply our dictionary just like the Lexicoder Sentiment Dictionary. A series counts as a crime series if it contains <strong>at least one</strong> crime feature:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_tv</span> <span class="op">&lt;-</span> <span class="va">tokens_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">dict_crime</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>crime_binary <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">crime</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="st">"crime"</span>, <span class="st">"non-crime"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>How many crime series are there?</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">crime_binary</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">n</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  crime_binary   n share
+1        crime 170  18.9
+2    non-crime 730  81.1</code></pre>
+</div>
+</div>
+<p>About one in five series is classified as a crime series. And which are the “clearest” crime series, i.e., the series with the highest share of crime features?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">crime</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Title</span>, <span class="va">crime</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                     Title     crime
+1 742. Behzat Ç: An Ankara Detective Story 0.2666667
+2                           815. Southland 0.2500000
+3                264. American Crime Story 0.1818182
+4                           162. Bodyguard 0.1764706
+5                               314. Bosch 0.1538462</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Which features does our dictionary actually find?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Wildcards are handy - but they can also match features we did not have in mind. With <code><a href="https://quanteda.io/reference/kwic.html">kwic()</a></code> (Tutorial 6), we can check in which contexts our dictionary features occur. For example, for all features that start with “court”:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://quanteda.io/reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">tokens_tv</span>, pattern <span class="op">=</span> <span class="st">"court*"</span>, window <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Keyword-in-context with 8 matches.                                                              
+ [text301, 29]      on the royal |   court   | of camelot who 
+ [text302, 15] on the basketball |   court   | and in the     
+ [text314, 19]  trial in federal |   court   | for the murder 
+ [text338, 24]  in kublai khan's |   court   | in 13th century
+ [text477, 17]     of the french |   court   |                
+  [text509, 4]      in the tudor |   court   | of elizabeth i 
+ [text770, 20]         of to her | courtship | and marriage to
+ [text814, 31]       and off the |   court   |                </code></pre>
+</div>
+</div>
+<p>“The royal court of Camelot”, “on the basketball court”, or even “courtship” have nothing to do with crime. Similarly, <code>dead*</code> matches “The Walking Dead” and “Deadwood”. This is why we should validate each single feature (step 3 of building organic dictionaries).</p>
+</div>
+</div>
+</div>
+</section><section id="does-the-threshold-matter" class="level3"><h3 class="anchored" data-anchor-id="does-the-threshold-matter">3.4 Does the threshold matter?</h3>
+<p>So far, one crime feature was enough to classify a series as a crime series. But we could also be stricter. <em>What happens if we require at least 2 or 3 crime features?</em></p>
+<p>For this, we need the <strong>number</strong> of crime features, not their share - so we skip <code><a href="https://quanteda.io/reference/dfm_weight.html">dfm_weight()</a></code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_counts</span> <span class="op">&lt;-</span> <span class="va">tokens_tv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">dict_crime</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/convert.html">convert</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">crime_counts</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>at_least_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">crime</span> <span class="op">&gt;=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>            at_least_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">crime</span> <span class="op">&gt;=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>            at_least_3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">crime</span> <span class="op">&gt;=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  at_least_1 at_least_2 at_least_3
+1       18.9        4.6        0.8</code></pre>
+</div>
+</div>
+<p>The threshold matters a lot: Depending on our decision, 18.9%, 4.6%, or only 0.8% of all series are crime series. There is no “correct” threshold - but you should justify your decision and test whether your results change.</p>
+</section></section><section id="take-aways" class="level2"><h2 class="anchored" data-anchor-id="take-aways">💡 Take-Aways</h2>
+<ul>
+<li>
+<strong>dictionaries</strong>: lists of features that describe a latent construct (e.g., sentiment)</li>
+<li>
+<strong>four steps</strong>: preprocessing, choosing or building a dictionary, analysis, validation</li>
+<li>
+<strong>off-the-shelf dictionaries</strong>: existing word lists, e.g., the Lexicoder Sentiment Dictionary: <code>data_dictionary_LSD2015</code>
+</li>
+<li>
+<strong>organic dictionaries</strong>: your own, domain-specific word lists: <code><a href="https://quanteda.io/reference/dictionary.html">dictionary()</a></code>
+</li>
+<li>
+<strong>looking up features</strong>: <code><a href="https://quanteda.io/reference/dfm_weight.html">dfm_weight()</a></code> (to account for text length), <code><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup()</a></code>
+</li>
+<li>
+<strong>thresholds</strong>: when a construct counts as present - this decision can change your results</li>
+</ul></section><section id="smart-hacks" class="level2"><h2 class="anchored" data-anchor-id="smart-hacks">🤓 Smart Hacks</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Smart Hack 1: Negation in the Lexicoder Sentiment Dictionary
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The Lexicoder Sentiment Dictionary has two more keys: <code>neg_positive</code> (negated positive features, e.g., “not good”) and <code>neg_negative</code> (negated negative features, e.g., “not bad”):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_dictionary_LSD2015</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dictionary object with 2 key entries.
+- [neg_positive]:
+  - best not, better not, no damag*, no no, not ability*, not able, not abound*, not absolv*, not absorbent*, not absorption*, not abundanc*, not abundant*, not acced*, not accentuat*, not accept*, not accessib*, not acclaim*, not acclamation*, not accolad*, not accommodat* [ ... and 1,701 more ]
+- [neg_negative]:
+  - not a lie, not abandon*, not abas*, not abattoir*, not abdicat*, not aberra*, not abhor*, not abject*, not abnormal*, not abolish*, not abominab*, not abominat*, not abrasiv*, not absent*, not abstrus*, not absurd*, not abus*, not accident*, not accost*, not accursed* [ ... and 2,840 more ]</code></pre>
+</div>
+</div>
+<p>These are <strong>multi-word features</strong>, which <code><a href="https://quanteda.io/reference/dfm_lookup.html">dfm_lookup()</a></code> cannot find (a document-feature matrix only contains single features). Instead, we use <code><a href="https://quanteda.io/reference/tokens_lookup.html">tokens_lookup()</a></code> on our tokens. With <code>nested_scope = "dictionary"</code>, “not good” is only counted as <code>neg_positive</code> - and not additionally as <code>positive</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"This series is not good"</span>, <span class="st">"This series is not bad"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># only negative &amp; positive: "not good" is positive, "not bad" negative</span></span>
+<span><span class="va">toy</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">data_dictionary_LSD2015</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 2 features (50.00% sparse) and 0 docvars.
+       features
+docs    negative positive
+  text1        0        1
+  text2        1        0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># all four keys: correct</span></span>
+<span><span class="va">toy</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">data_dictionary_LSD2015</span>,</span>
+<span>                nested_scope <span class="op">=</span> <span class="st">"dictionary"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 4 features (75.00% sparse) and 0 docvars.
+       features
+docs    negative positive neg_positive neg_negative
+  text1        0        0            1            0
+  text2        0        0            0            1</code></pre>
+</div>
+</div>
+<p>To classify texts, you can then add negated features to the <em>opposite</em> category, e.g., <code>negative = negative + neg_positive</code> and <code>positive = positive + neg_negative</code>.</p>
+</div>
+</div>
+</div>
+</section><section id="quiz" class="level2"><h2 class="anchored" data-anchor-id="quiz">🎲 Quiz</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb33" data-startfrom="336" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 335;"><span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a>round <span class="op">=</span> (n<span class="op">,</span> places) <span class="kw">=&gt;</span> {</span>
+<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>places) <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(n)<span class="op">;</span></span>
+<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> d <span class="op">=</span> <span class="dv">10</span> <span class="op">**</span> places<span class="op">;</span></span>
+<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(n <span class="op">*</span> d) <span class="op">/</span> d<span class="op">;</span></span>
+<span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-342"><a href="#cb33-342" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">textReplacementWithText</span>({ text<span class="op">,</span> placeholder<span class="op">,</span> correctText<span class="op">,</span> fontFamily <span class="op">=</span> <span class="st">"monospace"</span><span class="op">,</span> color <span class="op">=</span> <span class="st">"#000000"</span> }) {</span>
+<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> parts <span class="op">=</span> text<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\{\{</span><span class="ss">input</span><span class="sc">\}\}</span><span class="ss">/</span>)<span class="op">;</span> <span class="co">// Teilt den Text an den Eingabestellen</span></span>
+<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div style="font-size: HUGE; margin-top: -40; margin-bottom: -40; margin-left: -50px; line-height: 1.8; font-family: </span><span class="sc">${</span>fontFamily<span class="sc">}</span><span class="vs">; color: </span><span class="sc">${</span>color<span class="sc">}</span><span class="vs">; white-space: pre-wrap; text-indent: 0; display: flex; align-items: baseline;"&gt;</span></span>
+<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div style="flex: 1;"&gt;</span></span>
+<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>parts<span class="op">.</span><span class="fu">map</span>((part<span class="op">,</span> index) <span class="kw">=&gt;</span></span>
+<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a>        htl<span class="op">.</span><span class="fu">html</span><span class="vs">`</span><span class="sc">${</span>part<span class="sc">}${</span>index <span class="op">&lt;</span> parts<span class="op">.</span><span class="at">length</span> <span class="op">-</span> <span class="dv">1</span> <span class="op">?</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;span style="display: inline-flex; align-items: baseline;"&gt;</span></span>
+<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;input </span></span>
+<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a><span class="vs">            type="text"</span></span>
+<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a><span class="vs">            placeholder="</span><span class="sc">${</span>placeholder<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a><span class="vs">            style="padding: 3px; font-size: HUGE; border: 1px solid #ccc; margin-left: 0px; border-radius: 4px; width: calc(</span><span class="sc">${</span>correctText<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs">ch + 1em); font-family: </span><span class="sc">${</span>fontFamily<span class="sc">}</span><span class="vs">; color: </span><span class="sc">${</span>color<span class="sc">}</span><span class="vs">; text-align: right; box-sizing: border-box; margin-right: 0.2em;"</span></span>
+<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a><span class="vs">            oninput=</span><span class="sc">${</span>(e) <span class="kw">=&gt;</span> {</span>
+<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a>              <span class="kw">const</span> feedbackElement <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="vs">`#feedback-final`</span>)<span class="op">;</span></span>
+<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a>              <span class="kw">const</span> allInputsCorrect <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="bu">root</span><span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">"input"</span>))<span class="op">.</span><span class="fu">every</span>((input) <span class="kw">=&gt;</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">trim</span>() <span class="op">===</span> correctText<span class="op">.</span><span class="fu">trim</span>())<span class="op">;</span></span>
+<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> (allInputsCorrect) {</span>
+<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a>                feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"✅"</span><span class="op">;</span></span>
+<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a>                feedbackElement<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> <span class="st">"green"</span><span class="op">;</span></span>
+<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a>              } <span class="cf">else</span> {</span>
+<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a>                feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"🔴"</span><span class="op">;</span></span>
+<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a>                feedbackElement<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> <span class="st">"red"</span><span class="op">;</span></span>
+<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a>              }</span>
+<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a>            }<span class="sc">}</span></span>
+<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a><span class="vs">          /&gt;&lt;/span&gt;`</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a>      )<span class="sc">}</span></span>
+<span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb33-367"><a href="#cb33-367" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span id="feedback-final" style="font-weight: bold; font-size: HUGE; margin-left: 0.5em; color: inherit;"&gt;&lt;/span&gt;</span></span>
+<span id="cb33-368"><a href="#cb33-368" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-372"><a href="#cb33-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-373"><a href="#cb33-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">textReplacementTask</span>({ placeholder<span class="op">,</span> correctText<span class="op">,</span> width <span class="op">=</span> <span class="st">"300px"</span><span class="op">,</span> fontFamily <span class="op">=</span> <span class="st">"monospace"</span><span class="op">,</span> color <span class="op">=</span> <span class="st">"black"</span> }) {</span>
+<span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> enteredText <span class="op">=</span> <span class="st">""</span><span class="op">;</span> </span>
+<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div style="font-size: 14px; line-height: 1.5; margin-bottom: 20px;"&gt;</span></span>
+<span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;h4&gt;Bitte ersetzen Sie den Text:&lt;/h4&gt;</span></span>
+<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;!-- Eingabefeld --&gt;</span></span>
+<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div style="display: flex; align-items: center;"&gt;</span></span>
+<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;input</span></span>
+<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a><span class="vs">        type="text"</span></span>
+<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a><span class="vs">        placeholder="</span><span class="sc">${</span>placeholder<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a><span class="vs">        style="padding: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: </span><span class="sc">${</span>width<span class="sc">}</span><span class="vs">; font-family: </span><span class="sc">${</span>fontFamily<span class="sc">}</span><span class="vs">; color: </span><span class="sc">${</span>color<span class="sc">}</span><span class="vs">;"</span></span>
+<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a><span class="vs">        onInput=</span><span class="sc">${</span>(e) <span class="kw">=&gt;</span> {</span>
+<span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a>          enteredText <span class="op">=</span> e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a>          <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> enteredText<span class="op">;</span></span>
+<span id="cb33-389"><a href="#cb33-389" aria-hidden="true" tabindex="-1"></a>          <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span>))<span class="op">;</span></span>
+<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a>          <span class="fu">updateFeedback</span>()<span class="op">;</span></span>
+<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a>        }<span class="sc">}</span></span>
+<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a><span class="vs">      /&gt;</span></span>
+<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;!-- Feedback --&gt;</span></span>
+<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div id="feedback" style="font-weight: bold; font-size: 14px; margin-left: 10px; text-align: left; white-space: nowrap; color: inherit;"&gt;&lt;/div&gt;</span></span>
+<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-398"><a href="#cb33-398" aria-hidden="true" tabindex="-1"></a><span class="co">// Funktion zur Aktualisierung des Feedbacks</span></span>
+<span id="cb33-399"><a href="#cb33-399" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">updateFeedback</span>() {</span>
+<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> feedbackElement <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"#feedback"</span>)<span class="op">;</span></span>
+<span id="cb33-401"><a href="#cb33-401" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (enteredText<span class="op">.</span><span class="fu">trim</span>() <span class="op">===</span> correctText<span class="op">.</span><span class="fu">trim</span>()) {</span>
+<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a>      feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"✅"</span><span class="op">;</span></span>
+<span id="cb33-403"><a href="#cb33-403" aria-hidden="true" tabindex="-1"></a>      feedbackElement<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> <span class="st">"green"</span><span class="op">;</span></span>
+<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (enteredText<span class="op">.</span><span class="fu">trim</span>() <span class="op">===</span> <span class="st">""</span>) {</span>
+<span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a>      feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span> </span>
+<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a>      feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"🔴"</span><span class="op">;</span></span>
+<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a>      feedbackElement<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> <span class="st">"red"</span><span class="op">;</span></span>
+<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-411"><a href="#cb33-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-412"><a href="#cb33-412" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="kw">null</span><span class="op">;</span> </span>
+<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-417"><a href="#cb33-417" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">singleChoiceInput</span>({ options<span class="op">,</span> correctIndex }) {</span>
+<span id="cb33-418"><a href="#cb33-418" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> selectedAnswer <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div style="font-size: HUGE; line-height: 1.5; margin-bottom: 0px;"&gt;</span></span>
+<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;!-- Antworten --&gt;</span></span>
+<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div style="display: grid; row-gap: 12px;"&gt;</span></span>
+<span id="cb33-423"><a href="#cb33-423" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>options<span class="op">.</span><span class="fu">map</span>(</span>
+<span id="cb33-424"><a href="#cb33-424" aria-hidden="true" tabindex="-1"></a>        (option<span class="op">,</span> index) <span class="kw">=&gt;</span></span>
+<span id="cb33-425"><a href="#cb33-425" aria-hidden="true" tabindex="-1"></a>          htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div style="display: flex; align-items: center;"&gt;</span></span>
+<span id="cb33-426"><a href="#cb33-426" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;!-- Radiobutton und Option --&gt;</span></span>
+<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;label style="display: flex; align-items: center; padding-left: 4pt; font-weight: normal;"&gt;</span></span>
+<span id="cb33-428"><a href="#cb33-428" aria-hidden="true" tabindex="-1"></a><span class="vs">              &lt;input</span></span>
+<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a><span class="vs">                type="radio"</span></span>
+<span id="cb33-430"><a href="#cb33-430" aria-hidden="true" tabindex="-1"></a><span class="vs">                name="singleChoice"</span></span>
+<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a><span class="vs">                value=</span><span class="sc">${</span>index<span class="sc">}</span></span>
+<span id="cb33-432"><a href="#cb33-432" aria-hidden="true" tabindex="-1"></a><span class="vs">                style="margin-right: 10px;"</span></span>
+<span id="cb33-433"><a href="#cb33-433" aria-hidden="true" tabindex="-1"></a><span class="vs">                onChange=</span><span class="sc">${</span>() <span class="kw">=&gt;</span> {</span>
+<span id="cb33-434"><a href="#cb33-434" aria-hidden="true" tabindex="-1"></a>                  selectedAnswer <span class="op">=</span> index<span class="op">;</span></span>
+<span id="cb33-435"><a href="#cb33-435" aria-hidden="true" tabindex="-1"></a>                  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> selectedAnswer<span class="op">;</span></span>
+<span id="cb33-436"><a href="#cb33-436" aria-hidden="true" tabindex="-1"></a>                  <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span>))<span class="op">;</span></span>
+<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">updateFeedback</span>()<span class="op">;</span></span>
+<span id="cb33-438"><a href="#cb33-438" aria-hidden="true" tabindex="-1"></a>                }<span class="sc">}</span></span>
+<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a><span class="vs">              /&gt;</span></span>
+<span id="cb33-440"><a href="#cb33-440" aria-hidden="true" tabindex="-1"></a><span class="vs">              &lt;span&gt;</span><span class="sc">${</span>option<span class="sc">}</span><span class="vs">&lt;/span&gt;</span></span>
+<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;/label&gt;</span></span>
+<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;!-- Feedback --&gt;</span></span>
+<span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;div id="feedback-</span><span class="sc">${</span>index<span class="sc">}</span><span class="vs">" style="font-weight: bold; font-size: 14px; margin-left: 10px; text-align: left; white-space: nowrap; color: inherit;"&gt;&lt;/div&gt;</span></span>
+<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;/div&gt;`</span></span>
+<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a>      )<span class="sc">}</span></span>
+<span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;</span></span>
+<span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a><span class="co">// Funktion zur Aktualisierung des Feedbacks</span></span>
+<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">updateFeedback</span>() {</span>
+<span id="cb33-451"><a href="#cb33-451" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">forEach</span>((_<span class="op">,</span> index) <span class="kw">=&gt;</span> {</span>
+<span id="cb33-452"><a href="#cb33-452" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> feedbackElement <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="vs">`#feedback-</span><span class="sc">${</span>index<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb33-453"><a href="#cb33-453" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (selectedAnswer <span class="op">===</span> index) {</span>
+<span id="cb33-454"><a href="#cb33-454" aria-hidden="true" tabindex="-1"></a>        feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span></span>
+<span id="cb33-455"><a href="#cb33-455" aria-hidden="true" tabindex="-1"></a>          index <span class="op">===</span> correctIndex <span class="op">?</span> <span class="st">"✅"</span> <span class="op">:</span> <span class="st">"🔴"</span><span class="op">;</span></span>
+<span id="cb33-456"><a href="#cb33-456" aria-hidden="true" tabindex="-1"></a>        feedbackElement<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> index <span class="op">===</span> correctIndex <span class="op">?</span> <span class="st">"green"</span> <span class="op">:</span> <span class="st">"red"</span><span class="op">;</span></span>
+<span id="cb33-457"><a href="#cb33-457" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb33-458"><a href="#cb33-458" aria-hidden="true" tabindex="-1"></a>        feedbackElement<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span> <span class="co">// Löscht Feedback für nicht ausgewählte Optionen</span></span>
+<span id="cb33-459"><a href="#cb33-459" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb33-460"><a href="#cb33-460" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb33-461"><a href="#cb33-461" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-462"><a href="#cb33-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-463"><a href="#cb33-463" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb33-464"><a href="#cb33-464" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb33-465"><a href="#cb33-465" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-466"><a href="#cb33-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-467"><a href="#cb33-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-468"><a href="#cb33-468" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">quizInput</span>({ questions<span class="op">,</span> options}) {</span>
+<span id="cb33-469"><a href="#cb33-469" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> answers <span class="op">=</span> questions<span class="op">.</span><span class="fu">map</span>(() <span class="kw">=&gt;</span> <span class="kw">null</span>)<span class="op">;</span></span>
+<span id="cb33-470"><a href="#cb33-470" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> <span class="bu">root</span> <span class="op">=</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div</span></span>
+<span id="cb33-471"><a href="#cb33-471" aria-hidden="true" tabindex="-1"></a><span class="vs">      style="</span></span>
+<span id="cb33-472"><a href="#cb33-472" aria-hidden="true" tabindex="-1"></a><span class="vs">        display: grid;</span></span>
+<span id="cb33-473"><a href="#cb33-473" aria-hidden="true" tabindex="-1"></a><span class="vs">        grid-template-columns: 10% 10% 70% 10%;"</span></span>
+<span id="cb33-474"><a href="#cb33-474" aria-hidden="true" tabindex="-1"></a><span class="vs">    &gt;</span></span>
+<span id="cb33-475"><a href="#cb33-475" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>options<span class="op">.</span><span class="fu">map</span>(</span>
+<span id="cb33-476"><a href="#cb33-476" aria-hidden="true" tabindex="-1"></a>        (opt) <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div style="font-weight: bold; font-size: HUGE"&gt;</span><span class="sc">${</span>opt<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
+<span id="cb33-477"><a href="#cb33-477" aria-hidden="true" tabindex="-1"></a>      )<span class="sc">}</span></span>
+<span id="cb33-478"><a href="#cb33-478" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div style="font-weight: bold"&gt;Statement&lt;/div&gt;</span></span>
+<span id="cb33-479"><a href="#cb33-479" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div style="font-weight: bold"&gt;&lt;/div&gt;</span></span>
+<span id="cb33-480"><a href="#cb33-480" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(questions<span class="op">.</span><span class="fu">entries</span>()<span class="op">,</span> ([i<span class="op">,</span> [question<span class="op">,</span> correct]]) <span class="kw">=&gt;</span></span>
+<span id="cb33-481"><a href="#cb33-481" aria-hidden="true" tabindex="-1"></a>        <span class="fu">quizInputRow</span>({</span>
+<span id="cb33-482"><a href="#cb33-482" aria-hidden="true" tabindex="-1"></a>          question<span class="op">,</span></span>
+<span id="cb33-483"><a href="#cb33-483" aria-hidden="true" tabindex="-1"></a>          options<span class="op">,</span></span>
+<span id="cb33-484"><a href="#cb33-484" aria-hidden="true" tabindex="-1"></a>          correct<span class="op">,</span></span>
+<span id="cb33-485"><a href="#cb33-485" aria-hidden="true" tabindex="-1"></a>          <span class="dt">onChange</span><span class="op">:</span> (newAnswer) <span class="kw">=&gt;</span> {</span>
+<span id="cb33-486"><a href="#cb33-486" aria-hidden="true" tabindex="-1"></a>            answers[i] <span class="op">=</span> newAnswer<span class="op">;</span></span>
+<span id="cb33-487"><a href="#cb33-487" aria-hidden="true" tabindex="-1"></a>            <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> answers<span class="op">;</span></span>
+<span id="cb33-488"><a href="#cb33-488" aria-hidden="true" tabindex="-1"></a>            <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span>))<span class="op">;</span></span>
+<span id="cb33-489"><a href="#cb33-489" aria-hidden="true" tabindex="-1"></a>          }</span>
+<span id="cb33-490"><a href="#cb33-490" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb33-491"><a href="#cb33-491" aria-hidden="true" tabindex="-1"></a>      )<span class="sc">}</span></span>
+<span id="cb33-492"><a href="#cb33-492" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb33-493"><a href="#cb33-493" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> answers<span class="op">;</span></span>
+<span id="cb33-494"><a href="#cb33-494" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb33-495"><a href="#cb33-495" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-496"><a href="#cb33-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-497"><a href="#cb33-497" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">quizInputRow</span>({</span>
+<span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a>  question<span class="op">,</span></span>
+<span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a>  options<span class="op">,</span></span>
+<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a>  correct<span class="op">,</span></span>
+<span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a>  onChange <span class="op">=</span> () <span class="kw">=&gt;</span> {}</span>
+<span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a>}) {</span>
+<span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> <span class="bu">root</span> <span class="op">=</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div&gt;`</span><span class="op">;</span></span>
+<span id="cb33-504"><a href="#cb33-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-505"><a href="#cb33-505" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">setAnswer</span>(answer<span class="op">,</span> initial <span class="op">=</span> <span class="kw">false</span>) {</span>
+<span id="cb33-506"><a href="#cb33-506" aria-hidden="true" tabindex="-1"></a>    <span class="fu">morph</span>(</span>
+<span id="cb33-507"><a href="#cb33-507" aria-hidden="true" tabindex="-1"></a>      <span class="bu">root</span><span class="op">,</span></span>
+<span id="cb33-508"><a href="#cb33-508" aria-hidden="true" tabindex="-1"></a>      htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;div style="display: contents"&gt; </span></span>
+<span id="cb33-509"><a href="#cb33-509" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;form style="display: contents"&gt;</span></span>
+<span id="cb33-510"><a href="#cb33-510" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span><span class="sc">${</span>options<span class="op">.</span><span class="fu">map</span>(</span>
+<span id="cb33-511"><a href="#cb33-511" aria-hidden="true" tabindex="-1"></a>          (opt) <span class="kw">=&gt;</span></span>
+<span id="cb33-512"><a href="#cb33-512" aria-hidden="true" tabindex="-1"></a>            htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;label&gt;&amp;emsp;&lt;/label&gt; </span></span>
+<span id="cb33-513"><a href="#cb33-513" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;input  </span></span>
+<span id="cb33-514"><a href="#cb33-514" aria-hidden="true" tabindex="-1"></a><span class="vs">              name=</span><span class="sc">${</span>question<span class="sc">}</span><span class="vs"> &amp;emsp;</span></span>
+<span id="cb33-515"><a href="#cb33-515" aria-hidden="true" tabindex="-1"></a><span class="vs">              type="radio"</span></span>
+<span id="cb33-516"><a href="#cb33-516" aria-hidden="true" tabindex="-1"></a><span class="vs">              value="</span><span class="sc">${</span>opt<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb33-517"><a href="#cb33-517" aria-hidden="true" tabindex="-1"></a><span class="vs">              checked=</span><span class="sc">${</span>opt <span class="op">===</span> answer<span class="sc">}</span></span>
+<span id="cb33-518"><a href="#cb33-518" aria-hidden="true" tabindex="-1"></a><span class="vs">              onChange=</span><span class="sc">${</span>() <span class="kw">=&gt;</span> <span class="fu">setAnswer</span>(opt)<span class="sc">}</span></span>
+<span id="cb33-519"><a href="#cb33-519" aria-hidden="true" tabindex="-1"></a><span class="vs">            &gt;</span></span>
+<span id="cb33-520"><a href="#cb33-520" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;/input&gt;`</span></span>
+<span id="cb33-521"><a href="#cb33-521" aria-hidden="true" tabindex="-1"></a>        )<span class="sc">}</span></span>
+<span id="cb33-522"><a href="#cb33-522" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/form&gt;</span></span>
+<span id="cb33-523"><a href="#cb33-523" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div&gt;</span><span class="sc">${</span>question<span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb33-524"><a href="#cb33-524" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div&gt; &amp;emsp; </span><span class="sc">${</span></span>
+<span id="cb33-525"><a href="#cb33-525" aria-hidden="true" tabindex="-1"></a>       answer <span class="op">===</span> <span class="kw">null</span> <span class="op">?</span> <span class="st">""</span> <span class="op">:</span> answer <span class="op">===</span> correct <span class="op">?</span> <span class="st">"✅"</span> <span class="op">:</span> <span class="st">"🔴"</span></span>
+<span id="cb33-526"><a href="#cb33-526" aria-hidden="true" tabindex="-1"></a>      <span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb33-527"><a href="#cb33-527" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;`</span></span>
+<span id="cb33-528"><a href="#cb33-528" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb33-529"><a href="#cb33-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-530"><a href="#cb33-530" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> answer<span class="op">;</span></span>
+<span id="cb33-531"><a href="#cb33-531" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>initial) {</span>
+<span id="cb33-532"><a href="#cb33-532" aria-hidden="true" tabindex="-1"></a>      <span class="bu">root</span><span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">CustomEvent</span>(<span class="st">"input"</span>))<span class="op">;</span></span>
+<span id="cb33-533"><a href="#cb33-533" aria-hidden="true" tabindex="-1"></a>      <span class="fu">onChange</span>(answer)<span class="op">;</span></span>
+<span id="cb33-534"><a href="#cb33-534" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-535"><a href="#cb33-535" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-536"><a href="#cb33-536" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-537"><a href="#cb33-537" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setAnswer</span>(<span class="kw">null</span><span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb33-538"><a href="#cb33-538" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb33-539"><a href="#cb33-539" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-540"><a href="#cb33-540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-541"><a href="#cb33-541" aria-hidden="true" tabindex="-1"></a>morph <span class="op">=</span> <span class="pp">require</span>(<span class="st">"https://bundle.run/nanomorph@5.4.2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🎲 Question 1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Which of the following statements are correct?</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb34" data-startfrom="358" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 357;"><span id="cb34-358"><a href="#cb34-358" aria-hidden="true" tabindex="-1"></a>MC_dict_1 <span class="op">=</span> [</span>
+<span id="cb34-359"><a href="#cb34-359" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Dictionaries infer latent constructs from the occurrence of manifest features."</span><span class="op">,</span> <span class="st">"True"</span>]<span class="op">,</span></span>
+<span id="cb34-360"><a href="#cb34-360" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Before a dictionary analysis, we should always remove stopwords."</span><span class="op">,</span> <span class="st">"False"</span>]<span class="op">,</span></span>
+<span id="cb34-361"><a href="#cb34-361" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Organic dictionaries are developed for a specific research question and data."</span><span class="op">,</span> <span class="st">"True"</span>]<span class="op">,</span></span>
+<span id="cb34-362"><a href="#cb34-362" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"Off-the-shelf dictionaries can be used without validation, since others already tested them."</span><span class="op">,</span> <span class="st">"False"</span>]</span>
+<span id="cb34-363"><a href="#cb34-363" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb34-364"><a href="#cb34-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-365"><a href="#cb34-365" aria-hidden="true" tabindex="-1"></a>viewof answers_dict_1 <span class="op">=</span> <span class="fu">quizInput</span>({</span>
+<span id="cb34-366"><a href="#cb34-366" aria-hidden="true" tabindex="-1"></a>  <span class="dt">questions</span><span class="op">:</span> MC_dict_1<span class="op">,</span></span>
+<span id="cb34-367"><a href="#cb34-367" aria-hidden="true" tabindex="-1"></a>  <span class="dt">options</span><span class="op">:</span> [<span class="st">"True"</span><span class="op">,</span> <span class="st">"False"</span>]</span>
+<span id="cb34-368"><a href="#cb34-368" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>🎲 Question 2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>You want to count how many features of your crime dictionary occur in each TV series description. Type in the correct command!</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb35" data-startfrom="2" data-source-offset="-1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1;"><span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>TRT_8_1 <span class="op">=</span> [</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="vs">`tokens_tv |&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="vs">        dfm() |&gt;</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="vs">        {{input}}(dictionary = dict_crime)`</span><span class="op">,</span> <span class="co">// Text</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Command"</span><span class="op">,</span> <span class="co">// Placeholder</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dfm_lookup"</span><span class="op">,</span> <span class="co">// Correct Text</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"monospace"</span><span class="op">,</span> <span class="co">// Font Family</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#000000"</span> <span class="co">// Color</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>viewof answer_TRT_8_1 <span class="op">=</span> <span class="fu">textReplacementWithText</span>({</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">text</span><span class="op">:</span> TRT_8_1[<span class="dv">0</span>]<span class="op">,</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">placeholder</span><span class="op">:</span> TRT_8_1[<span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">correctText</span><span class="op">:</span> TRT_8_1[<span class="dv">2</span>]<span class="op">,</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">fontFamily</span><span class="op">:</span> TRT_8_1[<span class="dv">3</span>]<span class="op">,</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> TRT_8_1[<span class="dv">4</span>]</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="more-tutorials-on-this" class="level2"><h2 class="anchored" data-anchor-id="more-tutorials-on-this">📚 More tutorials on this</h2>
+<p>You still have questions? The following tutorials &amp; papers can help you with that:</p>
+<ul>
+<li><a href="https://tutorials.quanteda.io/">quanteda tutorials</a></li>
+<li>Boukes, M., van de Velde, B., Araujo, T., &amp; Vliegenthart, R. (2020). What’s the tone? Easy doesn’t do it: Analyzing performance and agreement between off-the-shelf sentiment analysis tools. <em>Communication Methods and Measures, 14</em>(2), 83-104. <a href="https://doi.org/10.1080/19312458.2019.1671966" class="uri">https://doi.org/10.1080/19312458.2019.1671966</a>
+</li>
+<li>Muddiman, A., McGregor, S. C., &amp; Stroud, N. J. (2019). (Re)Claiming our expertise: Parsing large text corpora with manually validated and organic dictionaries. <em>Political Communication, 36</em>(2), 214-226.</li>
+</ul></section><section id="test-your-knowledge" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge">📌 Test your knowledge</h2>
+<p>For the following tasks, we again use the 5,000 news articles on climate change from India, the USA, and Germany (see Tutorial 6). Read in the data and preprocess the texts as in this tutorial (without stemming &amp; without removing stopwords):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read in the data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"data/news_climate_change.RData"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># rename the object</span></span>
+<span><span class="va">data_climate</span> <span class="op">&lt;-</span> <span class="va">corpus</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">corpus</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># preprocessing (without stemming &amp; without removing stopwords)</span></span>
+<span><span class="va">tokens_climate</span> <span class="op">&lt;-</span> <span class="va">data_climate</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/corpus.html">corpus</a></span><span class="op">(</span>text_field <span class="op">=</span> <span class="st">"text_clean"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://quanteda.io/reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="task-1-easy" class="level3"><h3 class="anchored" data-anchor-id="task-1-easy">Task 1 (Easy🔥)</h3>
+<p>Use the Lexicoder Sentiment Dictionary (only the keys <em>negative</em> and <em>positive</em>) to classify the articles as negative, neutral, or positive - depending on which features dominate.</p>
+<p><em>What share of articles is negative, neutral, and positive? Does this result make sense to you?</em></p>
+</section><section id="task-2-hard" class="level3"><h3 class="anchored" data-anchor-id="task-2-hard">Task 2 (Hard🔥🔥🔥)</h3>
+<p>In Task 1, we measured the sentiment of <em>whole articles</em>. But how negatively or positively do articles write about <em>climate change</em> itself?</p>
+<ol type="1">
+<li>Extract the three words before and after “climate change” in each article.</li>
+<li>Keep only the adjectives among these words.</li>
+<li>Classify the adjectives as positive or negative with the Lexicoder Sentiment Dictionary and re-run your analysis from Task 1.</li>
+</ol>
+<p><em>What share of articles is negative, neutral, and positive about climate change? How do the results differ from Task 1?</em></p>
+<p><em>Hint</em>: Use <code><a href="https://quanteda.io/reference/kwic.html">kwic()</a></code> with <code><a href="https://quanteda.io/reference/phrase.html">phrase()</a></code> (Tutorial 6) and <code>udpipe()</code> for part-of-speech tagging (Tutorial 7). Part-of-speech tagging takes a few minutes - so first combine all contexts of an article into one text.</p>
+
+
+</section></section></main><!-- /main --><script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ilxucm91bmQgPSAobiwgcGxhY2VzKSA9PiB7XG4gIGlmICghcGxhY2VzKSByZXR1cm4gTWF0aC5yb3VuZChuKTtcbiAgY29uc3QgZCA9IDEwICoqIHBsYWNlcztcbiAgcmV0dXJuIE1hdGgucm91bmQobiAqIGQpIC8gZDtcbn1cblxuZnVuY3Rpb24gdGV4dFJlcGxhY2VtZW50V2l0aFRleHQoeyB0ZXh0LCBwbGFjZWhvbGRlciwgY29ycmVjdFRleHQsIGZvbnRGYW1pbHkgPSBcIm1vbm9zcGFjZVwiLCBjb2xvciA9IFwiIzAwMDAwMFwiIH0pIHtcbiAgY29uc3QgcGFydHMgPSB0ZXh0LnNwbGl0KC9cXHtcXHtpbnB1dFxcfVxcfS8pOyAvLyBUZWlsdCBkZW4gVGV4dCBhbiBkZW4gRWluZ2FiZXN0ZWxsZW5cblxuICBjb25zdCByb290ID0gaHRsLmh0bWxgPGRpdiBzdHlsZT1cImZvbnQtc2l6ZTogSFVHRTsgbWFyZ2luLXRvcDogLTQwOyBtYXJnaW4tYm90dG9tOiAtNDA7IG1hcmdpbi1sZWZ0OiAtNTBweDsgbGluZS1oZWlnaHQ6IDEuODsgZm9udC1mYW1pbHk6ICR7Zm9udEZhbWlseX07IGNvbG9yOiAke2NvbG9yfTsgd2hpdGUtc3BhY2U6IHByZS13cmFwOyB0ZXh0LWluZGVudDogMDsgZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGJhc2VsaW5lO1wiPlxuICAgIDxkaXYgc3R5bGU9XCJmbGV4OiAxO1wiPlxuICAgICAgJHtwYXJ0cy5tYXAoKHBhcnQsIGluZGV4KSA9PlxuICAgICAgICBodGwuaHRtbGAke3BhcnR9JHtpbmRleCA8IHBhcnRzLmxlbmd0aCAtIDEgPyBodGwuaHRtbGA8c3BhbiBzdHlsZT1cImRpc3BsYXk6IGlubGluZS1mbGV4OyBhbGlnbi1pdGVtczogYmFzZWxpbmU7XCI+XG4gICAgICAgICAgPGlucHV0IFxuICAgICAgICAgICAgdHlwZT1cInRleHRcIlxuICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCIke3BsYWNlaG9sZGVyfVwiXG4gICAgICAgICAgICBzdHlsZT1cInBhZGRpbmc6IDNweDsgZm9udC1zaXplOiBIVUdFOyBib3JkZXI6IDFweCBzb2xpZCAjY2NjOyBtYXJnaW4tbGVmdDogMHB4OyBib3JkZXItcmFkaXVzOiA0cHg7IHdpZHRoOiBjYWxjKCR7Y29ycmVjdFRleHQubGVuZ3RofWNoICsgMWVtKTsgZm9udC1mYW1pbHk6ICR7Zm9udEZhbWlseX07IGNvbG9yOiAke2NvbG9yfTsgdGV4dC1hbGlnbjogcmlnaHQ7IGJveC1zaXppbmc6IGJvcmRlci1ib3g7IG1hcmdpbi1yaWdodDogMC4yZW07XCJcbiAgICAgICAgICAgIG9uaW5wdXQ9JHsoZSkgPT4ge1xuICAgICAgICAgICAgICBjb25zdCBmZWVkYmFja0VsZW1lbnQgPSByb290LnF1ZXJ5U2VsZWN0b3IoYCNmZWVkYmFjay1maW5hbGApO1xuICAgICAgICAgICAgICBjb25zdCBhbGxJbnB1dHNDb3JyZWN0ID0gQXJyYXkuZnJvbShyb290LnF1ZXJ5U2VsZWN0b3JBbGwoXCJpbnB1dFwiKSkuZXZlcnkoKGlucHV0KSA9PiBpbnB1dC52YWx1ZS50cmltKCkgPT09IGNvcnJlY3RUZXh0LnRyaW0oKSk7XG4gICAgICAgICAgICAgIGlmIChhbGxJbnB1dHNDb3JyZWN0KSB7XG4gICAgICAgICAgICAgICAgZmVlZGJhY2tFbGVtZW50LnRleHRDb250ZW50ID0gXCLinIVcIjtcbiAgICAgICAgICAgICAgICBmZWVkYmFja0VsZW1lbnQuc3R5bGUuY29sb3IgPSBcImdyZWVuXCI7XG4gICAgICAgICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgICAgICAgZmVlZGJhY2tFbGVtZW50LnRleHRDb250ZW50ID0gXCLwn5S0XCI7XG4gICAgICAgICAgICAgICAgZmVlZGJhY2tFbGVtZW50LnN0eWxlLmNvbG9yID0gXCJyZWRcIjtcbiAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgfX1cbiAgICAgICAgICAvPjwvc3Bhbj5gIDogXCJcIn1gXG4gICAgICApfVxuICAgIDwvZGl2PlxuICAgIDxzcGFuIGlkPVwiZmVlZGJhY2stZmluYWxcIiBzdHlsZT1cImZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXNpemU6IEhVR0U7IG1hcmdpbi1sZWZ0OiAwLjVlbTsgY29sb3I6IGluaGVyaXQ7XCI+PC9zcGFuPlxuICA8L2Rpdj5gO1xuXG4gIHJldHVybiByb290O1xufVxuXG5cblxuZnVuY3Rpb24gdGV4dFJlcGxhY2VtZW50VGFzayh7IHBsYWNlaG9sZGVyLCBjb3JyZWN0VGV4dCwgd2lkdGggPSBcIjMwMHB4XCIsIGZvbnRGYW1pbHkgPSBcIm1vbm9zcGFjZVwiLCBjb2xvciA9IFwiYmxhY2tcIiB9KSB7XG4gIGxldCBlbnRlcmVkVGV4dCA9IFwiXCI7IFxuXG4gIGNvbnN0IHJvb3QgPSBodGwuaHRtbGA8ZGl2IHN0eWxlPVwiZm9udC1zaXplOiAxNHB4OyBsaW5lLWhlaWdodDogMS41OyBtYXJnaW4tYm90dG9tOiAyMHB4O1wiPlxuICAgIDxoND5CaXR0ZSBlcnNldHplbiBTaWUgZGVuIFRleHQ6PC9oND5cbiAgICA8IS0tIEVpbmdhYmVmZWxkIC0tPlxuICAgIDxkaXYgc3R5bGU9XCJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyO1wiPlxuICAgICAgPGlucHV0XG4gICAgICAgIHR5cGU9XCJ0ZXh0XCJcbiAgICAgICAgcGxhY2Vob2xkZXI9XCIke3BsYWNlaG9sZGVyfVwiXG4gICAgICAgIHN0eWxlPVwicGFkZGluZzogNXB4OyBmb250LXNpemU6IDE0cHg7IGJvcmRlcjogMXB4IHNvbGlkICNjY2M7IGJvcmRlci1yYWRpdXM6IDRweDsgd2lkdGg6ICR7d2lkdGh9OyBmb250LWZhbWlseTogJHtmb250RmFtaWx5fTsgY29sb3I6ICR7Y29sb3J9O1wiXG4gICAgICAgIG9uSW5wdXQ9JHsoZSkgPT4ge1xuICAgICAgICAgIGVudGVyZWRUZXh0ID0gZS50YXJnZXQudmFsdWU7XG4gICAgICAgICAgcm9vdC52YWx1ZSA9IGVudGVyZWRUZXh0O1xuICAgICAgICAgIHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiKSk7XG4gICAgICAgICAgdXBkYXRlRmVlZGJhY2soKTtcbiAgICAgICAgfX1cbiAgICAgIC8+XG4gICAgICA8IS0tIEZlZWRiYWNrIC0tPlxuICAgICAgPGRpdiBpZD1cImZlZWRiYWNrXCIgc3R5bGU9XCJmb250LXdlaWdodDogYm9sZDsgZm9udC1zaXplOiAxNHB4OyBtYXJnaW4tbGVmdDogMTBweDsgdGV4dC1hbGlnbjogbGVmdDsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgY29sb3I6IGluaGVyaXQ7XCI+PC9kaXY+XG4gICAgPC9kaXY+XG4gIDwvZGl2PmA7XG5cbi8vIEZ1bmt0aW9uIHp1ciBBa3R1YWxpc2llcnVuZyBkZXMgRmVlZGJhY2tzXG4gIGZ1bmN0aW9uIHVwZGF0ZUZlZWRiYWNrKCkge1xuICAgIGNvbnN0IGZlZWRiYWNrRWxlbWVudCA9IHJvb3QucXVlcnlTZWxlY3RvcihcIiNmZWVkYmFja1wiKTtcbiAgICBpZiAoZW50ZXJlZFRleHQudHJpbSgpID09PSBjb3JyZWN0VGV4dC50cmltKCkpIHtcbiAgICAgIGZlZWRiYWNrRWxlbWVudC50ZXh0Q29udGVudCA9IFwi4pyFXCI7XG4gICAgICBmZWVkYmFja0VsZW1lbnQuc3R5bGUuY29sb3IgPSBcImdyZWVuXCI7XG4gICAgfSBlbHNlIGlmIChlbnRlcmVkVGV4dC50cmltKCkgPT09IFwiXCIpIHtcbiAgICAgIGZlZWRiYWNrRWxlbWVudC50ZXh0Q29udGVudCA9IFwiXCI7IFxuICAgIH0gZWxzZSB7XG4gICAgICBmZWVkYmFja0VsZW1lbnQudGV4dENvbnRlbnQgPSBcIvCflLRcIjtcbiAgICAgIGZlZWRiYWNrRWxlbWVudC5zdHlsZS5jb2xvciA9IFwicmVkXCI7XG4gICAgfVxuICB9XG5cbiAgcm9vdC52YWx1ZSA9IG51bGw7IFxuICByZXR1cm4gcm9vdDtcbn1cblxuXG5mdW5jdGlvbiBzaW5nbGVDaG9pY2VJbnB1dCh7IG9wdGlvbnMsIGNvcnJlY3RJbmRleCB9KSB7XG4gIGxldCBzZWxlY3RlZEFuc3dlciA9IG51bGw7XG5cbiAgY29uc3Qgcm9vdCA9IGh0bC5odG1sYDxkaXYgc3R5bGU9XCJmb250LXNpemU6IEhVR0U7IGxpbmUtaGVpZ2h0OiAxLjU7IG1hcmdpbi1ib3R0b206IDBweDtcIj5cbiAgICA8IS0tIEFudHdvcnRlbiAtLT5cbiAgICA8ZGl2IHN0eWxlPVwiZGlzcGxheTogZ3JpZDsgcm93LWdhcDogMTJweDtcIj5cbiAgICAgICR7b3B0aW9ucy5tYXAoXG4gICAgICAgIChvcHRpb24sIGluZGV4KSA9PlxuICAgICAgICAgIGh0bC5odG1sYDxkaXYgc3R5bGU9XCJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyO1wiPlxuICAgICAgICAgICAgPCEtLSBSYWRpb2J1dHRvbiB1bmQgT3B0aW9uIC0tPlxuICAgICAgICAgICAgPGxhYmVsIHN0eWxlPVwiZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsgcGFkZGluZy1sZWZ0OiA0cHQ7IGZvbnQtd2VpZ2h0OiBub3JtYWw7XCI+XG4gICAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICAgIHR5cGU9XCJyYWRpb1wiXG4gICAgICAgICAgICAgICAgbmFtZT1cInNpbmdsZUNob2ljZVwiXG4gICAgICAgICAgICAgICAgdmFsdWU9JHtpbmRleH1cbiAgICAgICAgICAgICAgICBzdHlsZT1cIm1hcmdpbi1yaWdodDogMTBweDtcIlxuICAgICAgICAgICAgICAgIG9uQ2hhbmdlPSR7KCkgPT4ge1xuICAgICAgICAgICAgICAgICAgc2VsZWN0ZWRBbnN3ZXIgPSBpbmRleDtcbiAgICAgICAgICAgICAgICAgIHJvb3QudmFsdWUgPSBzZWxlY3RlZEFuc3dlcjtcbiAgICAgICAgICAgICAgICAgIHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiKSk7XG4gICAgICAgICAgICAgICAgICB1cGRhdGVGZWVkYmFjaygpO1xuICAgICAgICAgICAgICAgIH19XG4gICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgIDxzcGFuPiR7b3B0aW9ufTwvc3Bhbj5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8IS0tIEZlZWRiYWNrIC0tPlxuICAgICAgICAgICAgPGRpdiBpZD1cImZlZWRiYWNrLSR7aW5kZXh9XCIgc3R5bGU9XCJmb250LXdlaWdodDogYm9sZDsgZm9udC1zaXplOiAxNHB4OyBtYXJnaW4tbGVmdDogMTBweDsgdGV4dC1hbGlnbjogbGVmdDsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgY29sb3I6IGluaGVyaXQ7XCI+PC9kaXY+XG4gICAgICAgICAgPC9kaXY+YFxuICAgICAgKX1cbiAgICA8L2Rpdj5cbiAgPC9kaXY+YDtcblxuLy8gRnVua3Rpb24genVyIEFrdHVhbGlzaWVydW5nIGRlcyBGZWVkYmFja3NcbiAgZnVuY3Rpb24gdXBkYXRlRmVlZGJhY2soKSB7XG4gICAgb3B0aW9ucy5mb3JFYWNoKChfLCBpbmRleCkgPT4ge1xuICAgICAgY29uc3QgZmVlZGJhY2tFbGVtZW50ID0gcm9vdC5xdWVyeVNlbGVjdG9yKGAjZmVlZGJhY2stJHtpbmRleH1gKTtcbiAgICAgIGlmIChzZWxlY3RlZEFuc3dlciA9PT0gaW5kZXgpIHtcbiAgICAgICAgZmVlZGJhY2tFbGVtZW50LnRleHRDb250ZW50ID1cbiAgICAgICAgICBpbmRleCA9PT0gY29ycmVjdEluZGV4ID8gXCLinIVcIiA6IFwi8J+UtFwiO1xuICAgICAgICBmZWVkYmFja0VsZW1lbnQuc3R5bGUuY29sb3IgPSBpbmRleCA9PT0gY29ycmVjdEluZGV4ID8gXCJncmVlblwiIDogXCJyZWRcIjtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIGZlZWRiYWNrRWxlbWVudC50ZXh0Q29udGVudCA9IFwiXCI7IC8vIEzDtnNjaHQgRmVlZGJhY2sgZsO8ciBuaWNodCBhdXNnZXfDpGhsdGUgT3B0aW9uZW5cbiAgICAgIH1cbiAgICB9KTtcbiAgfVxuXG4gIHJvb3QudmFsdWUgPSBudWxsO1xuICByZXR1cm4gcm9vdDtcbn1cblxuXG5mdW5jdGlvbiBxdWl6SW5wdXQoeyBxdWVzdGlvbnMsIG9wdGlvbnN9KSB7XG4gIGxldCBhbnN3ZXJzID0gcXVlc3Rpb25zLm1hcCgoKSA9PiBudWxsKTtcbiAgbGV0IHJvb3QgPSBodGwuaHRtbGA8ZGl2XG4gICAgICBzdHlsZT1cIlxuICAgICAgICBkaXNwbGF5OiBncmlkO1xuICAgICAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDEwJSAxMCUgNzAlIDEwJTtcIlxuICAgID5cbiAgICAgICR7b3B0aW9ucy5tYXAoXG4gICAgICAgIChvcHQpID0+IGh0bC5odG1sYDxkaXYgc3R5bGU9XCJmb250LXdlaWdodDogYm9sZDsgZm9udC1zaXplOiBIVUdFXCI+JHtvcHR9PC9kaXY+YFxuICAgICAgKX1cbiAgICAgIDxkaXYgc3R5bGU9XCJmb250LXdlaWdodDogYm9sZFwiPlN0YXRlbWVudDwvZGl2PlxuICAgICAgPGRpdiBzdHlsZT1cImZvbnQtd2VpZ2h0OiBib2xkXCI+PC9kaXY+XG4gICAgICAke0FycmF5LmZyb20ocXVlc3Rpb25zLmVudHJpZXMoKSwgKFtpLCBbcXVlc3Rpb24sIGNvcnJlY3RdXSkgPT5cbiAgICAgICAgcXVpeklucHV0Um93KHtcbiAgICAgICAgICBxdWVzdGlvbixcbiAgICAgICAgICBvcHRpb25zLFxuICAgICAgICAgIGNvcnJlY3QsXG4gICAgICAgICAgb25DaGFuZ2U6IChuZXdBbnN3ZXIpID0+IHtcbiAgICAgICAgICAgIGFuc3dlcnNbaV0gPSBuZXdBbnN3ZXI7XG4gICAgICAgICAgICByb290LnZhbHVlID0gYW5zd2VycztcbiAgICAgICAgICAgIHJvb3QuZGlzcGF0Y2hFdmVudChuZXcgQ3VzdG9tRXZlbnQoXCJpbnB1dFwiKSk7XG4gICAgICAgICAgfVxuICAgICAgICB9KVxuICAgICAgKX1cbiAgICA8L2Rpdj5gO1xuICByb290LnZhbHVlID0gYW5zd2VycztcbiAgcmV0dXJuIHJvb3Q7XG59XG5cbmZ1bmN0aW9uIHF1aXpJbnB1dFJvdyh7XG4gIHF1ZXN0aW9uLFxuICBvcHRpb25zLFxuICBjb3JyZWN0LFxuICBvbkNoYW5nZSA9ICgpID0+IHt9XG59KSB7XG4gIGxldCByb290ID0gaHRsLmh0bWxgPGRpdj5gO1xuXG4gIGZ1bmN0aW9uIHNldEFuc3dlcihhbnN3ZXIsIGluaXRpYWwgPSBmYWxzZSkge1xuICAgIG1vcnBoKFxuICAgICAgcm9vdCxcbiAgICAgIGh0bC5odG1sYDxkaXYgc3R5bGU9XCJkaXNwbGF5OiBjb250ZW50c1wiPiBcbiAgICAgIDxmb3JtIHN0eWxlPVwiZGlzcGxheTogY29udGVudHNcIj5cbiAgICAgICAgJHtvcHRpb25zLm1hcChcbiAgICAgICAgICAob3B0KSA9PlxuICAgICAgICAgICAgaHRsLmh0bWxgPGxhYmVsPiZlbXNwOzwvbGFiZWw+IFxuICAgICAgICAgICAgPGlucHV0ICBcbiAgICAgICAgICAgICAgbmFtZT0ke3F1ZXN0aW9ufSAmZW1zcDtcbiAgICAgICAgICAgICAgdHlwZT1cInJhZGlvXCJcbiAgICAgICAgICAgICAgdmFsdWU9XCIke29wdH1cIlxuICAgICAgICAgICAgICBjaGVja2VkPSR7b3B0ID09PSBhbnN3ZXJ9XG4gICAgICAgICAgICAgIG9uQ2hhbmdlPSR7KCkgPT4gc2V0QW5zd2VyKG9wdCl9XG4gICAgICAgICAgICA+XG4gICAgICAgICAgICA8L2lucHV0PmBcbiAgICAgICAgKX1cbiAgICAgIDwvZm9ybT5cbiAgICAgIDxkaXY+JHtxdWVzdGlvbn08L2Rpdj5cbiAgICAgIDxkaXY+ICZlbXNwOyAke1xuICAgICAgIGFuc3dlciA9PT0gbnVsbCA/IFwiXCIgOiBhbnN3ZXIgPT09IGNvcnJlY3QgPyBcIuKchVwiIDogXCLwn5S0XCJcbiAgICAgIH08L2Rpdj5cbiAgICA8L2Rpdj5gXG4gICAgKTtcblxuICAgIHJvb3QudmFsdWUgPSBhbnN3ZXI7XG4gICAgaWYgKCFpbml0aWFsKSB7XG4gICAgICByb290LmRpc3BhdGNoRXZlbnQobmV3IEN1c3RvbUV2ZW50KFwiaW5wdXRcIikpO1xuICAgICAgb25DaGFuZ2UoYW5zd2VyKTtcbiAgICB9XG4gIH1cblxuICBzZXRBbnN3ZXIobnVsbCwgdHJ1ZSk7XG4gIHJldHVybiByb290O1xufVxuXG5tb3JwaCA9IHJlcXVpcmUoXCJodHRwczovL2J1bmRsZS5ydW4vbmFub21vcnBoQDUuNC4yXCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJcbk1DX2RpY3RfMSA9IFtcbiAgW1wiRGljdGlvbmFyaWVzIGluZmVyIGxhdGVudCBjb25zdHJ1Y3RzIGZyb20gdGhlIG9jY3VycmVuY2Ugb2YgbWFuaWZlc3QgZmVhdHVyZXMuXCIsIFwiVHJ1ZVwiXSxcbiAgW1wiQmVmb3JlIGEgZGljdGlvbmFyeSBhbmFseXNpcywgd2Ugc2hvdWxkIGFsd2F5cyByZW1vdmUgc3RvcHdvcmRzLlwiLCBcIkZhbHNlXCJdLFxuICBbXCJPcmdhbmljIGRpY3Rpb25hcmllcyBhcmUgZGV2ZWxvcGVkIGZvciBhIHNwZWNpZmljIHJlc2VhcmNoIHF1ZXN0aW9uIGFuZCBkYXRhLlwiLCBcIlRydWVcIl0sXG4gIFtcIk9mZi10aGUtc2hlbGYgZGljdGlvbmFyaWVzIGNhbiBiZSB1c2VkIHdpdGhvdXQgdmFsaWRhdGlvbiwgc2luY2Ugb3RoZXJzIGFscmVhZHkgdGVzdGVkIHRoZW0uXCIsIFwiRmFsc2VcIl1cbl1cblxudmlld29mIGFuc3dlcnNfZGljdF8xID0gcXVpeklucHV0KHtcbiAgcXVlc3Rpb25zOiBNQ19kaWN0XzEsXG4gIG9wdGlvbnM6IFtcIlRydWVcIiwgXCJGYWxzZVwiXVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxuVFJUXzhfMSA9IFtcbiAgYHRva2Vuc190diB8PlxuICAgICAgICBkZm0oKSB8PlxuICAgICAgICB7e2lucHV0fX0oZGljdGlvbmFyeSA9IGRpY3RfY3JpbWUpYCwgLy8gVGV4dFxuICBcIkNvbW1hbmRcIiwgLy8gUGxhY2Vob2xkZXJcbiAgXCJkZm1fbG9va3VwXCIsIC8vIENvcnJlY3QgVGV4dFxuICBcIm1vbm9zcGFjZVwiLCAvLyBGb250IEZhbWlseVxuICBcIiMwMDAwMDBcIiAvLyBDb2xvclxuXTtcblxudmlld29mIGFuc3dlcl9UUlRfOF8xID0gdGV4dFJlcGxhY2VtZW50V2l0aFRleHQoe1xuICB0ZXh0OiBUUlRfOF8xWzBdLFxuICBwbGFjZWhvbGRlcjogVFJUXzhfMVsxXSxcbiAgY29ycmVjdFRleHQ6IFRSVF84XzFbMl0sXG4gIGZvbnRGYW1pbHk6IFRSVF84XzFbM10sXG4gIGNvbG9yOiBUUlRfOF8xWzRdXG59KTtcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYW5zd2Vyc19kaWN0XzEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYW5zd2VyX1RSVF84XzEnKSJ9XX0=
+</script><script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/media-methods\.github\.io\/text-as-data\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./7-syntax.html" class="pagination-link" aria-label="7 Part-of-speech tagging &amp; dependency parsing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">7 Part-of-speech tagging &amp; dependency parsing</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./80-appendix.html" class="pagination-link" aria-label="Appendix">
+        <span class="nav-page-text">Appendix</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>University of Klagenfurt | Built with <a href="https://quarto.org/">Quarto</a> | <a href="./imprint.html">Imprint</a> | Shared under the <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC license</a></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+</body></html>

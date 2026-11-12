@@ -1,0 +1,511 @@
+---
+title: "8 Dictionaries"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 8, you'll be able to...
+
+- Explain what dictionaries are and which decisions a dictionary analysis involves
+- Apply off-the-shelf dictionaries
+- Build and apply your own (organic) dictionaries
+:::
+
+## 1 What are dictionaries?
+
+So far, we have mostly *described* texts, for example via frequent features (Tutorial 5), co-occurrences (Tutorial 6), or syntax (Tutorial 7). Today, we want to classify text into predetermined categories: Is a TV series description negative? Is a TV series a crime series?
+
+For this, we use **dictionaries**. Dictionaries are
+
+> lists of features that describe a construct (e.g., emotionality).
+
+The idea is simple: We count how often **manifest** features (e.g., "bad", "worse") occur in a text to infer whether a **latent** construct (e.g., a "negative evaluation") is present. Dictionaries are a **deductive** approach: We classify texts into categories that we define *before* the analysis.
+
+A classic example is **sentiment analysis**, which rests on
+
+> "the idea that the affective content of text \[...\] reveals information about the underlying opinions, stances, and attitudes" (Rauh, 2018, p. 320).
+
+Dictionary analyses typically follow four steps. Each step involves decisions:
+
+```{r steps, eval=TRUE, echo=FALSE}
+data.frame(
+  Step = c("1 Preprocessing", "2 Dictionary choice", "3 Analysis", "4 Validation"),
+  `Important questions` = c(
+    "Should I remove stopwords (e.g., negations such as \"not\")? Should I use stemming?",
+    "Do I use an existing off-the-shelf dictionary or build my own organic one?",
+    "Do I look at whole texts or only at features related to a specific object? How do I deal with negation and different text lengths? When is a construct present (threshold)?",
+    "Does the dictionary measure what it should?"
+  ),
+  check.names = FALSE
+) |>
+  knitr::kable()
+```
+
+In this tutorial, we focus on the first three steps. We only need `quanteda` and the `tidyverse`, which you already installed:
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# load packages (every time you restart R)
+library(tidyverse)
+library(quanteda)
+```
+
+We read in our TV series data and preprocess the descriptions as in Tutorial 3 - with two exceptions: We do *not* remove stopwords and we do *not* use stemming.
+
+```{r data, eval=TRUE, echo=TRUE}
+# read in the data
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+
+# preprocessing (without stemming & without removing stopwords)
+tokens_tv <- data |>
+  corpus(text_field = "Description") |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower()
+```
+
+::: {.callout-warning collapse="true"}
+## Why do we keep stopwords and skip stemming today?
+
+**Stopwords**: Lists of stopwords often include negations such as "not". If we remove them, "that is not bad" becomes "bad" - and a dictionary would classify the text as negative.
+
+**Stemming**: Many dictionaries already use **wildcards**: `abandon*` matches "abandon", "abandoned", and "abandonment". If we stem our texts, features such as "famili" may no longer match the dictionary.
+
+Again, preprocessing decisions depend on your goal (see Tutorial 6).
+:::
+
+## 2 Off-the-shelf dictionaries
+
+### 2.1 What are off-the-shelf dictionaries?
+
+Off-the-shelf dictionaries are existing word lists, often developed for other contexts. Here are some examples:
+
+```{r dictionaries, eval=TRUE, echo=FALSE}
+data.frame(
+  Dictionary = c("General Inquirer (GI)", "Linguistic Inquiry and Word Count (LIWC)",
+                 "Lexicoder Sentiment Dictionary (LSD)", "WordNet-Affect (WNA)", "Bing",
+                 "AFINN", "NRC Word-Emotion Association Lexicon", "SentimentWortschatz (SentiWS)"),
+  Measures = c("many categories, incl. positive & negative", "psychological & emotional categories",
+               "sentiment in (political) news", "emotions", "positive & negative sentiment",
+               "sentiment scores from -5 to +5", "eight emotions & sentiment", "sentiment in German texts")
+) |>
+  knitr::kable()
+```
+
+Off-the-shelf dictionaries have **advantages**: There is a large selection of existing dictionaries, so they are cheap to use. Many are already implemented in packages like `quanteda`. And they are transparent, i.e., no "black-box" method.
+
+But they also have **disadvantages**: They are often atheoretical and of limited validity, since they were not developed for *our* theories and data. Boukes et al. (2020) show that off-the-shelf sentiment tools barely agree with manual coding - and barely agree with each other (see the required reading).
+
+### 2.2 An Example: The Lexicoder Sentiment Dictionary
+
+We use the **Lexicoder Sentiment Dictionary** (Young & Soroka, 2012), which comes with `quanteda` as `data_dictionary_LSD2015`. A dictionary consists of **keys** (categories) and the features belonging to each key. With `[1:2]`, we only keep the first two keys, *negative* and *positive*:
+
+```{r lsd, eval=TRUE, echo=TRUE}
+data_dictionary_LSD2015[1:2]
+```
+
+The asterisk `*` is a wildcard: `abandon*` matches every feature that starts with "abandon".
+
+### 2.3 Looking up dictionary features
+
+To look up dictionary features, we need two functions:
+
+- `dfm_weight()`: With `scheme = "prop"`, we calculate the share of each feature among all features of a text. This way, we account for **text length**: Longer texts are more likely to contain, e.g., negative features "by chance".
+- `dfm_lookup()`: counts features from the dictionary per key.
+
+```{r lookup, eval=TRUE, echo=TRUE}
+sentiment_tv <- tokens_tv |>
+  dfm() |>
+  dfm_weight(scheme = "prop") |>
+  dfm_lookup(dictionary = data_dictionary_LSD2015[1:2])
+
+sentiment_tv
+```
+
+For example, 9.5% of all features in the first description ("Game of Thrones") are negative and 4.8% positive.
+
+### 2.4 Classifying texts
+
+Next, we classify each series as *negative*, *neutral*, or *positive* - depending on which features dominate. We convert the document-feature matrix into a data frame with `convert()`, add the original data with `bind_cols()`, and classify the series with `case_when()`:
+
+```{r classify, eval=TRUE, echo=TRUE}
+sentiment_tv <- sentiment_tv |>
+  convert(to = "data.frame") |>
+  bind_cols(data) |>
+  mutate(sentiment = case_when(
+    positive > negative ~ "positive",
+    negative > positive ~ "negative",
+    .default = "neutral"))
+
+sentiment_tv |>
+  select(Title, positive, negative, sentiment) |>
+  head(4)
+```
+
+*How negative are TV series?* We count the classifications and calculate shares:
+
+```{r share, eval=TRUE, echo=TRUE}
+sentiment_tv |>
+  count(sentiment) |>
+  mutate(share = round(n / sum(n) * 100, 1))
+```
+
+According to the dictionary, almost half of all TV series descriptions are negative. And which series are most negative?
+
+```{r most-negative, eval=TRUE, echo=TRUE}
+sentiment_tv |>
+  arrange(desc(negative)) |>
+  select(Title, negative) |>
+  head(5)
+```
+
+::: {.callout-warning collapse="true"}
+## Do dictionaries make mistakes?
+
+Yes - a lot! Dictionaries ignore context. Let's look at the description of "Dexter":
+
+```{r dexter, eval=TRUE, echo=TRUE}
+sentiment_tv |>
+  filter(Title == "8. Dexter") |>
+  select(Description, positive, negative, sentiment)
+```
+
+The description of a series about a serial killer is classified as *positive*. Why? "smart", "lovable", and "favorite" are positive - and so is "Dexter" itself, since the dictionary contains `dexter*` (as in "dexterous"). This is a typical problem of **polysemy**, i.e., features with several meanings.
+
+Dictionaries also struggle with **sarcasm**, **irony**, and **negation**: "Not a great way to start the day" contains the positive feature "great". Always check your results qualitatively!
+:::
+
+## 3 Organic dictionaries
+
+### 3.1 What are organic dictionaries?
+
+Organic dictionaries are your own, **domain-specific** word lists, developed for your research question and data. Building them typically involves four steps (Muddiman et al., 2019):
+
+1.  Identify features based on **existing studies**
+2.  Extend them based on the **corpus**, e.g., by inspecting top features (Tutorial 5) or keywords-in-context (Tutorial 6)
+3.  **Validate** each single feature
+4.  **Validate** the whole dictionary
+
+Organic dictionaries are often more closely tied to **theoretical concepts** - and thus more valid. Like off-the-shelf dictionaries, they are transparent. However, they are very **time-consuming** to build and hardly **generalizable**, since they are closely tied to one corpus.
+
+### 3.2 Creating a dictionary
+
+*Which TV series are crime series?* We create our own dictionary with `dictionary()`. It takes a list with one key (here: `crime`) and a vector of features:
+
+```{r dict-crime, eval=TRUE, echo=TRUE}
+dict_crime <- dictionary(list(
+  crime = c("crim*", "police*", "gun*", "shot*", "dead*",
+            "murder*", "kill*", "court*", "suspect*",
+            "witness*", "arrest*", "officer*", "verdict*")))
+
+dict_crime
+```
+
+Again, the wildcard `*` matches any ending: `crim*` matches "crime", "crimes", "criminal", etc.
+
+::: {.callout-tip collapse="true"}
+## Can a dictionary have more than one key?
+
+Yes! Simply add further elements to the list, e.g., one key for crime series and one for science fiction series:
+
+```{r dict-keys, eval=FALSE, echo=TRUE}
+dict_genres <- dictionary(list(
+  crime = c("crim*", "police*", "murder*", "detective*"),
+  scifi = c("galax*", "space*", "alien*", "planet*")))
+```
+:::
+
+### 3.3 Applying the dictionary
+
+We apply our dictionary just like the Lexicoder Sentiment Dictionary. A series counts as a crime series if it contains **at least one** crime feature:
+
+```{r apply-crime, eval=TRUE, echo=TRUE}
+crime_tv <- tokens_tv |>
+  dfm() |>
+  dfm_weight(scheme = "prop") |>
+  dfm_lookup(dictionary = dict_crime) |>
+  convert(to = "data.frame") |>
+  bind_cols(data) |>
+  mutate(crime_binary = if_else(crime > 0, "crime", "non-crime"))
+```
+
+*How many crime series are there?*
+
+```{r count-crime, eval=TRUE, echo=TRUE}
+crime_tv |>
+  count(crime_binary) |>
+  mutate(share = round(n / sum(n) * 100, 1))
+```
+
+About one in five series is classified as a crime series. And which are the "clearest" crime series, i.e., the series with the highest share of crime features?
+
+```{r clearest-crime, eval=TRUE, echo=TRUE}
+crime_tv |>
+  arrange(desc(crime)) |>
+  select(Title, crime) |>
+  head(5)
+```
+
+::: {.callout-warning collapse="true"}
+## Which features does our dictionary actually find?
+
+Wildcards are handy - but they can also match features we did not have in mind. With `kwic()` (Tutorial 6), we can check in which contexts our dictionary features occur. For example, for all features that start with "court":
+
+```{r kwic-court, eval=TRUE, echo=TRUE}
+kwic(tokens_tv, pattern = "court*", window = 3)
+```
+
+"The royal court of Camelot", "on the basketball court", or even "courtship" have nothing to do with crime. Similarly, `dead*` matches "The Walking Dead" and "Deadwood". This is why we should validate each single feature (step 3 of building organic dictionaries).
+:::
+
+### 3.4 Does the threshold matter?
+
+So far, one crime feature was enough to classify a series as a crime series. But we could also be stricter. *What happens if we require at least 2 or 3 crime features?*
+
+For this, we need the **number** of crime features, not their share - so we skip `dfm_weight()`:
+
+```{r threshold, eval=TRUE, echo=TRUE}
+crime_counts <- tokens_tv |>
+  dfm() |>
+  dfm_lookup(dictionary = dict_crime) |>
+  convert(to = "data.frame")
+
+crime_counts |>
+  summarise(at_least_1 = round(mean(crime >= 1) * 100, 1),
+            at_least_2 = round(mean(crime >= 2) * 100, 1),
+            at_least_3 = round(mean(crime >= 3) * 100, 1))
+```
+
+The threshold matters a lot: Depending on our decision, 18.9%, 4.6%, or only 0.8% of all series are crime series. There is no "correct" threshold - but you should justify your decision and test whether your results change.
+
+## 💡 Take-Aways
+
+- **dictionaries**: lists of features that describe a latent construct (e.g., sentiment)
+- **four steps**: preprocessing, choosing or building a dictionary, analysis, validation
+- **off-the-shelf dictionaries**: existing word lists, e.g., the Lexicoder Sentiment Dictionary: `data_dictionary_LSD2015`
+- **organic dictionaries**: your own, domain-specific word lists: `dictionary()`
+- **looking up features**: `dfm_weight()` (to account for text length), `dfm_lookup()`
+- **thresholds**: when a construct counts as present - this decision can change your results
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Negation in the Lexicoder Sentiment Dictionary
+
+The Lexicoder Sentiment Dictionary has two more keys: `neg_positive` (negated positive features, e.g., "not good") and `neg_negative` (negated negative features, e.g., "not bad"):
+
+```{r lsd-neg, eval=TRUE, echo=TRUE}
+data_dictionary_LSD2015[3:4]
+```
+
+These are **multi-word features**, which `dfm_lookup()` cannot find (a document-feature matrix only contains single features). Instead, we use `tokens_lookup()` on our tokens. With `nested_scope = "dictionary"`, "not good" is only counted as `neg_positive` - and not additionally as `positive`:
+
+```{r lsd-neg-example, eval=TRUE, echo=TRUE}
+toy <- tokens(c("This series is not good", "This series is not bad")) |>
+  tokens_tolower()
+
+# only negative & positive: "not good" is positive, "not bad" negative
+toy |>
+  tokens_lookup(dictionary = data_dictionary_LSD2015[1:2]) |>
+  dfm()
+
+# all four keys: correct
+toy |>
+  tokens_lookup(dictionary = data_dictionary_LSD2015,
+                nested_scope = "dictionary") |>
+  dfm()
+```
+
+To classify texts, you can then add negated features to the *opposite* category, e.g., `negative = negative + neg_positive` and `positive = positive + neg_negative`.
+:::
+
+## 🎲 Quiz
+
+::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**Which of the following statements are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_dict_1 = [
+  ["Dictionaries infer latent constructs from the occurrence of manifest features.", "True"],
+  ["Before a dictionary analysis, we should always remove stopwords.", "False"],
+  ["Organic dictionaries are developed for a specific research question and data.", "True"],
+  ["Off-the-shelf dictionaries can be used without validation, since others already tested them.", "False"]
+]
+
+viewof answers_dict_1 = quizInput({
+  questions: MC_dict_1,
+  options: ["True", "False"]
+})
+```
+:::
+
+::: {.callout-note icon="false"}
+## 🎲 Question 2
+
+**You want to count how many features of your crime dictionary occur in each TV series description. Type in the correct command!**
+
+```{ojs}
+//| echo: false
+
+TRT_8_1 = [
+  `tokens_tv |>
+        dfm() |>
+        {{input}}(dictionary = dict_crime)`, // Text
+  "Command", // Placeholder
+  "dfm_lookup", // Correct Text
+  "monospace", // Font Family
+  "#000000" // Color
+];
+
+viewof answer_TRT_8_1 = textReplacementWithText({
+  text: TRT_8_1[0],
+  placeholder: TRT_8_1[1],
+  correctText: TRT_8_1[2],
+  fontFamily: TRT_8_1[3],
+  color: TRT_8_1[4]
+});
+```
+:::
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- [quanteda tutorials](https://tutorials.quanteda.io/)
+- Boukes, M., van de Velde, B., Araujo, T., & Vliegenthart, R. (2020). What's the tone? Easy doesn't do it: Analyzing performance and agreement between off-the-shelf sentiment analysis tools. *Communication Methods and Measures, 14*(2), 83-104. <https://doi.org/10.1080/19312458.2019.1671966>
+- Muddiman, A., McGregor, S. C., & Stroud, N. J. (2019). (Re)Claiming our expertise: Parsing large text corpora with manually validated and organic dictionaries. *Political Communication, 36*(2), 214-226.
+
+## 📌 Test your knowledge
+
+For the following tasks, we again use the 5,000 news articles on climate change from India, the USA, and Germany (see Tutorial 6). Read in the data and preprocess the texts as in this tutorial (without stemming & without removing stopwords):
+
+```{r climate-data, eval=FALSE, echo=TRUE}
+# read in the data
+load("data/news_climate_change.RData")
+
+# rename the object
+data_climate <- corpus
+rm(corpus)
+
+# preprocessing (without stemming & without removing stopwords)
+tokens_climate <- data_climate |>
+  corpus(text_field = "text_clean") |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower()
+```
+
+### Task 1 (Easy🔥)
+
+Use the Lexicoder Sentiment Dictionary (only the keys *negative* and *positive*) to classify the articles as negative, neutral, or positive - depending on which features dominate.
+
+*What share of articles is negative, neutral, and positive? Does this result make sense to you?*
+
+```{r task-1, eval=FALSE, echo=FALSE}
+sentiment_climate <- tokens_climate |>
+  dfm() |>
+  dfm_weight(scheme = "prop") |>
+  dfm_lookup(dictionary = data_dictionary_LSD2015[1:2]) |>
+  convert(to = "data.frame") |>
+  bind_cols(data_climate |> select(country)) |>
+  mutate(sentiment = case_when(
+    positive > negative ~ "positive",
+    negative > positive ~ "negative",
+    .default = "neutral"))
+
+sentiment_climate |>
+  count(sentiment) |>
+  mutate(share = round(n / sum(n) * 100, 1))
+
+# Answer: 31.3% negative, 2.2% neutral, 66.5% positive.
+# Surprising for news on climate change! Possible reasons: The dictionary was not
+# developed for climate news (e.g., "protection", "support", "clean" are positive)
+# - and long news articles are rarely neutral. We would need to validate this.
+```
+
+### Task 2 (Hard🔥🔥🔥)
+
+In Task 1, we measured the sentiment of *whole articles*. But how negatively or positively do articles write about *climate change* itself?
+
+1.  Extract the three words before and after "climate change" in each article.
+2.  Keep only the adjectives among these words.
+3.  Classify the adjectives as positive or negative with the Lexicoder Sentiment Dictionary and re-run your analysis from Task 1.
+
+*What share of articles is negative, neutral, and positive about climate change? How do the results differ from Task 1?*
+
+*Hint*: Use `kwic()` with `phrase()` (Tutorial 6) and `udpipe()` for part-of-speech tagging (Tutorial 7). Part-of-speech tagging takes a few minutes - so first combine all contexts of an article into one text.
+
+```{r task-2, eval=FALSE, echo=FALSE}
+library(udpipe)
+
+# 1) keywords-in-context: 3 words before and after "climate change"
+kwic_climate <- kwic(tokens_climate,
+                     pattern = phrase("climate change"),
+                     window = 3) |>
+  as.data.frame()
+
+# combine all contexts of an article into one text
+contexts_climate <- kwic_climate |>
+  mutate(text = paste(pre, "climate change", post)) |>
+  group_by(doc_id = docname) |>
+  summarise(text = paste(text, collapse = ". "))
+
+# 2) part-of-speech tagging: keep only adjectives (takes a few minutes!)
+adjectives_climate <- udpipe(contexts_climate, object = "english") |>
+  filter(upos == "ADJ")
+
+# most frequent adjectives
+adjectives_climate |>
+  count(token, sort = TRUE) |>
+  head(10)
+
+# 3) classify the adjectives as positive or negative...
+dfm_adjectives <- adjectives_climate |>
+  group_by(doc_id) |>
+  summarise(text = paste(token, collapse = " ")) |>
+  corpus() |>
+  tokens() |>
+  dfm()
+
+# ...which adjectives are positive and negative?
+dfm_adjectives |>
+  dfm_select(pattern = data_dictionary_LSD2015["positive"]) |>
+  topfeatures()
+
+dfm_adjectives |>
+  dfm_select(pattern = data_dictionary_LSD2015["negative"]) |>
+  topfeatures()
+
+# ...and re-run the analysis from Task 1
+sentiment_adjectives <- dfm_adjectives |>
+  dfm_lookup(dictionary = data_dictionary_LSD2015[1:2]) |>
+  convert(to = "data.frame") |>
+  mutate(sentiment = case_when(
+    positive > negative ~ "positive",
+    negative > positive ~ "negative",
+    .default = "neutral"))
+
+sentiment_adjectives |>
+  count(sentiment) |>
+  mutate(share = round(n / sum(n) * 100, 1))
+
+# Answer: 3,398 of 5,000 articles contain at least one adjective around
+# "climate change". Of these, 15.3% are negative, 68.3% neutral, and 16.4%
+# positive about climate change - very different from Task 1 (66.5% positive)!
+# Most adjectives around climate change (e.g., "global", "intergovernmental",
+# "human") are not part of the dictionary, so most articles are neutral.
+# Typical negative adjectives: "vulnerable", "catastrophic", "worst", "dangerous".
+# But the dictionary still makes mistakes: "united" (as in "United Nations"),
+# "special" (as in "special report"), and even "copenhagen" (matched by the
+# positive feature "cope*") are classified as positive.
+```
+:::::
