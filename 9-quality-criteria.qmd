@@ -59,7 +59,7 @@ The logic is simple: We code the same texts a) **automatically** and b) **manual
 Not necessarily! Human coders also make mistakes and often disagree with each other. Song et al. (2020) show that the quality of the manual coding strongly affects the quality of the validation. They recommend that the gold standard...
 
 - is based on a **random sample** of texts,
-- is coded by at least two coders with sufficient **intercoder reliability** (e.g., Krippendorff's α ≥ .7),
+- is coded by at least two coders with sufficient **intercoder reliability** (e.g., Krippendorff's $\alpha \geq .7$),
 - is **large enough** (in their simulation, more than 1,300 texts, i.e., more than 1% of all texts).
 
 In this tutorial, we only code 20 series - for practical reasons. Keep in mind that results based on such small samples are very uncertain.

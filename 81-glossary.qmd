@@ -24,6 +24,16 @@ glossary <- read.csv2(
   ) |>
   dplyr::arrange(r_function)
 
+# PDF version: simple table that can break across pages
+if (knitr::is_latex_output()) {
+  # pipe table; the dashes set the column widths (approx. 30% / 70%)
+  knitr::asis_output(paste(
+    c("| R Function | Definition |",
+      paste0("|:", strrep("-", 27), "|:", strrep("-", 63), "|"),
+      paste0("| `", glossary$r_function, "` | ", glossary$definition, " |")),
+    collapse = "\n"))
+} else {
+
 glossary |>
   gt::gt() |>
   gt::cols_label(
@@ -82,4 +92,6 @@ glossary |>
     row.striping.include_table_body = TRUE
   ) |>
   gt::opt_row_striping()
+
+}
 ```

@@ -1,0 +1,26 @@
+# PDF version of the book
+# render with: quarto render --profile pdf --to pdf
+project:
+  output-dir: pdf
+
+format:
+  pdf:
+    documentclass: scrreprt
+    pdf-engine: xelatex
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    colorlinks: true
+    linkcolor: "black"
+    urlcolor: "black"
+    fig-width: 6
+    fig-height: 4
+    code-block-bg: true
+    filters:
+      - files/www/pdf-cleanup.lua
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+        \fvset{breaklines}
+        \AtBeginDocument{\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere}}
