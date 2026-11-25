@@ -214,7 +214,7 @@ fcm_tv |>
   textplot_network(min_freq = 0.8)
 ```
 
-For example, "new", "york", and "city" are strongly connected - as are "family" and "life".
+For example, "new", "york", and "city" are strongly connected. "life" is also connected to many other features, e.g., "new" ("new life") and "family".
 
 ## 💡 Take-Aways
 
@@ -342,6 +342,9 @@ Climate change can be described in different ways, e.g., as "climate change", "c
 
 *Hint*: Preprocess the texts as in this tutorial (without stemming) and have a look at Section 2.3 on compounding.
 
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
 ```{r task-1, eval=TRUE, echo=TRUE}
 # preprocessing (without stemming)
 tokens_climate <- data_climate |>
@@ -363,6 +366,7 @@ dfm_terms <- tokens_climate |>
 # frequencies
 textstat_frequency(dfm_terms)
 ```
+:::
 
 ### Task 2 (Medium🔥🔥)
 
@@ -371,6 +375,9 @@ Visualize the frequency of these three terms across the countries in the data se
 *Do the countries differ in how they describe climate change?*
 
 *Hint*: Have a look at Tutorial 5 on comparing groups with `textstat_frequency()` and on bar charts with `ggplot()`.
+
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r task-2, eval=TRUE, echo=TRUE}
 # Note: If the number of articles differs between countries, absolute frequencies
@@ -385,6 +392,7 @@ textstat_frequency(dfm_terms, groups = country) |>
   theme_minimal()
 
 ```
+:::
 
 ### Task 3 (Hard🔥🔥🔥)
 
@@ -401,6 +409,9 @@ This task goes beyond what we have covered in the tutorials so far (e.g., extrac
 
 However, you remain responsible for your code: Make sure that you understand what each line does and check whether the results make sense (e.g., by looking at a few articles and their extracted years). Remember that AI is **not** allowed in the exam - so use it as a learning aid, not as a replacement for understanding.
 :::
+
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r task-3, eval=TRUE, echo=TRUE}
 # extract year from text
@@ -463,4 +474,5 @@ dfm_terms_reduced |>
   labs(x = "Year", y = "Share of articles", color = "Term") +
   theme_minimal()
 ```
+:::
 ::::::

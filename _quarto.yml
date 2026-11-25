@@ -38,6 +38,8 @@ book:
        - 8-dictionaries.qmd
 
     - part: Quality criteria and validation
+      chapters:
+       - 9-quality-criteria.qmd
 
     - part: 80-appendix.qmd
       chapters:

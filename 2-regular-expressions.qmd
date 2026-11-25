@@ -417,11 +417,15 @@ You still have questions? The following tutorials & papers can help you with tha
 
 Use the TV series data. *Can you identify the number of TV series whose description mentions London?*
 
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
 ```{r task-1, eval=TRUE, echo=TRUE}
 data |>
   filter(str_detect(Description, "London")) |>
   nrow()
 ```
+:::
 
 ### Task 2 (Medium🔥🔥)
 
@@ -432,9 +436,10 @@ Use the TV series data.
 
 *How many series are about superheroes? What does the first description look like after your replacement?*
 
-*Solution*:
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
-```{r task-2, eval= TRUE, echo= TRUE}
+```{r task-2, eval=TRUE, echo=TRUE}
 data_superheroes <- data |>
   filter(str_detect(Description, "[Ss]uperhero(es)?")) |>
   mutate(Description = str_replace_all(Description, "[Ss]uperhero(es)?", "fancy R programmers"))
@@ -445,6 +450,7 @@ data_superheroes |>
   slice(1) |>
   pull(Description)
 ```
+:::
 
 ### Task 3 (Hard🔥🔥🔥)
 
@@ -471,7 +477,8 @@ data |>
 
 *Hint*: Have a look at the box "More on regular expressions: Anchors" in Section 2.4.
 
-*Solution*:
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r clean-title-3, eval=TRUE, echo=TRUE}
 data |>
@@ -479,4 +486,5 @@ data |>
   select(Title) |>
   head(5)
 ```
+:::
 :::::

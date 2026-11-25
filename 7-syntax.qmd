@@ -96,7 +96,7 @@ Now let's tag our TV series descriptions. First, we read in the data:
 data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
 ```
 
-Then, we tag all descriptions. This may take a moment (about 30 seconds), since `udpipe` analyzes about 20,000 tokens:
+Then, we tag all descriptions. This may take a moment (about 30 seconds), since `udpipe` analyzes about 26,000 tokens:
 
 ```{r pos-data, eval=TRUE, echo=TRUE, message=FALSE}
 pos_tv <- udpipe(data$Description, object = "english")
@@ -272,6 +272,9 @@ You still have questions? The following tutorials & papers can help you with tha
 
 Use the tagged TV series data. *What are the five most frequent verbs in the TV series descriptions?*
 
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
 ```{r task-1, eval=TRUE, echo=TRUE}
 pos_tv |>
   filter(upos == "VERB") |>
@@ -280,12 +283,16 @@ pos_tv |>
 
 # Answer: follow (69), find (68), become (48), have (44), live (43)
 ```
+:::
 
 ### Task 2 (Medium🔥🔥)
 
 Use the tagged TV series data. *Which adjectives occur in descriptions that mention "woman"?*
 
 *Hint*: First, save the `doc_id` of all descriptions that mention "woman" with `pull()`. Then, keep only these documents with `%in%`.
+
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r task-2, eval=TRUE, echo=TRUE}
 woman_docs <- pos_tv |>
@@ -297,12 +304,16 @@ pos_tv |>
   count(lemma, sort = TRUE) |>
   head(5)
 ```
+:::
 
 ### Task 3 (Hard🔥🔥🔥)
 
 Use the tagged TV series data. *Which adjectives directly describe "man" vs. "woman"?*
 
 *Hint*: Use dependency relations as in Section 3.3.
+
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r task-3, eval=TRUE, echo=TRUE}
 men <- pos_tv |>
@@ -330,4 +341,5 @@ pos_tv |>
 # Answer: Both men and women are most often described as "young" (10 each).
 # Men are also described as "mysterious", women as "married".
 ```
+:::
 :::::

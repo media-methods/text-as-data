@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Valerie Hase">
 <title>6 Collocations &amp; co-occurrence – Text-as-Data</title>
@@ -10,10 +10,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -73,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9e3e5b9121e68b3f077afb32f2c64d95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-631496449bf32ff9b0bb69a6bfd9195d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -205,9 +208,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Quality criteria and validation</span></span>
-  </li>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Quality criteria and validation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./9-quality-criteria.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9 Quality criteria &amp; validation</span></a>
+  </div>
+</li>
+      </ul>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./80-appendix.html" class="sidebar-item-text sidebar-link">
@@ -457,7 +472,8 @@ text1 :
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://quanteda.io/reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">tokens_tv</span>, pattern <span class="op">=</span> <span class="st">"detective"</span>, window <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Keyword-in-context with 5 matches.                                                                             
+<pre><code>Keyword-in-context with 5 matches.
+                                                                             
   [text93, 3]              story behind | detective | james gordon's rise    
  [text133, 8]   novelist castle's books | detective | beckett seeks help     
  [text135, 6]         links lives ceres | detective | accidental ship captain
@@ -533,7 +549,8 @@ features   returns
   ancient        1
   enemy          1
   returns        0
-[ reached max_nfeat ... 5,349 more features, reached max_nfeat ... 5,349 more features ]</code></pre>
+[ reached max_nfeat ... 5,349 more features, reached max_nfeat ... 5,349 more
+features ]</code></pre>
 </div>
 </div>
 <p>Our FCM is large: It contains all features of our data as both rows and columns.</p>
@@ -574,7 +591,7 @@ features   returns
 </div>
 </div>
 </div>
-<p>For example, “new”, “york”, and “city” are strongly connected - as are “family” and “life”.</p>
+<p>For example, “new”, “york”, and “city” are strongly connected. “life” is also connected to many other features, e.g., “new” (“new life”) and “family”.</p>
 </section></section><section id="take-aways" class="level2"><h2 class="anchored" data-anchor-id="take-aways">💡 Take-Aways</h2>
 <ul>
 <li>
@@ -1022,6 +1039,18 @@ features   returns
 <p>Climate change can be described in different ways, e.g., as “climate change”, “climate crisis”, or “global warming”.</p>
 <p><em>How often does each of these three terms occur in the articles?</em></p>
 <p><em>Hint</em>: Preprocess the texts as in this tutorial (without stemming) and have a look at Section 2.3 on compounding.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># preprocessing (without stemming)</span></span>
 <span><span class="va">tokens_climate</span> <span class="op">&lt;-</span> <span class="va">data_climate</span> <span class="op">|&gt;</span></span>
@@ -1049,10 +1078,25 @@ features   returns
 3 climate_crisis        75    3      64   all</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section><section id="task-2-medium" class="level3"><h3 class="anchored" data-anchor-id="task-2-medium">Task 2 (Medium🔥🔥)</h3>
 <p>Visualize the frequency of these three terms across the countries in the data set (India, Germany, USA).</p>
 <p><em>Do the countries differ in how they describe climate change?</em></p>
 <p><em>Hint</em>: Have a look at Tutorial 5 on comparing groups with <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> and on bar charts with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Note: If the number of articles differs between countries, absolute frequencies</span></span>
 <span><span class="co"># are misleading. Better: relative frequencies, e.g., the share of each term among</span></span>
@@ -1068,6 +1112,9 @@ features   returns
 <div>
 <figure class="figure"><p><img src="6-cooccurrence_files/figure-html/task-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1092,6 +1139,18 @@ features   returns
 <p>However, you remain responsible for your code: Make sure that you understand what each line does and check whether the results make sense (e.g., by looking at a few articles and their extracted years). Remember that AI is <strong>not</strong> allowed in the exam - so use it as a learning aid, not as a replacement for understanding.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># extract year from text</span></span>
 <span><span class="va">data_reduced</span> <span class="op">&lt;-</span> <span class="va">data_climate</span> <span class="op">|&gt;</span></span>
@@ -1156,6 +1215,9 @@ features   returns
 <div>
 <figure class="figure"><p><img src="6-cooccurrence_files/figure-html/task-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

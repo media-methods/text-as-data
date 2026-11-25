@@ -1,0 +1,357 @@
+---
+title: "9 Quality criteria & validation"
+---
+
+::: callout-note
+## 🎯 Learning goals
+
+After working through Tutorial 9, you'll be able to...
+
+- Explain what quality criteria are and why we need them for text-as-data methods
+- Explain why we should validate automated analyses
+- Validate a dictionary against manual coding with precision, recall, and F1
+:::
+
+## 1 Quality criteria
+
+In Tutorial 8, we classified TV series as crime series with our own dictionary: About one in five series was a crime series. But **can we trust this number** - for example, if we wanted to report it in a paper or use it as a variable in further analyses?
+
+To answer this question, we need **quality criteria**. For text-as-data methods, four criteria are often discussed:
+
+```{r criteria, eval=TRUE, echo=FALSE}
+data.frame(
+  Criterion = c("Validity", "Robustness", "Reproducibility", "Replicability"),
+  Question = c(
+    "Do we measure what we want to measure?",
+    "Do we get similar results with the same data, but other methods?",
+    "Do we get the same results with the same data and methods?",
+    "Do we get similar results with the same methods, but other data?"
+  ),
+  Example = c(
+    "Does our dictionary really find crime series?",
+    "Do we find the same share of crime series with another, similar dictionary?",
+    "Does a fellow student re-running our code on our data get the same results?",
+    "Does our dictionary work as well for series from another time period?"
+  )
+) |>
+  knitr::kable()
+```
+
+Robustness, reproducibility, and replicability are **necessary, but not sufficient**: A result can be robust, reproducible, and replicable - and still not measure what we want to measure. This is why we focus on **validity** today.
+
+Automated content analyses can produce results within seconds. But this does not mean that the results are correct: Errors can arise during preprocessing (e.g., stemming), operationalization (e.g., which features we include in a dictionary), or analysis (e.g., which threshold we use). This is why Grimmer and Stewart (2013, p. 271) recommend:
+
+> "Validate, Validate, Validate. \[...\] What should be avoided, then, is the blind use of any method without a validation step."
+
+**Validation** helps us understand *where* our automated analysis goes wrong - and *how* wrong it is.
+
+## 2 Validation via manual coding
+
+### 2.1 The gold standard
+
+There are many ways to validate automated analyses (for an overview, see Birkenmaier et al., 2024). Here, we focus on the most common one: the **comparison with manual coding**.
+
+The logic is simple: We code the same texts a) **automatically** and b) **manually**. Then, we compare both codings. The manual coding is often called the **"gold standard"**, since we assume that human coders can capture the "true" value of a variable in a text.
+
+::: {.callout-warning collapse="true"}
+## Is manual coding really a "gold standard"?
+
+Not necessarily! Human coders also make mistakes and often disagree with each other. Song et al. (2020) show that the quality of the manual coding strongly affects the quality of the validation. They recommend that the gold standard...
+
+- is based on a **random sample** of texts,
+- is coded by at least two coders with sufficient **intercoder reliability** (e.g., Krippendorff's α ≥ .7),
+- is **large enough** (in their simulation, more than 1,300 texts, i.e., more than 1% of all texts).
+
+In this tutorial, we only code 20 series - for practical reasons. Keep in mind that results based on such small samples are very uncertain.
+:::
+
+### 2.2 The confusion matrix
+
+To compare automated and manual coding, we use a **confusion matrix**. For our crime dictionary, it looks like this:
+
+|                           | Manual: crime       | Manual: non-crime   |
+|---------------------------|---------------------|---------------------|
+| **Dictionary: crime**     | True positive (TP)  | False positive (FP) |
+| **Dictionary: non-crime** | False negative (FN) | True negative (TN)  |
+
+: The confusion matrix
+
+- **True positive**: a crime series is correctly classified as "crime"
+- **True negative**: a non-crime series is correctly classified as "non-crime"
+- **False positive**: a non-crime series is wrongly classified as "crime"
+- **False negative**: a crime series is wrongly classified as "non-crime"
+
+### 2.3 Precision, recall, and F1
+
+Based on the confusion matrix, we calculate three common metrics:
+
+**Precision** tells us whether all texts we classify as "crime" really are crime series, i.e., whether our analysis produces few *false positives*:
+
+$$Precision = \frac{TP}{TP + FP}$$
+
+**Recall** tells us whether we find all crime series, i.e., whether our analysis produces few *false negatives*:
+
+$$Recall = \frac{TP}{TP + FN}$$
+
+**F1** is the harmonic mean of both. It is useful if we need one metric that combines precision and recall:
+
+$$F_1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}$$
+
+All three metrics range from 0 (bad) to 1 (perfect).
+
+Importantly, precision and recall cannot be optimized independently: Improving one often worsens the other. Remember the thresholds from Tutorial 8? With a threshold of at least one crime feature, we find more crime series (recall ↑) - but also more wrong ones (precision ↓). With a threshold of at least two features, we find fewer wrong ones (precision ↑) - but miss many crime series (recall ↓).
+
+::: {.callout-warning collapse="true"}
+## Which values are "good enough"?
+
+There are no fixed rules (yet). As a rough guideline, you can orient yourself to common thresholds for intercoder reliability: Values of about .8 or higher suggest that an automated analysis produces valid results.
+
+But which metric matters most depends on your research question: If you want to find *all* crime series (e.g., to analyze them in detail), recall is more important. If you want to make sure that the series you analyze really *are* crime series, precision is more important.
+:::
+
+## 3 Validation in R
+
+Validating a dictionary in R involves four steps:
+
+1.  Draw a **random sample** of texts
+2.  Code the sample **manually** (the "gold standard")
+3.  **Merge** manual & automated codings
+4.  **Compare** both: precision, recall & F1
+
+For the last step, we need the package [`caret`](https://topepo.github.io/caret/). Make sure that you install it first (you only need to do this once):
+
+```{r packages, eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+# install.packages("caret")
+
+# load packages (every time you restart R)
+library(tidyverse)
+library(quanteda)
+library(caret)
+```
+
+First, we repeat our dictionary analysis from Tutorial 8. Since we classify series based on the *number* of crime features, we do not need `dfm_weight()`. The variable `automated` contains our automated classification: 1 = crime series (at least one crime feature), 0 = non-crime series.
+
+```{r dictionary, eval=TRUE, echo=TRUE}
+# read in the data
+data <- read.csv2("data/data_tvseries.csv", encoding = "UTF-8")
+
+# preprocessing (as in Tutorial 8)
+tokens_tv <- data |>
+  corpus(text_field = "Description") |>
+  tokens(remove_punct = TRUE,
+         remove_numbers = TRUE,
+         remove_symbols = TRUE) |>
+  tokens_tolower()
+
+# our crime dictionary (as in Tutorial 8)
+dict_crime <- dictionary(list(
+  crime = c("crim*", "police*", "gun*", "shot*", "dead*",
+            "murder*", "kill*", "court*", "suspect*",
+            "witness*", "arrest*", "officer*", "verdict*")))
+
+# apply the dictionary & classify
+crime_tv <- tokens_tv |>
+  dfm() |>
+  dfm_lookup(dictionary = dict_crime) |>
+  convert(to = "data.frame") |>
+  bind_cols(data) |>
+  mutate(automated = if_else(crime > 0, 1, 0))
+```
+
+### 3.1 Step 1: Draw a random sample
+
+We draw a random sample of 20 series with `slice_sample()`. With `set.seed()`, we make sure that we all get the same 20 series (see Tutorial 5 for `set.seed()`).
+
+We keep only the variables we need for coding: the ID of each document (`doc_id`), its title, and its description. We also add an empty variable `manual` for our manual coding. Importantly, we do **not** include the automated classification - so that it cannot influence our manual coding.
+
+```{r sample, eval=TRUE, echo=TRUE}
+set.seed(42)
+
+sample <- crime_tv |>
+  slice_sample(n = 20) |>
+  select(doc_id, Title, Description) |>
+  mutate(manual = NA)
+```
+
+Then, we save the sample as a `.csv` file with `write.csv2()`:
+
+```{r sample-save, eval=FALSE, echo=TRUE}
+write.csv2(sample, "data/validation_sample.csv", row.names = FALSE)
+```
+
+### 3.2 Step 2: Code the sample manually
+
+Now we leave R. Open `validation_sample.csv` (e.g., in Excel), read each description, and fill in the column `manual`:
+
+- **1** if the description shows that the series is a crime series
+- **0** if the description shows that the series is not a crime series
+
+As in any manual content analysis, you should follow a clear codebook with coding instructions. Save the file as `validation_sample_coded.csv` in your `data` folder - in the same format (separated by semicolons).
+
+Then, we read in our coding with `read.csv2()`:
+
+```{r read-coding, eval=FALSE, echo=TRUE}
+sample_coded <- read.csv2("data/validation_sample_coded.csv")
+```
+
+```{r example-coding, eval=TRUE, echo=FALSE}
+# example coding used in this tutorial (instead of reading in a file)
+crime_series <- c("49. Wednesday", "128. Pretty Little Liars", "839. Death in Paradise",
+                  "356. iZombie", "601. Columbo")
+
+sample_coded <- sample |>
+  mutate(manual = if_else(Title %in% crime_series, 1, 0))
+```
+
+This is how we coded the 20 series. Your coding may differ - for example, would you code "Riverdale" or "Pretty Little Liars" as crime series?
+
+```{r show-coding, eval=TRUE, echo=TRUE}
+sample_coded |>
+  select(Title, manual)
+```
+
+### 3.3 Step 3: Merge both codings
+
+Next, we add the automated classification to our manual coding. We use `left_join()` and match both data sets via `doc_id`.
+
+`caret` needs both classifications as **factors** with the same levels. We therefore convert both variables with `factor()`:
+
+```{r merge, eval=TRUE, echo=TRUE}
+validation <- sample_coded |>
+  select(doc_id, manual) |>
+  left_join(crime_tv |> select(doc_id, automated),
+            by = "doc_id") |>
+  mutate(manual = factor(manual, levels = c(0, 1)),
+         automated = factor(automated, levels = c(0, 1)))
+
+head(validation)
+```
+
+### 3.4 Step 4: Compare both codings
+
+Finally, we compare both codings with `confusionMatrix()` from the `caret` package. We need to specify...
+
+- `data`: the automated coding
+- `reference`: the manual coding (our gold standard)
+- `mode = "prec_recall"`: that we want precision, recall, and F1
+- `positive = "1"`: which value indicates that a series *is* a crime series
+
+```{r validate, eval=TRUE, echo=TRUE}
+cm <- confusionMatrix(data = validation$automated,
+                      reference = validation$manual,
+                      mode = "prec_recall",
+                      positive = "1")
+
+# confusion matrix
+cm$table
+
+# precision, recall & F1 (rounded)
+round(cm$byClass[c("Precision", "Recall", "F1")], 2)
+```
+
+Let's start with the **confusion matrix** at the top. It shows how many series were classified as 0 or 1 by the dictionary ("Prediction") and in our manual coding ("Reference"):
+
+- 4 series are crime series according to both codings (true positives)
+- 15 series are non-crime series according to both codings (true negatives)
+- 0 series were wrongly classified as crime series by the dictionary (false positives)
+- 1 series was wrongly classified as non-crime series by the dictionary (false negative)
+
+What does this mean for our metrics?
+
+- **Precision = 1.00**: All 4 series classified as crime series really are crime series.
+- **Recall = 0.80**: We find 4 of the 5 crime series - we miss one.
+- **F1 = 0.89**: Overall, the dictionary seems to work well.
+
+But careful: With only 20 series (and only 5 crime series!), these values are very **uncertain**. A single different coding decision would change them considerably.
+
+## 💡 Take-Aways
+
+- **quality criteria**: criteria to ensure the quality of research, e.g., validity, robustness, reproducibility, and replicability
+- **validity**: Do we measure what we want to measure?
+- **validation via manual coding**: comparing automated and manual coding ("gold standard") of a random sample: `set.seed()`, `slice_sample()`, `write.csv2()`, `left_join()`
+- **confusion matrix**: true/false positives and true/false negatives
+- **precision**: Are all texts we classify as X really X? **recall**: Do we find all texts that are X? **F1**: harmonic mean of both: `confusionMatrix()`
+
+## 🤓 Smart Hacks
+
+::: {.callout-tip collapse="true"}
+## Smart Hack 1: Calculating precision and recall by hand
+
+`confusionMatrix()` is convenient, but you can also calculate the metrics yourself with `summarise()` and `mutate()`. This helps to understand what the metrics mean:
+
+```{r by-hand, eval=TRUE, echo=TRUE}
+validation |>
+  summarise(TP = sum(automated == 1 & manual == 1),
+            FP = sum(automated == 1 & manual == 0),
+            FN = sum(automated == 0 & manual == 1)) |>
+  mutate(precision = TP / (TP + FP),
+         recall = TP / (TP + FN),
+         f1 = 2 * precision * recall / (precision + recall))
+```
+:::
+
+## 🎲 Quiz
+
+:::::::: {.content-visible when-format="html"}
+{{< include "files/www/quiz_script.qmd" >}}
+
+::: {.callout-note icon="false"}
+## 🎲 Question 1
+
+**Which of the following statements are correct?**
+
+```{ojs}
+//| echo: false
+
+MC_quality_1 = [
+  ["Precision tells us whether all texts we classify as X really are X.", "True"],
+  ["Recall tells us whether we find all texts that are X.", "True"],
+  ["If a result is reproducible, it is also valid.", "False"],
+  ["When drawing a sample for manual coding, we should include the automated classification so that coders can check it.", "False"]
+]
+
+viewof answers_quality_1 = quizInput({
+  questions: MC_quality_1,
+  options: ["True", "False"]
+})
+```
+:::
+
+::: {.callout-note icon="false"}
+## 🎲 Question 2
+
+**You want to compare your automated with your manual coding. Type in the correct command!**
+
+```{ojs}
+//| echo: false
+
+TRT_9_1 = [
+  `{{input}}(data = validation$automated,
+        reference = validation$manual,
+        mode = "prec_recall",
+        positive = "1")`, // Text
+  "Command", // Placeholder
+  "confusionMatrix", // Correct Text
+  "monospace", // Font Family
+  "#000000" // Color
+];
+
+viewof answer_TRT_9_1 = textReplacementWithText({
+  text: TRT_9_1[0],
+  placeholder: TRT_9_1[1],
+  correctText: TRT_9_1[2],
+  fontFamily: TRT_9_1[3],
+  color: TRT_9_1[4]
+});
+```
+:::
+::::::::
+
+## 📚 More tutorials on this
+
+You still have questions? The following tutorials & papers can help you with that:
+
+- Birkenmaier, L., Lechner, C. M., & Wagner, C. (2024). The search for solid ground in text as data: A systematic review of validation practices and practical recommendations for validation. *Communication Methods and Measures, 18*(3), 249–277. <https://doi.org/10.1080/19312458.2023.2285765>
+- Grimmer, J., & Stewart, B. M. (2013). Text as data: The promise and pitfalls of automatic content analysis methods for political texts. *Political Analysis, 21*(3), 267–297. <https://doi.org/10.1093/pan/mps028>
+- Haim, M., Hase, V., Schindler, J., Bachl, M., & Domahidi, E. (2023). (Re)Establishing quality criteria for content analysis: A critical perspective on the field's core method. *Studies in Communication and Media, 12*(4), 277–288. <https://doi.org/10.5771/2192-4007-2023-4-277>
+- Song, H., Tolochko, P., Eberl, J.-M., Eisele, O., Greussing, E., Heidenreich, T., Lind, F., Galyga, S., & Boomgaarden, H. G. (2020). In validations we trust? The impact of imperfect human annotations as a gold standard on the quality of validation of automated content analysis. *Political Communication, 37*(4), 550–572. <https://doi.org/10.1080/10584609.2020.1723752>

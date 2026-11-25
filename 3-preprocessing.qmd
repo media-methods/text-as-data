@@ -312,6 +312,9 @@ Use the TV series data. Preprocess only the description of "Breaking Bad" (the s
 
 *How many tokens does the description have before and after preprocessing?*
 
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
 ```{r task-1, eval=TRUE, echo=TRUE}
 # before
 corpus_tv[2] |>
@@ -328,12 +331,16 @@ corpus_tv[2] |>
   tokens_wordstem() |>
   ntoken()
 ```
+:::
 
 ### Task 2 (Medium🔥🔥)
 
 Use the TV series data. In this tutorial, we first removed stopwords and then applied stemming. Repeat the preprocessing from this tutorial, but **switch the order** of these two steps: First apply stemming, then remove stopwords.
 
 *Why does the order of preprocessing steps matter here?*
+
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r task-2, eval=TRUE, echo=TRUE}
 # original order: removing stopwords, then stemming
@@ -363,4 +370,5 @@ corpus_tv |>
 # "themselves" -> "themselv"), so they no longer match the stopword list and
 # are not removed. The order of preprocessing steps therefore matters!
 ```
+:::
 :::::

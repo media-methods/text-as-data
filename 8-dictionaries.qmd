@@ -413,7 +413,10 @@ Use the Lexicoder Sentiment Dictionary (only the keys *negative* and *positive*)
 
 *What share of articles is negative, neutral, and positive? Does this result make sense to you?*
 
-```{r task-1, eval=FALSE, echo=FALSE}
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
+```{r task-1, eval=FALSE, echo=TRUE}
 sentiment_climate <- tokens_climate |>
   dfm() |>
   dfm_weight(scheme = "prop") |>
@@ -434,6 +437,7 @@ sentiment_climate |>
 # developed for climate news (e.g., "protection", "support", "clean" are positive)
 # - and long news articles are rarely neutral. We would need to validate this.
 ```
+:::
 
 ### Task 2 (Hard🔥🔥🔥)
 
@@ -447,7 +451,10 @@ In Task 1, we measured the sentiment of *whole articles*. But how negatively or 
 
 *Hint*: Use `kwic()` with `phrase()` (Tutorial 6) and `udpipe()` for part-of-speech tagging (Tutorial 7). Part-of-speech tagging takes a few minutes - so first combine all contexts of an article into one text.
 
-```{r task-2, eval=FALSE, echo=FALSE}
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
+```{r task-2, eval=FALSE, echo=TRUE}
 library(udpipe)
 
 # 1) keywords-in-context: 3 words before and after "climate change"
@@ -511,5 +518,6 @@ sentiment_adjectives |>
 # "special" (as in "special report"), and even "copenhagen" (matched by the
 # positive feature "cope*") are classified as positive.
 ```
+:::
 :::
 ::::::

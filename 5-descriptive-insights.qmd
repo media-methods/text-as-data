@@ -295,9 +295,13 @@ You still have questions? The following tutorials & papers can help you with tha
 
 Use `dfm_tv`. *Which are the 20 most frequent features?*
 
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
+
 ```{r task-1, eval=TRUE, echo=TRUE}
 topfeatures(dfm_tv, 20)
 ```
+:::
 
 ### Task 2 (Medium🔥🔥)
 
@@ -307,6 +311,9 @@ Use the TV series data.
 - Visualize the most frequent features for both groups using a comparison word cloud.
 
 *Do descriptions of top-rated series differ from those of low-rated series?*
+
+::: {.callout-note collapse="true" icon="false"}
+## ✅ Solution
 
 ```{r task-2, eval=TRUE, echo=TRUE, warning=FALSE}
 # create new variable (all other series: NA)
@@ -338,4 +345,5 @@ textplot_wordcloud(dfm_rating,
 # worst-rated series with "fight", "complicated", "deal", or "life". Since there
 # are only 23 worst-rated series, their features dominate the word cloud.
 ```
+:::
 :::::
